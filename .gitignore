@@ -2,4 +2,5 @@ IEEEtranBST/
 *.pdf
 *.log
 *.gz
+*.aux
 .DS_Store
