@@ -3,4 +3,5 @@ IEEEtranBST/
 *.log
 *.gz
 *.aux
+*.bbl
 .DS_Store
