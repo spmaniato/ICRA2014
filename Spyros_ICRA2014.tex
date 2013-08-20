@@ -49,9 +49,9 @@
 \newcounter{examplecounter}		% Example counter. Independent of theorem and other counters.
 \newenvironment{myExample}
 {
-    	\refstepcounter{examplecounter}%
-  	\textbf{Example \arabic{examplecounter}.}% Example #.
-  	\quad							% Let's give our text some space :-)
+	\refstepcounter{examplecounter}%
+	\textbf{Example \arabic{examplecounter}.}% Example #.
+	\quad							% Let's give our text some space :-)
 }
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,8 +63,7 @@
 
 \author{Spyros Maniatopoulos, Matthew Blair and Hadas Kress-Gazit% 	<-this % stops a space
 %\thanks{*This work was not supported by any organization}% 			<-this % stops a space
-\thanks{The authors are with the Autonomous Systems Lab, School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA
-        {\tt\small \{sm2296, hadaskg\}@cornell.edu}}%
+\thanks{The authors are with the Autonomous Systems Lab, School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA, {\tt \{sm2296, hadaskg\}@cornell.edu}}%
 %\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University,
 %        Dayton, OH 45435, USA
  %     {\tt\small b.d.researcher@ieee.org}}%
@@ -89,86 +88,22 @@ Check LTL in LaTeX: $\X \G \F \Cox$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{INTRODUCTION}
-
-...
-
-\begin{itemize}
-	\item High-level robot mission planning
-  	\item Fixed workspace (state-space) assumption
- 	\item Recent literature
-   	\item Brief statement of our contributions
-   	\item Paper structure
-\end{itemize}
-
-Some references: \cite{MurrayICRA2012}, \cite{MurrayICRA2013a},  \cite{BeltaICRA2012}, \cite{Dimos2013ICRA}, \cite{Belta2013RSS}, \cite{BingxinRSS2012}.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tex/intro.tex}
 
 \section{PRELIMINARIES}
-
-\subsection{Controller Synthesis}
-
-...
-
-\subsection{LTL Mission Planning}
-
-LTLMoP, Structured English, Parsing
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tex/prelim}
 
 \section{HIGHER LEVEL ABSTRACTIONS}
-
-\subsection{Groups of Propositions} 
-
-...
-
-\begin{myExample}\label{Ex:groups}
-	Groups of sensors or actions (use Hadas's and Cam's ideas).
-\end{myExample}
-
-\subsection{Group Quantifiers} 
-
-...
-
-\begin{myExample}\label{Ex:quantifiers}
-	2-3 one-liners that demonstrate the 3 quantifiers (any, all, each)
-\end{myExample}
-
-\subsection{Proposition Correspondence} 
-
-...
-
-\begin{myExample}\label{Ex:corresponding}
-	Robowaiter (orders-customers) or PR3 (letters-addresses)
-\end{myExample}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tex/abstractions}
 
 \section{SYNTHESIS FOR OPEN--WORLDS}
-
-\subsection{Tasks over Unknown Propositions}
-
-...
-
-% \subsection{Exploring the Physical Workspace}
-
-\subsection{Augmenting the State-Space} % Re-synthesis (not local yet)
-
-...
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tex/openworld.tex}
 
 \section{SIMULATION: Open--World Exploration}  % or make exploration a subsection in pref section
-
-...
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tex/simulation.tex}
 
 \section{CONCLUSIONS AND FUTURE WORK}
-
-...
-
-Local/Incremental re-synthesis
+\input{tex/conclusion.tex}
 
 %\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
