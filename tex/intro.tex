@@ -2,10 +2,20 @@
 
 \begin{itemize}
 	\item High-level robot mission planning
-  	\item Fixed workspace (state-space) assumption
+	\item Reactivity as the first step toward open world planning
+  	\item Closed/fixed/static world/workspace/state-space assumption
  	\item Recent literature
    	\item Brief statement of our contributions
    	\item Paper structure
+\end{itemize}
+
+Use some ideas from \cite{open-world-sw}:
+\begin{itemize}
+	\item Software should react to changes by self-organizing its structure and self-adapting its behavior.
+	\item Closed software: composed of parts that don't change during execution.
+	\item Changes in the world make new components available. System can discover and bind such components dynamically while the application is executing.
+	\item In practical cases, not all requirements can or should be specified upfront. Stakeholders add new requirements during execution. For example, scientists on the MARS Rover team bla bla bla.
+	\item Uncertainty and partial a priori knowledge are inherent aspects of missions, not problems that we should attempt to avoid encountering.
 \end{itemize}
 
 Some references: \cite{MurrayICRA2012}, \cite{MurrayICRA2013a},  \cite{BeltaICRA2012}, \cite{Dimos2013ICRA}, \cite{Belta2013RSS}, \cite{BingxinRSS2012}.
