@@ -13,7 +13,7 @@
 \usepackage{times} 			% assumes new font selection scheme installed
 \usepackage{amsmath} 		% assumes amsmath package installed
 %\usepackage{amsthm}
-\usepackage{amssymb}  		g% assumes amsmath package installed
+\usepackage{amssymb}  		% assumes amsmath package installed
 \usepackage{listings}
 \usepackage{stmaryrd}
 \usepackage{graphicx, float, wrapfig}
@@ -41,7 +41,7 @@
 \DeclareMathOperator{\Cox}{
     \begin{tikzpicture}[baseline=(X.base)]
     \path[use as bounding box] (-0.16,-0.17) -- (0.16,0.17);
-    \node at (0,0) {\scalebox{0.8}{$\F$}}; \node (X) at(0,0) {$\bigcirc$}; 
+    \node at (0,0) {\scalebox{0.8}{$\F$}}; \node (X) at(0,0) go{$\bigcirc$}; 
     %\draw (current bounding box.north west) rectangle (current bounding box.south east);
     \end{tikzpicture}}
     
@@ -52,6 +52,14 @@
 	\refstepcounter{examplecounter}%
 	\textbf{Example \arabic{examplecounter}.}% Example #.
 	\quad							% Let's give our text some space :-)
+}
+
+% Define a "Definition" environment with its own counter    
+\newcounter{definitioncounter}		% Definition counter. Independent of theorem and other counters.
+\newenvironment{myDefinition}
+{
+	\refstepcounter{definitioncounter}%
+	\textbf{Definition \arabic{definitioncounter}}% Definition #.
 }
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -93,7 +101,7 @@ Check LTL in LaTeX: $\X \G \F \Cox$.
 \section{PRELIMINARIES}
 \input{tex/prelim}
 
-\section{HIGHER LEVEL ABSTRACTIONS}
+\section{HIGHER LEVEL ABSTRACTIONS}\label{abstractions}
 \input{tex/abstractions}
 
 \section{SYNTHESIS FOR OPEN--WORLDS}
