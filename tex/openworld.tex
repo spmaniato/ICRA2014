@@ -1,12 +1,14 @@
 \subsection{Defining Tasks over Open Worlds}
 
-\begin{myExample}\label{Ex:mailman} Robotic Mailman (revisited)\\
-	A robotic mailman operates within a school building. It is tasked with collecting letters and delivering them to the offices of the corresponding recipients. However, the robot's mission specification does not have to account for every possible recipient. Using the open world abstractions introduced in Section \ref{abstractions}, we can describe one of the robot's objective, in Structured English, as follows: 
+Use new abstractions to define tasks for open worlds \ldots
+
+\begin{myExample}\label{Ex:mailman2} Robotic Mailman (revisited)\\
+	Using the open world abstractions introduced in Section \ref{abstractions}, we can describe one of the robot's objective, in Structured English, as follows: 
 \texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letter} and \texttt{Office} are groups of environment and location (robot) propositions, respectively.
 %\texttt{each CarryLetter is set on PickupLetter and the corresponding Letter and reset on DeliverLetter}, where \texttt{CarryLetter} and \texttt{Letter} are groups of robot and environment propositions, respectively, and \texttt{PickupLetter} is a robot proposition that abstracts an actuator (e.g. a hand or gripper). 
 \end{myExample}
 
-In the example above, the information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with propositions, the robot's discrete abstraction is updated, and the mission specification is translated into LTL formulas accordingly. These steps are described in the remainder of this section..
+In the example above, the information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with propositions, the robot's discrete abstraction is updated, and the mission specification is translated into LTL formulas accordingly. These steps are described in the remainder of this section.
 
 \subsection{Exploring the Physical Workspace}
 
