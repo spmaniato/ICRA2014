@@ -1,37 +1,35 @@
 \subsection{Defining Tasks over Open Worlds}
 
-First of all, let us define the notion of open world in the context of controller synthesis for high-level robot tasks.
+First of all, let us define the notion of open world in the current context.
 
 \begin{myDefinition}
-	\textbf{(Open World).} The union of $\mathcal{X}$ and $\mathcal{Y}$, the sets of environment and robot proposition respectively, defines the state-space. If the state-space is allowed to increase and decrease in size during execution, then we say that the robot operates under the open world assumption.
+	\textbf{(Open World).} The union of $\mathcal{X}$ and $\mathcal{Y}$, the sets of environment and robot proposition respectively, defines the state-space. If the state-space is allowed to increase in size during execution, then we say that the robot operates under the open world assumption.
 \end{myDefinition}
 
 In real-world applications, such as search and rescue scenarios, there is a need to define a mission before the robot has obtained full knowledge of the world. In other cases, the state-space may be too large for (i) the user to enumerate every possible variation upfront, and (ii) the synthesis algorithm to deal with. To clarify the latter cases, consider the following mission:
 
-\begin{myExample}\label{Ex:mission1} Autonomous Robotic Mailman\\
-	A robotic mailman operates within a school building. It is tasked with collecting letters and delivering them to the offices of the corresponding recipients. However, the robot's mission specification does not have to account for every possible recipient. Using the open world abstractions introduced in Section \ref{abstractions}, we can describe one of the robot's objective, in Structured English, as follows: 
+\begin{myExample}\label{Ex:mission1}
+	A robotic mailman operates within a school building. It is tasked with collecting letters from a mailroom, and delivering them to the offices of the corresponding recipients. However, the robot's mission specification does not have to account for every possible recipient. Using the open world abstractions introduced in Section \ref{abstractions}, we can describe one of the robot's objective, in Structured English, as follows: 
 \texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letter} and \texttt{Office} are groups of environment and location (robot) propositions, respectively.
 %\texttt{each CarryLetter is set on PickupLetter and the corresponding Letter and reset on DeliverLetter}, where \texttt{CarryLetter} and \texttt{Letter} are groups of robot and environment propositions, respectively, and \texttt{PickupLetter} is a robot proposition that abstracts an actuator (e.g. a hand or gripper). 
+The information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with propositions, the robot's discrete abstraction is updated, and the mission specification is translated into LTL formulas accordingly.
 \end{myExample}
 
-In the example above, the information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with propositions, the robot's discrete abstraction is updated, and the mission specification is translated into LTL formulas accordingly. These steps are described in the remainder of this section..
+...
 
 \subsection{Exploring the Physical Workspace}
 
 In the robotics domain, more often than not, the state-space has a physical subset: the workspace that the robot operates in. When defining tasks using the open world abstractions that were introduced in Section \ref{abstractions}, one needs to account for the fact that the robot could simply choose to ignore those tasks. In other worlds, there has to be a mechanism that forces the robot to expand its physical workspace, in order to discover aspects of its mission specification.
 
-We dedicate a portion of the mission specification to this ``exploration sub-task". It is worth noting that (i) the approach is still valid in the case that the robot has full knowledge of its workspace, but not its entire state-space, and (ii) that, since exploration is part of the specification, the user can define how the robot will deal with the open world, and under which conditions it will perform actions such as exploration or re-planning. The specification in this sub-task contain instructions on how the robot should visit newly discovered regions (see ???).
+We dedicate a portion of the mission specification to this ``exploration" task. It is worth noting that (i) the approach is still valid in the case that the robot has full knowledge of its workspace, but not its entire state-space, and (ii) that, since exploration is part of the specification, the user can define how the robot will deal with the open world, and under which conditions it will perform actions such as exploration or re-planning.
 
-We create the following template for defining specifications that have mixed mission and exploration goals. The specification is broken into three parts. The first part is the actual mission specification and its content does not depend on whether the robot is operating in an open world. The last part is the exploration sub-task mentioned above, and is the same for all scenarios involving exploration of the physical workspace. Therefore, it can be automatically generated, and appended to any specification. In the intermediate part, dubbed ``exploration settings", the user creates a link between the mission and exploration tasks. On one end of the spectrum, the user may choose to have the robot always be in exploration mode (e.g. \texttt{always not exploreMODE}). On the other end, the user may decide to ignore the open world aspect of the problem and restrict the mission to the currently known state-space. In between the two extremes, the user can set conditions for when the robot is allowed to explore. For example, in a search and rescue scenario, it would be sensible for the exploration settings to include the following constraint: \texttt{do exploreMODE if and only if you are not activating rescuingSurvivor}. This would prevent the robot from exploring a disaster area while attempting to help a survivor and guide him to a safe location. Note that \texttt{exploreMODE} is just a name for a binary robot proposition. Finally, the exploration settings also contain instructions for adding propositions, besides locative ones, such as new sensors and actions, to their corresponding groups.
+... frontier, BFS/DFS, memory, ...
 
 \subsection{Augmenting the State-Space} % Re-synthesis (not local yet)
 
 \begin{itemize}
 	\item add to / remove from
-	\item BFS/DFS
 	\item re-synthesis
 	\item Not just LTL anymore (add to / remove from Group). First-order logic?
 	\item ...
 \end{itemize}
-
-% END
