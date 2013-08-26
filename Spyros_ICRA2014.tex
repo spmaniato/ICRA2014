@@ -59,21 +59,29 @@
 \newenvironment{myDefinition}
 {
 	\refstepcounter{definitioncounter}%
-	\textbf{Definition \arabic{definitioncounter}}% Definition #.
+	\textbf{Definition \arabic{definitioncounter}}%
 }
 
 % Define a "Problem" environment with its own counter    
-\newcounter{problemcounter}		% Definition counter. Independent of theorem and other counters.
+\newcounter{problemcounter}
 \newenvironment{myProblem}
 {
 	\refstepcounter{problemcounter}%
 	\textbf{Problem \arabic{definitioncounter}}% Definition #.
 }
+
+% Define an "Assumption" environment with its own counter    
+\newcounter{assumptioncounter}
+\newenvironment{myAssumption}
+{
+	\refstepcounter{assumptioncounter}%
+	\textbf{Assumption \arabic{assumptioncounter}:}%
+}
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{\LARGE \bf
-	Open World Abstractions for Reactive Mission Planning and Exploration
+	Open World Abstractions for Reactive Mission Re-Planning
 }
 
 \author{Spyros Maniatopoulos, Matthew Blair and Hadas Kress-Gazit% 	<-this % stops a space
