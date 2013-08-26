@@ -8,7 +8,7 @@ First of all, let us define the notion of open world in the context of controlle
 
 In real-world applications, such as search and rescue scenarios, there is a need to define a mission before the robot has obtained full knowledge of the world. In other cases, the state-space may be too large for (i) the user to enumerate every possible variation upfront, and (ii) the synthesis algorithm to deal with. To clarify the latter cases, consider the following mission:
 
-\begin{myExample}\label{Ex:mission1} Autonomous Robotic Mailman\\
+\begin{myExample}\label{Ex:mission1} Robotic Mailman\\
 	A robotic mailman operates within a school building. It is tasked with collecting letters and delivering them to the offices of the corresponding recipients. However, the robot's mission specification does not have to account for every possible recipient. Using the open world abstractions introduced in Section \ref{abstractions}, we can describe one of the robot's objective, in Structured English, as follows: 
 \texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letter} and \texttt{Office} are groups of environment and location (robot) propositions, respectively.
 %\texttt{each CarryLetter is set on PickupLetter and the corresponding Letter and reset on DeliverLetter}, where \texttt{CarryLetter} and \texttt{Letter} are groups of robot and environment propositions, respectively, and \texttt{PickupLetter} is a robot proposition that abstracts an actuator (e.g. a hand or gripper). 
