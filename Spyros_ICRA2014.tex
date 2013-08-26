@@ -50,7 +50,7 @@
 \newenvironment{myExample}
 {
 	\refstepcounter{examplecounter}%
-	\textbf{Example \arabic{examplecounter}.}% Example #.
+	\textbf{Example \arabic{examplecounter}:}% Example #.
 	\quad							% Let's give our text some space :-)
 }
 
@@ -60,6 +60,14 @@
 {
 	\refstepcounter{definitioncounter}%
 	\textbf{Definition \arabic{definitioncounter}}% Definition #.
+}
+
+% Define a "Problem" environment with its own counter    
+\newcounter{problemcounter}		% Definition counter. Independent of theorem and other counters.
+\newenvironment{myProblem}
+{
+	\refstepcounter{problemcounter}%
+	\textbf{Problem \arabic{definitioncounter}}% Definition #.
 }
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,10 +107,13 @@
 \input{tex/intro.tex}
 
 \section{PRELIMINARIES}
-\input{tex/prelim}
+\input{tex/prelim.tex}
+
+\section{PROBLEM FORMULATION}
+\input{tex/problem.tex}
 
 \section{HIGHER LEVEL ABSTRACTIONS}\label{abstractions}
-\input{tex/abstractions}
+\input{tex/abstractions.tex}
 
 \section{SYNTHESIS FOR OPEN--WORLDS}
 \input{tex/openworld.tex}
