@@ -1,27 +1,33 @@
-...
+Firstly, this paper tackles the problem of specifying high-level robot tasks in a way compatible with the open world assumption. Then, we consider the need for re-planning, which arises when new elements of the open world are introduced. We begin by stating what is meant by \emph{open world} in the current context; that of controller synthesis.
 
 \begin{myDefinition}
-	\textbf{(Open World):} The union of $\mathcal{X}$ and $\mathcal{Y}$, the sets of environment and robot proposition respectively, defines the state-space. If the state-space is allowed to increase and decrease in size during execution, then we say that the robot operates under the open world assumption.
+	\textbf{(Open World):} The union of $\mathcal{X}$ and $\mathcal{Y}$, the sets of environment and robot proposition respectively, defines the state-space. If the state-space is allowed to increase and decrease in size during execution, then we say that the robot operates in an open world.
 \end{myDefinition}
-% FIXME: Either remove "decrease" from the definition above, or comment on it afterwards.
-In real-world applications, such as search and rescue scenarios, there is a need to define a mission before the robot has obtained full knowledge of the world. In other cases, the state-space may be too large for (i) the user to enumerate every possible variation upfront, and (ii) the synthesis algorithm to deal with. To clarify the latter cases, consider the following mission:
+We are mostly concerned with increasing state-spaces, which arise in scenarios where new elements of a mission are introduced during execution.
+
+The need to express mission specifications differently when the robot is expected to operate in an open world is motivated by real-world applications, such as autonomous search and rescue scenarios. In such cases, the mission has to be specified before the robot has obtained full knowledge of the world. In other cases, the state-space may be too large for (i) the user to enumerate every possible variation upfront, and/or (ii) the synthesis algorithm to deal with. To clarify the latter cases, consider the following scenario:
 
 \begin{myExample}\label{Ex:mailman1} Robotic Mailman\\
-	A robotic mailman operates within a school building. It is tasked with collecting letters and delivering them to the offices of the corresponding recipients. \ldots
+	A robotic mailman operates within a school building. It is tasked with collecting letters and delivering them to the offices of the corresponding recipients. Even if the maximum number of different letters and recipients was fixed, it may not be available at the time the mission specification is defined. 
 \end{myExample}
 
-The example above demonstrates \ldots
+Notice that in the example above, the robot does not operate serially, collecting one letter, delivering it, and returning for the next one. Rather, it is allowed to carry multiple letters at once, collect letters on its way to delivering a different letter, etc. Therefore, the specification must make sure that the robot only delivers letters at the correct location, that it is aware of which letters it is carrying, and that it does not forget to deliver a letter altogether. The open world aspect of the mission comes from the fact that new letters that correspond to new recipients may be collected by the robot. Therefore, it is not possible to explicitly write a specification in the form of individual tasks, e.g., \texttt{if you are sensing letter\_John\_Doe then do PickUp and go to John\_Does\_office}.
+
+In the case of Example \ref{Ex:mailman1}, it would be desirable to be able to describe the robot's mission in more abstract terms. With the only knowledge available being the fact that there are letters that have to be delivered to the corresponding recipients. We formalize the underlying problem as follows:
 
 \begin{myProblem}
-	\textbf{(Open World Mission Re-Planning):} \ldots
+	\textbf{(Open World Mission):} % answer: abstractions, exploration, rewrite spec, resynthesis	
 \end{myProblem}
 
-We are not assuming that the robot's physical workspace is of some unknown fixed size. We do, however, make the following assumptions (TODO: either in this section, or the one on Open World Synthesis) \ldots
+We are not assuming that the robot's physical workspace is of some unknown fixed size. We do, however, make the following assumptions.
+% TODO: either in this section, or the one on Open World Synthesis
 
 \begin{myAssumption}
-	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at at time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
+	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
 \end{myAssumption}
 
 \begin{myAssumption}
-	\ldots
+	The relationship of new elements of the open world to the robot's mission is provided either by the robot's low-level sensor, or by a human. For instance, in Example \ref{Ex:mailman1}, the correspondence between each letter and its recipient is given by the information written on the letter itself.
 \end{myAssumption}
+
+% END
