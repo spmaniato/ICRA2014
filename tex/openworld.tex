@@ -4,11 +4,11 @@ Use new abstractions to define tasks for open worlds \ldots
 
 \begin{myExample}\label{Ex:mailman2} Robotic Mailman (revisited)\\
 	Using the open world abstractions introduced in Section \ref{abstractions}, we can describe one of the robot's objective, in Structured English, as follows: 
-\texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letter} and \texttt{Office} are groups of environment and location (robot) propositions, respectively.
+\texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letter} and \texttt{Office} are groups of environment and robot (region) propositions, respectively.
 %\texttt{each CarryLetter is set on PickupLetter and the corresponding Letter and reset on DeliverLetter}, where \texttt{CarryLetter} and \texttt{Letter} are groups of robot and environment propositions, respectively, and \texttt{PickupLetter} is a robot proposition that abstracts an actuator (e.g. a hand or gripper). 
 \end{myExample}
 
-We are not assuming that the robot's physical workspace is of some unknown fixed size. We do, however, make the following assumptions.
+We are not assuming that the size of the robot's physical workspace is fixed. We do, however, make the following assumptions.
 
 \begin{myAssumption}
 	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
