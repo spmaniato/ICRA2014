@@ -8,7 +8,17 @@ Use new abstractions to define tasks for open worlds \ldots
 %\texttt{each CarryLetter is set on PickupLetter and the corresponding Letter and reset on DeliverLetter}, where \texttt{CarryLetter} and \texttt{Letter} are groups of robot and environment propositions, respectively, and \texttt{PickupLetter} is a robot proposition that abstracts an actuator (e.g. a hand or gripper). 
 \end{myExample}
 
-In the example above, the information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with propositions, the robot's discrete abstraction is updated, and the mission specification is translated into LTL formulas accordingly. These steps are described in the remainder of this section.
+We are not assuming that the robot's physical workspace is of some unknown fixed size. We do, however, make the following assumptions.
+
+\begin{myAssumption}
+	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
+\end{myAssumption}
+
+\begin{myAssumption}
+	The relationship of new elements of the open world to the robot's mission is provided either by the robot's low-level sensors, or by a human.
+\end{myAssumption}
+
+For instance, in Example \ref{Ex:mailman1}, the information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with new propositions, the robot's discrete abstraction is updated, and the mission specification is translated into LTL formulas accordingly, and a new discrete strategy is constructed. These steps are described in the remainder of this section.
 
 \subsection{Exploring the Physical Workspace}
 

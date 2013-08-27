@@ -13,21 +13,16 @@ The need to express mission specifications differently when the robot is expecte
 
 Notice that in the example above, the robot does not operate serially, collecting one letter, delivering it, and returning for the next one. Rather, it is allowed to carry multiple letters at once, collect letters on its way to delivering a different letter, etc. Therefore, the specification must make sure that the robot only delivers letters at the correct location, that it is aware of which letters it is carrying, and that it does not forget to deliver a letter altogether. The open world aspect of the mission comes from the fact that new letters that correspond to new recipients may be collected by the robot. Therefore, it is not possible to explicitly write a specification in the form of individual tasks, e.g., \texttt{if you are sensing letter\_John\_Doe then do PickUp and go to John\_Does\_office}.
 
-In the case of Example \ref{Ex:mailman1}, it would be desirable to be able to describe the robot's mission in more abstract terms. With the only knowledge available being the fact that there are letters that have to be delivered to the corresponding recipients. We formalize the underlying problem as follows:
+In the case of Example \ref{Ex:mailman1}, it would be desirable to be able to describe the robot's mission in more abstract terms. With the only knowledge available being the fact that there are letters that have to be delivered to the corresponding recipients. Notice, that there exists a subset of the state-space, the one that includes the \texttt{letter} and \texttt{office} propositions, that is being augmented. However, the remainder of the state-space remains fixed, as it includes propositions such as \texttt{PickUp}, which is an action, independent of a specific letter. 
 
-\begin{myProblem}
-	\textbf{(Open World Mission):} % answer: abstractions, exploration, rewrite spec, resynthesis	
+Putting it all together, we can state the problem we are addressing as follows:
+
+\begin{myProblem}\label{Prob:mission}
+	\textbf{(Open World Missions \& Re-Planning):} 
+	% answer: abstractions, exploration, rewrite spec, resynthesis	
+	Given a robot mission, dependent on region, action, and robot propositions, express it, in Structured English, such that it does not explicitly refer to the subset of the state-space that can be augmented in an open world. We call such a mission an \emph{open world mission}. In addition, update the underlying discrete abstraction and LTL formulas according to the new elements. Finally, update the discrete control strategy such that it satisfies the specification in the augmented state-space.
 \end{myProblem}
 
-We are not assuming that the robot's physical workspace is of some unknown fixed size. We do, however, make the following assumptions.
-% TODO: either in this section, or the one on Open World Synthesis
-
-\begin{myAssumption}
-	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
-\end{myAssumption}
-
-\begin{myAssumption}
-	The relationship of new elements of the open world to the robot's mission is provided either by the robot's low-level sensor, or by a human. For instance, in Example \ref{Ex:mailman1}, the correspondence between each letter and its recipient is given by the information written on the letter itself.
-\end{myAssumption}
+In order to tackle Problem \ref{Prob:mission}, we proceed as follows. First, we introduce higher level abstractions, dubbed \emph{open world abstractions}, which we then use to specify open world missions. Furthermore, we specify a sub-task that can be appended to any open world mission specification, in order to allow the robot to expand its physical workspace, the subset of the state-space that includes region propositions. Finally, we  show how applying the steps above enables us to rewrite the underlying LTL formulas and construct a new strategy, which satisfies the updated mission specification.
 
 % END
