@@ -1,4 +1,4 @@
-...
+In order to demonstrate our proposed approach to open world mission planning, we present two simulation examples. For clarity, each one will focus on a different aspect of the approach. The first one (Example \ref{Ex:mailman3}) is an example of augmenting the state-space via new sensor and action propositions. The second one (Example \ref{Ex:planetxplore}) is mainly focused on the exploration of the robot's physical workspace. In both cases, new elements of the open world result in additional liveness requirements (mission goals) for the robot to pursue.
 
 \begin{myExample}\label{Ex:mailman3} Mailman (revisited)
 	Give all details of the spec ... \textbf{Same as demo or multiple letters but other simplifications?}
@@ -10,14 +10,17 @@
 	\texttt{Group Letters is empty}\\
 	\texttt{Group CarryingLetters is empty}\\
 	\texttt{Group Offices is empty}\\
-	\texttt{CarryingLetters correspond to Letter}\\
-	\texttt{Offices correspond to Letter}\\
-	\texttt{DeliverLetter correspond to Letter}\\
+	
+	\texttt{CarryingLetters correspond to Letters}\\
+	\texttt{Offices correspond to Letters}\\
+	\texttt{DeliverLetter correspond to Letters}\\
+	
 	\texttt{each CarryingLetter is set on PickUp and the corresponding Letter and reset on the corresponding DeliverLetter}\\
 	
-	\texttt{if you are not activating any CarryingLetter then "patrol"?.}\\
+	\texttt{if you are not activating any CarryingLetter then "patrol"?}\\
 	\texttt{...}\\
 	}
+	
 	\textbf{Exploration Settings:}\\
 	{\small
 	\texttt{...} 
@@ -33,12 +36,38 @@
 \begin{algorithm}
 	\textbf{Mission specification:} Autonomous Planetary Exploration\\
 	{\small
-	\texttt{...}\\
+	\texttt{Group InterestingRegions is empty}\\
+	\texttt{Group PendingRequests is empty}\\
+	\texttt{Group Sites is empty}\\
+	\texttt{Group Actions is empty}\\
+	
+	\texttt{Sites correspond to Requests}\\
+	\texttt{Actions correspond to Requests}\\
+	
+	\texttt{Recharging is set on BatteryLow and reset on BatteryFull}\\
+	\texttt{if you are activating Recharging then stay there}\\
+	\texttt{infinitely often BatteryFull}\\
+	
+	\texttt{visit each InterestingRegion and do Panorama}\\
+	\texttt{if you are activating any PendingRequests then go to the corresponding Site and do the corresponding Action}\\
+	\texttt{each PendingRequest is toggled on the corresponding Site and the corresponding Action}\\
 	}
+	
 	\textbf{Exploration Settings:}\\
 	{\small
+	\texttt{do exploreMODE if and only if you are not activating Recharging}\\
+	\texttt{if you are sensing newInterestingRegion then add to InterestingRegions}\\
 	\texttt{...} 
 	}
 \end{algorithm}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\columnwidth, clip]{./img/planetXplore_regions.pdf}
+	\caption{Workspace for the autonomous planetary exploration scenario (to be updated and broken down to intermediate exploration steps).}
+	% TODO: Update this map. Regions should be around the land site! No mountain next to it either.
+	% Instead of the final map, show intermediate steps as the workspace is expanded.
+	\label{Fig:planetxplore}
+\end{figure}
 
 % END
