@@ -27,47 +27,47 @@ In order to demonstrate our proposed approach to open world mission planning, we
 	}
 \end{algorithm}
 
-\begin{myExample}\label{Ex:planetxplore} Autonomous Planetary Exploration\\
-	Consider now the more futuristic scenario of autonomous planetary exploration using rovers. In order to lessen the dependency of the rover from the engineers on Earth, the rover will be given a mission specification that it should carry out autonomously. However, the need to redefine the mission will arise as the rover discovers interesting elements of its environment, such as new types of rock and regions interest. In these cases, the engineers and scientists on Earth should be able to extend the rover's mission specification without sacrificing correctness or rewriting the specification from scratch.
-	
-	Specifics: exploration, new stuff sensor, new requests.
-\end{myExample}
-
-\begin{algorithm}
-	\textbf{Mission specification:} Autonomous Planetary Exploration\\
-	{\small
-	\texttt{Group InterestingRegions is empty}\\
-	\texttt{Group PendingRequests is empty}\\
-	\texttt{Group Sites is empty}\\
-	\texttt{Group Actions is empty}\\
-	
-	\texttt{Sites correspond to Requests}\\
-	\texttt{Actions correspond to Requests}\\
-	
-	\texttt{Recharging is set on BatteryLow and reset on BatteryFull}\\
-	\texttt{if you are activating Recharging then stay there}\\
-	\texttt{infinitely often BatteryFull}\\
-	
-	\texttt{visit each InterestingRegion and do Panorama}\\
-	\texttt{if you are activating any PendingRequests then go to the corresponding Site and do the corresponding Action}\\
-	\texttt{each PendingRequest is toggled on the corresponding Site and the corresponding Action}\\
-	}
-	
-	\textbf{Exploration Settings:}\\
-	{\small
-	\texttt{do exploreMODE if and only if you are not activating Recharging}\\
-	\texttt{if you are sensing newInterestingRegion then add to InterestingRegions}\\
-	\texttt{...} 
-	}
-\end{algorithm}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.7\columnwidth, clip]{./img/planetXplore_regions.pdf}
-	\caption{Workspace for the autonomous planetary exploration scenario (to be updated and broken down to intermediate exploration steps).}
-	% TODO: Update this map. Regions should be around the land site! No mountain next to it either.
-	% Instead of the final map, show intermediate steps as the workspace is expanded.
-	\label{Fig:planetxplore}
-\end{figure}
-
 % END
+
+%\begin{myExample}\label{Ex:planetxplore} Autonomous Planetary Exploration\\
+%	Consider now the more futuristic scenario of autonomous planetary exploration using rovers. In order to lessen the dependency of the rover from the engineers on Earth, the rover will be given a mission specification that it should carry out autonomously. However, the need to redefine the mission will arise as the rover discovers interesting elements of its environment, such as new types of rock and regions interest. In these cases, the engineers and scientists on Earth should be able to extend the rover's mission specification without sacrificing correctness or rewriting the specification from scratch.
+%	
+%	Specifics: exploration, new stuff sensor, new requests.
+%\end{myExample}
+%
+%\begin{algorithm}
+%	\textbf{Mission specification:} Autonomous Planetary Exploration\\
+%	{\small
+%	\texttt{Group InterestingRegions is empty}\\
+%	\texttt{Group PendingRequests is empty}\\
+%	\texttt{Group Sites is empty}\\
+%	\texttt{Group Actions is empty}\\
+%	
+%	\texttt{Sites correspond to Requests}\\
+%	\texttt{Actions correspond to Requests}\\
+%	
+%	\texttt{Recharging is set on BatteryLow and reset on BatteryFull}\\
+%	\texttt{if you are activating Recharging then stay there}\\
+%	\texttt{infinitely often BatteryFull}\\
+%	
+%	\texttt{visit each InterestingRegion and do Panorama}\\
+%	\texttt{if you are activating any PendingRequests then go to the corresponding Site and do the corresponding Action}\\
+%	\texttt{each PendingRequest is toggled on the corresponding Site and the corresponding Action}\\
+%	}
+%	
+%	\textbf{Exploration Settings:}\\
+%	{\small
+%	\texttt{do exploreMODE if and only if you are not activating Recharging}\\
+%	\texttt{if you are sensing newInterestingRegion then add to InterestingRegions}\\
+%	\texttt{...} 
+%	}
+%\end{algorithm}
+%
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=0.7\columnwidth, clip]{./img/planetXplore_regions.pdf}
+%	\caption{Workspace for the autonomous planetary exploration scenario (to be updated and broken down to intermediate exploration steps).}
+%	% TODO: Update this map. Regions should be around the land site! No mountain next to it either.
+%	% Instead of the final map, show intermediate steps as the workspace is expanded.
+%	\label{Fig:planetxplore}
+%\end{figure}
