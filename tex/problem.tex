@@ -2,10 +2,12 @@ In order to obtain a mission specification and a robot plan compatible with the 
 
 We begin by giving a broad definition of \emph{open world}, specific to the current context; that of controller synthesis.
 
-\begin{myDefinition}
-	\textbf{(Open World):} The union of $\mathcal{X}$ and $\mathcal{Y}$, the sets of environment and robot propositions respectively, defines the state-space. We say that the robot operates in an open world if the state-space grows during execution.
+\begin{myDefinition}\label{Def:openworld}
+	\textbf{(Open World):} . We say that the robot operates in an open world if the state-space $\SSS$ grows during execution. Specifically, we define the open world function $$\mathcal{W}(\SSS, \mathit{x}, \mathit{y}) = \hat{\SSS} = \hat{\mathcal{X}} \cup \hat{\mathcal{Y}},$$
+	where $\hat{\mathcal{X}} = \mathcal{X} \cup \left\{ \mathit{x} \right\}$, $\hat{\mathcal{Y}} = \mathcal{Y} \cup \left\{ \mathit{y} \right\}$, and $\mathit{x}, \mathit{y} \neq \emptyset \Rightarrow \mathit{x}, \mathit{y} \not \in \SSS $.
 	\end{myDefinition} 
-We will return to this definition in Section \ref{openworld}, where we narrow down the set of possible additions to it.
+% TODO: define open world function?
+The elements $\mathit{x}, \mathit{y}$ are possible new environment and robot propositions, respectively. We will return to this definition in Section \ref{openworld}, where we add additional structure and make use of a more narrow domain of the open world function.
 
 Given the definition above, there are two three reasons that motivate the need for open world mission specifications. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy. Finally, the state-space may be too large for the user to enumerate every possible variation a priori (see Example \ref{Ex:mailbot1} below).  To clarify these reasons, we introduce an illustrative example:
 
