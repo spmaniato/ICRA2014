@@ -1,5 +1,20 @@
 \subsection{Defining Tasks over Open Worlds}
 
+We will now leverage the power of the abstractions introduced in Section \ref{abstractions} to specify robot tasks over open worlds. Then, we will show how these open world specifications (see Definition \ref{Def:spec}) can be re-written on-the-fly to incorporate new propositions. We first introduce the notion of \emph{open world mission specifications}:
+
+\begin{myDefinition}\label{Def:spec}
+	\textbf{(Open World Mission Specification):} A set of high-level robot tasks is called an open world mission specification if (i) it is partially expressed using set abstractions, (ii) the open world (Definition \ref{Def:openworld}) can add new elements to the groups of propositions, which are a subset of the state-space, and (iii) the robot is equipped with a sensor capable of recognizing new elements of the world. 
+	\end{myDefinition} 
+This ``new proposition sensor" mentioned in Definition \ref{Def:spec} is abstracted as an environment proposition. Therefore, it becomes a new element of the state-space.
+
+\begin{myProblem}\label{Prob:mission}
+	\textbf{(Open World Mission Planning):} g
+	...
+\end{myProblem}
+
+In order to tackle Problem \ref{Prob:mission}, we proceed as follows. First, we introduce higher level abstractions, dubbed \emph{open world abstractions}, % TODO: "open world" or "higher level" ??
+which we then use to specify open world missions. Furthermore, we specify a sub-task that can be appended to any open world mission specification, in order to allow the robot to expand its physical workspace, the subset of the state-space that includes region propositions. Finally, we  show how applying the steps above enables us to rewrite the underlying LTL formulas and construct a new strategy, which satisfies the updated mission specification. 
+
 Use new abstractions to define tasks for open worlds \ldots
 
 \begin{myExample}\label{Ex:mailbot2} Autonomous Mailbot (revisited)\\
