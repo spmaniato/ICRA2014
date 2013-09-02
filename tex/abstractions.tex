@@ -1,6 +1,6 @@
 \subsection{Groups of Propositions} 
 
-In order to write meaningful specifications over propositions which are not known prior to execution, we abstract propositions into groups. We can then specify the desired reactive behaviors in terms of groups of propositions and add new propositions to the appropriate group(s) when they are discovered. A proposition group is simply an ordered collection of propositions that are all of the same type (i.e. sensors, actions, or regions). Our Structured English grammar allows us to define proposition groups in a specification with sentences of the form: ``group [groupName] is [proposition1], [proposition2], [proposition3], ... , [propositionN]''. 
+In order to write meaningful specifications over propositions which are not known prior to execution, we abstract propositions into groups. We can then specify the desired reactive behaviors in terms of groups of propositions and add new propositions to the appropriate group(s) when they are discovered. A proposition group is simply an ordered collection of propositions that are all of the same type (i.e. sensors, actions, or regions). Our Structured English grammar allows us to define proposition groups in a specification with sentences of the form: ``group [groupName] is [proposition1], [proposition2], [proposition3], ... , [propositionN]''. This generalizes the work in \cite{BingxinIROS12} focusing on groups of regions propositions. Note that this syntax is just one possible implementation of the abstractions we describe. An alternative implementation would be possible in SLURP \cite{findTheSlurpPaper}, for instance. 
 
 \subsection{Group Quantifiers} 
 
@@ -24,7 +24,7 @@ The quantifier ``each'' is similar to ``all'', but acts with a different semanti
 For sentences that contain multiple quantifier phrases, the parser applies these translation operations in the order that the quantifiers appear in the sentence. With these abstractions, we can write compact, expressive, and intuitive specifications. 
 \par
 \begin{myExample}\label{Ex:quantifiers} 	
-	Consider a scenario where a robot is helping to manage a hotel. The robot has a group of regions called \texttt{room} a group of sensors called \texttt{roomsOccupied} with a proposition for every room, and actions called \texttt{cleanRoom}, \texttt{welcomeGuests}, and \texttt{apologizeToGuests}. Part of the robot's specification might be: \texttt{If not any roomsOccupied then go to each room and do cleanRoom. If any roomsOccupied and not all roomsOccupied then do welcomeGuests. If all roomsOccupied then do apologizeToGuests.} 
+	Consider a scenario where a robot is helping to manage a hotel. The robot has a group of regions called \texttt{room} a group of sensors called \texttt{roomsOccupied} with a proposition for every room, and actions called \texttt{cleanRoom}, \texttt{welcomeGuests}, and \texttt{apologizeToGuests}. Part of the robot's specification might be: \texttt{If any roomsOccupied and not all roomsOccupied then do welcomeGuests. If all roomsOccupied then do apologizeToGuests. If not any roomsOccupied then go to each room and do cleanRoom. } 
 \end{myExample}
 
 \subsection{Proposition Correspondence} 
