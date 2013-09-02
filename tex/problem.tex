@@ -34,6 +34,15 @@ Putting it all together, we can state the problem we are addressing as follows:
 \end{myProblem}
 
 In order to tackle Problem \ref{Prob:mission}, we proceed as follows. First, we introduce higher level abstractions, dubbed \emph{open world abstractions}, % TODO: "open world" or "higher level" ??
-which we then use to specify open world missions. Furthermore, we specify a sub-task that can be appended to any open world mission specification, in order to allow the robot to expand its physical workspace, the subset of the state-space that includes region propositions. Finally, we  show how applying the steps above enables us to rewrite the underlying LTL formulas and construct a new strategy, which satisfies the updated mission specification.
+which we then use to specify open world missions. Furthermore, we specify a sub-task that can be appended to any open world mission specification, in order to allow the robot to expand its physical workspace, the subset of the state-space that includes region propositions. Finally, we  show how applying the steps above enables us to rewrite the underlying LTL formulas and construct a new strategy, which satisfies the updated mission specification. 
+
+The first problem we aim to solve is a practical one. In a scenario such as \ref{Ex:mailbot1}, parts of the robot's state space (e.g. letters to carry)  are potentially very large and could conceivably be expanded (or reduced) by the user in subsequent runs. To specify the same reactive behavior over an additional proposition in the domain the user would need to modify or duplicate nearly every sentence in the specification. A better approach would be to specify behaviors with an abstraction that does not explicitly refer to individual propositions.  
+
+\begin{myProblem}\label{Prop:groups}
+	\textbf{(Specification Abstractions):}
+	Given a robot mission that includes indentical or symmetrical behavior over multiple propositions, express that mission in a specification language such that the individual propositions acted on symmetrically are not explicitly referred to. 
+\end{myProblem}
+
+Our approach to Problem 1 is to include elements of first-order logic in our specification language, specifically set operations. We will first explain the theory and use of these abstractions in our specifications, then apply them to the larger problem of open-world missions. 
 
 % END
