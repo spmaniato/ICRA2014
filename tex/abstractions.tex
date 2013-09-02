@@ -1,22 +1,22 @@
 \subsection{Groups of Propositions} 
 
-In order to write meaningful specifications over propositions which are not known prior to execution, we abstract propositions into groups. We can then specify the desired reactive behaviors in terms of groups of propositions and add new propositions to the appropriate group(s) when they are discovered. A proposition group is simply an ordered collection of propositions that are all of the same type (i.e. sensors, actions, or regions). Our Structured English grammar allows us to define proposition groups in a specification with sentences of the form: ``group [groupName] is [proposition1], [proposition2], [proposition3], ... , [propositionN]''. This generalizes the work in \cite{BingxinIROS12} focusing on groups of regions propositions. Note that this syntax is just one possible implementation of the abstractions we describe. An alternative implementation would be possible in SLURP \cite{findTheSlurpPaper}, for instance. 
+In order to write meaningful specifications over propositions without referring to them explicitly, we abstract propositions into groups. We can then specify the desired reactive behaviors in terms of groups of propositions and add new propositions to the appropriate group(s) when needed, making use of the existing logic in the specification. A proposition group is simply an ordered collection of propositions that are all of the same type (i.e. sensors, actions, or regions). Our Structured English grammar allows us to define proposition groups in a specification with sentences of the form: ``group \textit{groupName} is \textit{proposition1}, \textit{proposition2}, \textit{proposition3}, ... , \textit{propositionN}''. This generalizes the work in \cite{BingxinRSS2012} focusing on groups of region propositions. Note that this syntax is just one possible implementation of the abstractions we describe. An alternative implementation would be possible in SLURP \cite{RamanRSS2013}, for instance. 
 
 \subsection{Group Quantifiers} 
 
 Unlike atomic propositions or boolean formulas of propositions, proposition groups don't have an intrinsic truth value. A proposition group used in a specification must be paired with a quantifier to produce a truth-valued logical formula. Our Structured English grammar supports three quantifiers: any, all, and each. To explain the semantics of these quantifiers, we will use $S(g)$ to denote the logical formula produced by translating a sentence with the quantifier and group name treated as a single proposition, $g$. We will also use $G$ to denote the set of propositions in a group. 
 \par
-The phrase ``any [groupName]'' in a sentence is simply translated as the logical disjunction of every proposition in the group named by ``[groupName]''. That is, the complete translation of the sentence is: 
+The phrase ``any \textit{groupName}'' in a sentence is simply translated as the logical disjunction of every proposition in the group named by \textit{groupName}. That is, the complete translation of the sentence is: 
 \begin{equation*}
 	S( \bigvee \limits_{\phi_i \in G} \phi_i )
 \end{equation*}
 \par
-The phrase ``all [groupName]'' in a sentence is translated as the logical conjunction of every proposition in the group named by ``[groupName]''. The complete translation of the sentence is: 
+The phrase ``all \textit{groupName}'' in a sentence is translated as the logical conjunction of every proposition in the group named by \textit{groupName}. The complete translation of the sentence is: 
 \begin{equation*}
 	S( \bigwedge \limits_{\phi_i \in G} \phi_i )
 \end{equation*}
 \par
-The quantifier ``each'' is similar to ``all'', but acts with a different semantic scope. The phrase ``each [groupName]'' in a sentence denotes that the entire sentence is true for each of the propositions in ``[groupName]'' separately. The complete translation of the sentence is:
+The quantifier ``each'' is similar to ``all'', but acts with a different semantic scope. The phrase ``each \textit{groupName}'' in a sentence denotes that the entire sentence is true for each of the propositions in \textit{groupName} separately. The complete translation of the sentence is:
 \begin{equation*}
  	\bigwedge\limits_{\phi_i \in G} S(\phi_i)
 \end{equation*}
@@ -28,24 +28,17 @@ For sentences that contain multiple quantifier phrases, the parser applies these
 \end{myExample}
 
 \subsection{Proposition Correspondence} 
-A consequence of abstracting specifications away from individual propositions is that relationships between propositions become more difficult to denote. To address this difficulty, our Structured English grammar allows the definition of correspondences between propositions in groups. A correspondence is a mapping from individual propositions to sets of propositions that contain at most one proposition from each group defined in the specification. We allow two sentence forms for defining correspondence: ``[propositionA1], [propositionA2], ... , [propositionAN] correspond to [propositionB1], [propositionB2], ... [propositionBN]'' and ``[GroupName1] corresponds to [GroupName2]''. In the second form, propositions are paired in the ordering of their respective groups. Once correspondence has been defined in a specification, we can use the ``corresponding'' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. When a sentence contains the phrase ``the corresponding [groupName]'', the parser will find the nearest previous reference to another proposition group in the sentence. The parser will then produce a copy of the sentence for each proposition in that first group, replacing occurrences of the two group names with the elements of each that correspond. The translation of the original sentence is then the conjunction of these sentences. More formally, if $S(g_1,g_2)$ represents the LTL translation of a sentence with groups $g_1$ and $g_2$ treated as single propositions, and if ``corresponding'' is used with $g_2$ and follows $g_1$ in the sentence, then the complete translation of the sentence is:
+A consequence of abstracting specifications away from individual propositions is that relationships between propositions become more difficult to denote. To address this difficulty, our Structured English grammar allows the definition of correspondences between propositions in groups. A correspondence is a mapping from individual propositions to sets of propositions that contain at most one proposition from each group defined in the specification. We allow two sentence forms for defining correspondence: 
+\begin{itemize}
+	\item ``\textit{PropA1}, \textit{PropA2}, ... , \textit{PropAN} correspond to \textit{PropB1}, \textit{PropB2}, ... , \textit{PropBN}''
+	\item ``\textit{GroupName1} corresponds to \textit{GroupName2}''
+\end{itemize} 
+In the second form, propositions are paired in the ordering of their respective groups. Once correspondence has been defined in a specification, we can use the ``corresponding'' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. When a sentence contains the phrase ``the corresponding \textit{groupName}'', the parser will find the nearest previous reference to another proposition group in the sentence. The parser will then produce a copy of the sentence for each proposition in that first group, replacing occurrences of the two group names with the elements of each that correspond. The translation of the original sentence is then the conjunction of these sentences. We can state this more formally: Let $S(g_1,g_2)$ represent the LTL translation of a sentence with groups $g_1$ and $g_2$ treated as single propositions. If $g_2$ follows $g_1$ in the sentence and ``corresponding'' is used with $g_2$, then the complete translation of the sentence is:
 \begin{equation*}
 	\bigwedge \limits_{\phi_i \in G_1} S(\phi_i, f(\phi_i) \cap G_2)
 \end{equation*}
-Here $f$ is the correspondence function such that $f(\phi_i)$ represents the propositions that $\phi_i$ corresponds to and $G_1$ and $G_2$ are the sets of propositions in groups $g_1$ and $g_2$ respectively. 
+Here $f$ is the correspondence function such that $f(\phi_i)$ represents the set of propositions that $\phi_i$ corresponds to. $G_1$ and $G_2$ are the sets of propositions in groups $g_1$ and $g_2$ respectively. Note from our earlier definition of correspondence that the set intersection in this expression results in at most one element (correspondences may contain at most one element from any group). If the intersection is empty, meaning that a correspondence has not been propoerly defined, then the sentence produces a syntax error. 
 
 \begin{myExample}\label{Ex:corresponding}
 	Correspondence is useful in a scenario in which a robot performs an identical task over many sets of related propositions, such as waiting on tables at a restaurant. Our specification can define a group \texttt{tables} of region propositions, representing the tables in a restaurant, and a group \texttt{calls} of sensor propositions, representing the robot being signalled by specific tables. We can specify our desired behavior as follows: \texttt{Calls correspond to tables. If you are sensing any calls then go to the corresponding tables.} The abstraction of propositions into groups makes the specification more compact and readable, less error-prone, and more easily extensible. To specify this behavior over another pair of call and table propositions, we need only add the new propositions to their appropriate groups and they will automatically become included in the reactive behavior. 
 \end{myExample}
-
-%\subsection{Proposition Exclusion} 
-%
-%...
-%
-%\begin{myExample}\label{Ex:other}
-%	\begin{itemize}
-%		\item "If you're activating any Actions, then do not any other Actions" (e.g. If you are activating 			guideSurvivor, do not any other Actions)
-%		\item "If you're activating any Actions, then do all other Actions"
-%		\item "If you're in any Regions, then visit each other Regions"
-%	\end{itemize}
-%\end{myExample}
