@@ -3,7 +3,10 @@
 We will now leverage the power of the abstractions introduced in Section \ref{abstractions} to specify robot tasks over open worlds. Then, we will show how these open world specifications (see Definition \ref{Def:spec}) can be re-written on-the-fly to incorporate new propositions. We first introduce the notion of \emph{open world mission specifications}:
 
 \begin{myDefinition}\label{Def:spec}
-	\textbf{(Open World Mission Specification):} A set of high-level robot tasks is called an open world mission specification if (i) it is partially expressed using set abstractions, (ii) the open world (Definition \ref{Def:openworld}) can add new elements to the groups of propositions, which are a subset of the state-space, and (iii) the robot is equipped with a sensor capable of recognizing new elements of the world. 
+	\textbf{(Open World Mission Specification):} A set of high-level robot tasks is called an open world mission specification if 
+	(i) it is partially expressed using set abstractions, 
+	(ii) the open world function $\mathcal{W}$ (see Definition \ref{Def:openworld}) only adds new elements to propositions in the state-space $\SSS$ that are included in Groups, and 
+	(iii) the robot is equipped with a sensor(s) capable of identifying the  new proposition(s), $\mathit{x}$ or $\mathit{y}$, i.e., the inputs of $\mathcal{W}$.
 	\end{myDefinition} 
 This ``new proposition sensor" mentioned in Definition \ref{Def:spec} is abstracted as an environment proposition. Therefore, it becomes a new element of the state-space.
 
@@ -18,16 +21,12 @@ which we then use to specify open world missions. Furthermore, we specify a sub-
 Use new abstractions to define tasks for open worlds \ldots
 
 \begin{myExample}\label{Ex:mailbot2} Autonomous Mailbot (revisited)\\
-	Using the open world abstractions introduced in Section \ref{abstractions}, we can describe one of the robot's objective, in Structured English, as follows: 
-\texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letter} and \texttt{Office} are groups of environment and robot (region) propositions, respectively.
+	Using the set abstractions introduced in Section \ref{abstractions}, we could express one of the robot's objective, in Structured English, as follows: 
+\texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letters} and \texttt{Offices} are groups of environment and robot (region) propositions, respectively.
 %\texttt{each CarryLetter is set on PickupLetter and the corresponding Letter and reset on DeliverLetter}, where \texttt{CarryLetter} and \texttt{Letter} are groups of robot and environment propositions, respectively, and \texttt{PickupLetter} is a robot proposition that abstracts an actuator (e.g. a hand or gripper). 
 \end{myExample}
 
 We are not assuming that the size of the robot's physical workspace is fixed. We do, however, make the following assumptions.
-
-\begin{myAssumption}
-	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
-\end{myAssumption}
 
 \begin{myAssumption}
 	The correspondence, i,e., the relationship of new elements of the open world to the robot's mission, is provided either by the robot's low-level sensors. A human--robot, dialogue-based interface that would enable the robot to actively ask what to do upon discovery of new elements of the world is a subject of future research.
@@ -37,8 +36,14 @@ For instance, in Example \ref{Ex:mailbot2}, the information on the letters thems
 
 \subsection{Exploring the Physical Workspace}
 
+\textbf{This subsection will change dramatically. Feel free to skip :-)}
+
 % FIXME: Make UKR much smaller. Explain why region propositions are slightly different.
 In the robotics domain, more often than not, the state-space has a physical subset: the workspace that the robot operates in. When defining tasks using the open world abstractions that were introduced in Section \ref{abstractions}, one needs to account for the fact that the robot could simply restrict itself to its current workspace, never discovering new regions, without violating the specification. Therefore, part of the specification has to direct the robot to expand its physical workspace, and incorporate newly discovered regions to the discrete abstraction and mission specification.
+
+\begin{myAssumption}
+	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
+\end{myAssumption}
 
 To this end, we dedicate a portion of the mission specification to this ``exploration sub-task". It is worth noting that (i) the approach is still valid in the case that the robot already has full knowledge of its workspace, and (ii) that, since exploration is part of the specification, the user can define how the robot will deal with the open world, and under which conditions it will perform actions such as exploration or re-synthesis. The statements in this sub-task are instructions on how the robot should visit newly discovered regions.
 

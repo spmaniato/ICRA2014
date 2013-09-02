@@ -1,6 +1,6 @@
 In order to demonstrate our proposed approach to open world mission planning, we present two simulation examples. For clarity, each one will focus on a different aspect of the approach. The first one (Example \ref{Ex:mailbot3}) is an example of augmenting the state-space via new sensor and action propositions. The second one (Example \ref{Ex:planetxplore}) is mainly focused on the exploration of the robot's physical workspace. In both cases, new elements of the open world result in additional liveness requirements (mission goals) for the robot to pursue.
 
-\begin{myExample}\label{Ex:mailbot3} Autonomous Mailbot (revisited)
+\begin{myExample}\label{Ex:mailbot3} Autonomous Mailbot (revisited)\\
 	Give all details of the spec ... \textbf{Same as demo or multiple letters but other simplifications?}
 \end{myExample}
 
@@ -17,7 +17,7 @@ In order to demonstrate our proposed approach to open world mission planning, we
 	
 	\texttt{each CarryingLetter is set on PickUp and the corresponding Letter and reset on the corresponding DeliverLetter}\\
 	
-	\texttt{if you are not activating any CarryingLetter then "patrol"?}\\
+	\texttt{if you are not activating any CarryingLetter then \ldots}\\
 	\texttt{...}\\
 	}
 	
@@ -29,19 +29,22 @@ In order to demonstrate our proposed approach to open world mission planning, we
 
 \ldots
 
-\begin{myExample}\label{Ex:restaurant} Robotic Waiter
-	Give all details of the spec ... \textbf{Same as demo or multiple letters but other simplifications?}
+\begin{myExample}\label{Ex:restaurant} Robotic Waiter \\
+	Overview of task \ldots
 \end{myExample}
 
 \begin{algorithm}
 	\textbf{Mission specification:} Robotic Waiter\\
 	{\small
-	\texttt{Group ... is empty}\\
+	\texttt{Group Customers is empty}\\
+	\texttt{Group Orders is empty}\\
 	\texttt{Group ... is empty}\\
 	\texttt{Group ... is empty}\\
 	
+	\texttt{Orders correspond to Customers}\\
 	\texttt{... correspond to...}\\
 	
+	\texttt{if you are activating any Orders then go to kitchen and do corresponding FoodPickUp and go to corresponding Customer and do corresponding ServeFood}\\
 	\texttt{...}\\
 	
 	\texttt{...}\\
@@ -49,6 +52,7 @@ In order to demonstrate our proposed approach to open world mission planning, we
 	
 	\textbf{Open World Settings:}\\
 	{\small
+	\texttt{if you are sensing newOrder then add to Orders}\\ % TODO: ... and add to corr. groups?
 	\texttt{...} 
 	}
 \end{algorithm}
