@@ -7,7 +7,7 @@ We begin by giving a broad definition of \emph{open world}, specific to the curr
 	where $\hat{\mathcal{X}} = \mathcal{X} \cup \left\{ \mathit{x} \right\}$, $\hat{\mathcal{Y}} = \mathcal{Y} \cup \left\{ \mathit{y} \right\}$, and $\mathit{x}, \mathit{y} \neq \emptyset \Rightarrow \mathit{x}, \mathit{y} \not \in \SSS $.
 	\end{myDefinition} 
 % TODO: define open world function?
-The elements $\mathit{x}, \mathit{y}$ are possible new environment and robot propositions, respectively. We will return to this definition in Section \ref{openworld}, where we add additional structure and make use of a more narrow domain of the open world function.
+The elements $\mathit{x}, \mathit{y}$ are possible new environment and robot propositions, respectively. We will return to this definition in Section \ref{openworld}, where we add additional structure and make use of a more narrow domain of the open world function $\mathcal{W}$.
 
 Given the definition above, there are two three reasons that motivate the need for open world mission specifications. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy. Finally, the state-space may be too large for the user to enumerate every possible variation a priori (see Example \ref{Ex:mailbot1} below).  To clarify these reasons, we introduce an illustrative example:
 
