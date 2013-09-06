@@ -1,18 +1,11 @@
-In order to obtain a mission specification and a robot plan compatible with the open world assumption, we need to address two main problems. First of all, the specification itself has to allow for self-updates during execution. Second, the specification has to be automatically re-written, in order to incorporate the newly discovered elements of the open world, such as new mission objectives. Afterwards, re-synthesis will ensure that the changes are reflected in the robot's discrete strategy.
+\subsection{Motivation}
 
-We begin by giving a broad definition of \emph{open world}, specific to the current context; that of controller synthesis.
+Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world in the current context. Specifically, the closed world assumption implies that $AP$, the set of atomic propositions with which LTL specifications are constructed from, is fixed. That is, if the robot encounters a new element of its world, which is not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
 
-\begin{myDefinition}\label{Def:openworld}
-	\textbf{(Open World):} . We say that the robot operates in an open world if the state-space $\SSS$ grows during execution. Specifically, we define the open world function $$\mathcal{W}(\SSS, \mathit{x}, \mathit{y}) = \hat{\SSS} = \hat{\mathcal{X}} \cup \hat{\mathcal{Y}},$$
-	where $\hat{\mathcal{X}} = \mathcal{X} \cup \left\{ \mathit{x} \right\}$, $\hat{\mathcal{Y}} = \mathcal{Y} \cup \left\{ \mathit{y} \right\}$, and $\mathit{x}, \mathit{y} \neq \emptyset \Rightarrow \mathit{x}, \mathit{y} \not \in \SSS $.
-	\end{myDefinition} 
-% TODO: define open world function?
-The elements $\mathit{x}, \mathit{y}$ are possible new environment and robot propositions, respectively. We will return to this definition in Section \ref{openworld}, where we add additional structure and make use of a more narrow domain of the open world function $\mathcal{W}$.
-
-Given the definition above, there are two three reasons that motivate the need for open world mission specifications. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy. Finally, the state-space may be too large for the user to enumerate every possible variation a priori (see Example \ref{Ex:mailbot1} below).  To clarify these reasons, we introduce an illustrative example:
+Three main reasons motivate the need for open world mission specification and planning. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy. Finally, the state-space may be too large for the user to enumerate every possible variation a priori.  To clarify these reasons, we introduce an illustrative example:
 
 \begin{myExample}\label{Ex:mailbot1} Autonomous Mailbot (Fig. \ref{Fig:pr3})\\
-	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients and the locations of their offices are fixed, the information may not be available at the time the mission specification is defined. 
+	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available at the time the mission specification is defined.
 \end{myExample}
 
 \begin{figure}[ht]
@@ -22,17 +15,58 @@ Given the definition above, there are two three reasons that motivate the need f
 	\label{Fig:pr3}
 \end{figure}
 
-In the example above, notice that the robot does not operate serially, i.e., collecting one letter, delivering it, and returning for the next one. Rather, it is allowed to carry multiple letters at once, collect letters on its way to delivering a different letter, etc. Therefore, the specification must make sure that the robot only delivers letters at the correct location, that it is aware of which letters it is carrying, and that it does not forget to deliver a letter altogether. The open world aspect of the mission comes from the fact that new letters that correspond to new recipients may be collected by the robot. Therefore, it is not possible to explicitly write a specification in the form of individual tasks, e.g., \texttt{if you are sensing letter\_John\_Doe then do PickUp and go to John\_Does\_office}.
+In Example \ref{Ex:mailbot1}, notice that the robot does not operate serially, i.e., collecting one letter, delivering it, and returning for the next one. Rather, it is allowed to carry multiple letters at once, collect letters on its way to delivering a different letter, etc. Therefore, the specification must make sure that the robot only delivers letters at the correct location, that it is aware of which letters it is carrying, and that it does not forget to deliver a letter altogether. The open world aspect of the mission comes from the fact that new letters that correspond to new recipients may be collected by the robot during execution. Therefore, it is not possible to explicitly write a specification in the form of individual delivery tasks, e.g., \texttt{if you are sensing letter\_John\_Doe then do PickUp\_Letter and go to John\_Does\_office}. Notice that the detection of a letter addressed to a new recipient necessitates both its modeling, as a proposition, and the addition of another objective in the specification.
 
-Given the ``symmetry" of the individual delivery tasks of Example \ref{Ex:mailbot1} (bring letters to offices), the ability to describe the robot's mission in more abstract terms would be desirable. In general, operation in an open world will result in new region, action, and environment propositions, as well as additional mission goals, all of which have to be (i) taken into account \emph{implicitly} in the initial mission specification, and (ii) incorporated in the specification on-the-fly.
+\subsection{Problem Statement}
 
-The first problem we aim to solve is a practical one. In a scenario such as that of Example \ref{Ex:mailbot1}, parts of the robot's state space (e.g. letters to carry) are potentially very large and could conceivably be expanded (or reduced) by the user in subsequent runs. To specify the same reactive behavior over an additional proposition in the domain, the user would have to modify or duplicate nearly every sentence in the specification. A more preferable approach would be to specify behaviors with an abstraction that does not explicitly refer to individual propositions.
+We begin our formal analysis of the problem by defining a model of the open world, compatible with the current setting; that of controller synthesis.
 
-\begin{myProblem}\label{Prop:groups}
-	\textbf{(Specification Abstractions):}
-	Given a robot mission that includes indentical behavior over multiple propositions, express that mission in a specification language such that the individual propositions acted on identically are not explicitly referred to. 
-\end{myProblem}
+Let $\W$ be a sequence of sets of atomic propositions:
+\begin{equation}\label{Eq:W}
+	\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\}, \quad k \in \NN,
+\end{equation} 
+where $\mathcal{D} = \left\{ d_1, \ldots, d_m, \ldots, d_M \right\} \subseteq \mathcal{X}_k \subset AP_k, \forall k$. The abstract sensors in $\mathcal{D}$ are responsible for detecting $M$ types of new elements of the open world. For instance, one sensor $d$ may detect new letters, whereas another new offices.
 
-Our approach to Problem 1 is to include elements of first-order logic in our specification language, specifically set operations. We will first explain the theory and use of these abstractions in our specifications (Section \ref{abstractions}), and then apply them to the second part of our overall problem, updating an open world mission specification (Section \ref{openworld}). 
+In addition, let $A$ be a function which reads the sensors that environment propositions $\mathcal{D}$ abstract, and returns a new proposition if they detected an unmodeled element of the world:
+\begin{equation}\label{Eq:A}
+	A(m, k) = 
+	\begin{cases}
+		\left\{ \pi_{mk} \right\}, & \text{if } d_m \\ % Refers to valuation {0,1}
+		\left\{ \right\}, &  \text{if } \neg d_m
+	\end{cases}
+\end{equation}¥
+where $d_m \in \mathcal{D}$ and $\pi_{mk} \not \in AP_k$. The new proposition $\pi_{mk}$ can be either an environment, action, or region proposition.
+
+Putting together Equations \eqref{Eq:W} -- \eqref{Eq:A}, we state our interpretation of an open world model.
+
+\begin{myDefinition}\label{Def:openworld}	
+	\textbf{(Open World Model):}
+	The sequence $\W$ is an open world model if the sets $AP_k$ are iteratively defined:
+	\begin{equation}\label{Eq:updateAP}
+		AP_{k+1} = AP_k \bigcup_{m=1}^{M}A(m, k),
+	\end{equation}
+	and the index $k$ is then updated only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
+	\begin{equation*}
+		k \leftarrow 
+		\begin{cases}
+			k + 1, & \text{if } \bigvee_{m=1}^{M} d_m \\
+			k, & \text{otherwise}
+		\end{cases}
+	\end{equation*}
+	\end{myDefinition} 
+% TODO: define open world function?
+
+We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_k$ in Eq. \eqref{Eq:updateAP} with additional new propositions.
+
+In order to obtain a mission specification and a robot plan that can react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow mission specifications
 
 % END
+
+%The first problem we aim to solve is a practical one. In a scenario such as that of Example \ref{Ex:mailbot1}, parts of the robot's state space (e.g. letters to carry) are potentially very large and could conceivably be expanded (or reduced) by the user in subsequent runs. To specify the same reactive behavior over an additional proposition in the domain, the user would have to modify or duplicate nearly every sentence in the specification. A more preferable approach would be to specify behaviors with an abstraction that does not explicitly refer to individual propositions.
+%
+%\begin{myProblem}\label{Prop:groups}
+%	\textbf{(Specification Abstractions):}
+%	Given a robot mission that includes indentical behavior over multiple propositions, express that mission in a specification language such that the individual propositions acted on identically are not explicitly referred to. 
+%\end{myProblem}
+%
+%Our approach to Problem 1 is to include elements of first-order logic in our specification language, specifically set operations. We will first explain the theory and use of these abstractions in our specifications (Section \ref{abstractions}), and then apply them to the second part of our overall problem, updating an open world mission specification (Section \ref{openworld}). 
