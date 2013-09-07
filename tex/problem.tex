@@ -31,11 +31,11 @@ In addition, let $A$ be a function which reads the sensors that environment prop
 \begin{equation}\label{Eq:A}
 	A(m, k) = 
 	\begin{cases}
-		\left\{ \pi_{mk} \right\}, & \text{if } d_m \\ % Refers to valuation {0,1}
-		\left\{ \right\}, &  \text{if } \neg d_m
+		\left\{ \pi_{mk} \right\}, & \text{if } x_{d_m} \\ % Refers to valuation {0,1}
+		\left\{ \right\}, &  \text{if } \neg x_{d_m}
 	\end{cases}
 \end{equation}¥
-where $d_m \in \mathcal{D}$ and $\pi_{mk} \not \in AP_k$. The new proposition $\pi_{mk}$ can be either an environment, action, or region proposition.
+where $x_{d_m} \in \Sigma_\mathcal{D}$ is the valuation of the $m$-th detection sensor, and $\pi_{mk} \not \in AP_k$. The new proposition $\pi_{mk}$ can be either an environment, or an action, or a region proposition.
 
 Putting together Equations \eqref{Eq:W} -- \eqref{Eq:A}, we state our interpretation of an open world model.
 
@@ -49,7 +49,7 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:A}, we state our interpreta
 	\begin{equation*}
 		k \leftarrow 
 		\begin{cases}
-			k + 1, & \text{if } \bigvee_{m=1}^{M} d_m \\
+			k + 1, & \text{if } \bigvee_{m=1}^{M} x_{d_m} \\
 			k, & \text{otherwise}
 		\end{cases}
 	\end{equation*}
@@ -58,7 +58,22 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:A}, we state our interpreta
 
 We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_k$ in Eq. \eqref{Eq:updateAP} with additional new propositions.
 
-In order to obtain a mission specification and a robot plan that can react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow mission specifications
+In order to obtain a mission specification and a robot plan that can react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow mission specifications \ldots
+
+\begin{myProblem}\label{Prop:newSpec}
+	\textbf{(Mission Specification Update):} Define a specification language $\Lambda$, and a parser $\mathcal{P}$ for it. Then, given a mission specification $\mathcal{M}$ written in $\Lambda$, a GR(1) specification $\varphi [k]$, and the latest set of atomic propositions $AP_{k+1}$, the LTL specification is updated as follows:
+	\begin{equation}\label{Eq:newSpec}
+		\varphi [k+1] = \mathcal{P} (\mathcal{M}, \varphi [k], AP_{k+1}),
+	\end{equation}
+	such that
+	\begin{align*} % This is NOT right! The automaton has not been updated yet...
+		x_{k+1} &\models \varphi_i^e [k+1], \; x_{k+1} \in \Sigma_{\mathcal{X}_{k+1}} = \Sigma_{\mathcal{X}_{k}} \cup \Sigma_{\mathcal{X}_{k+1} \backslash \mathcal{X}_{k}} \\
+		y_{k+1} &\models \varphi_i^s [k+1], \; y_{k+1} \in \Sigma_{\mathcal{Y}_{k+1}} = \Sigma_{\mathcal{Y}_{k}} \cup \Sigma_{\mathcal{Y}_{k+1} \backslash \mathcal{Y}_{k}}
+	\end{align*}
+	% Also include a constraint on safeties and livenesses.
+\end{myProblem}
+
+The restrictions on $\varphi [k+1]$, the updated GR(1) specification, ensure that its initial conditions are compatible with the current ($k$) environment and robot state, and they set the valuations of any new propositions $\pi \in AP_{k+1} \backslash AP_{k}$.
 
 % END
 
