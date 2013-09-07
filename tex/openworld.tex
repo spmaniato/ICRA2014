@@ -3,10 +3,10 @@
 We will now leverage the power of the abstractions introduced in Section \ref{abstractions} to specify robot tasks over open worlds. Then, we will show how these open world specifications (see Definition \ref{Def:spec}) can be re-written on-the-fly to incorporate new propositions. We first introduce the notion of \emph{open world mission specifications}:
 
 \begin{myDefinition}\label{Def:spec}
-	\textbf{(Open World Mission Specification):} A set of high-level robot tasks is called an open world mission specification if 
-	(i) it is partially expressed using set abstractions, 
-	(ii) the open world function $\mathcal{W}$ (see Definition \ref{Def:openworld}) only adds new elements to propositions in the state-space $\SSS$ that are included in Groups, and 
-	(iii) the robot is equipped with a sensor(s) capable of identifying the  new proposition(s), $\mathit{x}$ or $\mathit{y}$, i.e., the inputs of $\mathcal{W}$.
+%	\textbf{(Open World Mission Specification):} A set of high-level robot tasks is called an open world mission specification if 
+%	(i) it is partially expressed using set abstractions, 
+%	(ii) the open world function $\mathcal{W}$ (see Definition \ref{Def:openworld}) only adds new elements to propositions in the state-space $\SSS$ that are included in Groups, and 
+%	(iii) the robot is equipped with a sensor(s) capable of identifying the  new proposition(s), $\mathit{x}$ or $\mathit{y}$, i.e., the inputs of $\mathcal{W}$.
 	\end{myDefinition} 
 This ``new proposition sensor" mentioned in Definition \ref{Def:spec} is abstracted as an environment proposition. Therefore, it becomes a new element of the state-space.
 
@@ -34,27 +34,7 @@ We are not assuming that the size of the robot's physical workspace is fixed. We
 
 For instance, in Example \ref{Ex:mailbot2}, the information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with new propositions, the robot's discrete abstraction is updated, the mission specification is translated into LTL formulas accordingly, and a new discrete strategy is constructed. These steps are described in the remainder of this section.
 
-\subsection{Exploring the Physical Workspace}
-
-% FIXME: Make UKR much smaller. Explain why region propositions are slightly different.
-In the robotics domain, more often than not, the state-space has a physical subset: the workspace that the robot operates in. When defining tasks using the open world abstractions that were introduced in Section \ref{abstractions}, one needs to account for the fact that the robot could simply restrict itself to its current workspace, never discovering new regions, without violating the specification. Therefore, part of the specification has to direct the robot to expand its physical workspace, and incorporate newly discovered regions to the discrete abstraction and mission specification.
-
-\begin{myAssumption}
-	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
-\end{myAssumption}
-
-To this end, we dedicate a portion of the mission specification to this ``exploration sub-task". It is worth noting that (i) the approach is still valid in the case that the robot already has full knowledge of its workspace, and (ii) that, since exploration is part of the specification, the user can define how the robot will deal with the open world, and under which conditions it will perform actions such as exploration or re-synthesis. The statements in this sub-task are instructions on how the robot should visit newly discovered regions.
-
-Putting everything together, we create the following template for defining specifications that have mixed mission and exploration tasks. Specifically, the specification is broken into three parts. The first part is the actual mission specification and its content does not depend on whether the robot is operating in an open world. The last part is the exploration sub-task mentioned above, and is the same for all scenarios involving exploration of the physical workspace. Therefore, it can be automatically generated, and appended to any specification. In the intermediate part, dubbed ``exploration settings", the user creates a link between the mission and exploration tasks. On one end of the spectrum, the user may choose to have the robot always be in exploration mode (e.g. \texttt{always do exploreMODE}). On the other end, the user may decide to ignore the open world aspect of the problem and restrict the mission to the currently known state-space. In between the two extremes, the user can set conditions for when the robot is allowed to explore. For example, in a search and rescue scenario, it would be sensible for the exploration settings to include the following constraint: \texttt{do exploreMODE if and only if you are not activating rescuingSurvivor}. This would prevent the robot from exploring a disaster area while attempting to help a survivor and guide him to a safe location. Note that \texttt{exploreMODE} is just a name for a binary robot proposition. Finally, the exploration settings also contain instructions for adding non-region propositions, such as new sensors and actions, to their corresponding groups.
-
-\begin{algorithm}
-	\textbf{Exploration sub-task:}\\
-	{\small
-	\texttt{...}
-	}
-\end{algorithm}
-
-\subsection{Augmenting the State-Space} % Re-synthesis (not local yet)
+\subsection{Rewriting the Specification} % Re-synthesis (not local yet)
 
 Stuff to mention:
 \begin{itemize}
@@ -65,5 +45,28 @@ Stuff to mention:
 	\item Not just LTL anymore (add to / remove from Group). First-order logic?
 	\item ...
 \end{itemize}
+
+\subsection{Exploring the Physical Workspace}
+
+So far we have not made a distinction among the different types of propositions that are added to $AP_k$; environment, action, and region propositions. \ldots
+
+\textbf{Is there a distinction after all?}
+
+%In the robotics domain, more often than not, the state-space has a physical subset: the workspace that the robot operates in. When defining tasks using the open world abstractions that were introduced in Section \ref{abstractions}, one needs to account for the fact that the robot could simply restrict itself to its current workspace, never discovering new regions, without violating the specification. Therefore, part of the specification has to direct the robot to expand its physical workspace, and incorporate newly discovered regions to the discrete abstraction and mission specification.
+
+%\begin{myAssumption}
+%	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
+%\end{myAssumption}
+%
+%To this end, we dedicate a portion of the mission specification to this ``exploration sub-task". It is worth noting that (i) the approach is still valid in the case that the robot already has full knowledge of its workspace, and (ii) that, since exploration is part of the specification, the user can define how the robot will deal with the open world, and under which conditions it will perform actions such as exploration or re-synthesis. The statements in this sub-task are instructions on how the robot should visit newly discovered regions.
+%
+%Putting everything together, we create the following template for defining specifications that have mixed mission and exploration tasks. Specifically, the specification is broken into three parts. The first part is the actual mission specification and its content does not depend on whether the robot is operating in an open world. The last part is the exploration sub-task mentioned above, and is the same for all scenarios involving exploration of the physical workspace. Therefore, it can be automatically generated, and appended to any specification. In the intermediate part, dubbed ``exploration settings", the user creates a link between the mission and exploration tasks. On one end of the spectrum, the user may choose to have the robot always be in exploration mode (e.g. \texttt{always do exploreMODE}). On the other end, the user may decide to ignore the open world aspect of the problem and restrict the mission to the currently known state-space. In between the two extremes, the user can set conditions for when the robot is allowed to explore. For example, in a search and rescue scenario, it would be sensible for the exploration settings to include the following constraint: \texttt{do exploreMODE if and only if you are not activating rescuingSurvivor}. This would prevent the robot from exploring a disaster area while attempting to help a survivor and guide him to a safe location. Note that \texttt{exploreMODE} is just a name for a binary robot proposition. Finally, the exploration settings also contain instructions for adding non-region propositions, such as new sensors and actions, to their corresponding groups.
+
+%\begin{algorithm}
+%	\textbf{Exploration sub-task:}\\
+%	{\small
+%	\texttt{...}
+%	}
+%\end{algorithm}
 
 % END
