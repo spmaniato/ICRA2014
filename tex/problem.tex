@@ -2,7 +2,7 @@
 
 Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world in the current context. Specifically, the closed world assumption implies that $AP$, the set of atomic propositions with which LTL specifications are constructed from, is fixed. That is, if the robot encounters a new element of its world, which is not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
 
-Three main reasons motivate the need for open world mission specification and planning. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy. Finally, the state-space may be too large for the user to enumerate every possible variation a priori.  To clarify these reasons, we introduce an illustrative example:
+Three main reasons motivate the need for open world mission specification and planning. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy, i.e., add new propositions to $AP$. Finally, the mission's set of atomic propositions $AP$ may be too large for the user to enumerate a priori.  To clarify these reasons, we introduce an illustrative example:
 
 \begin{myExample}\label{Ex:mailbot1} Autonomous Mailbot (Fig. \ref{Fig:pr3})\\
 	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available at the time the mission specification is defined.
@@ -55,9 +55,19 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:A}, we state our interpreta
 	\end{equation*}
 	\end{myDefinition} 
 
-We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_k$ in Eq. \eqref{Eq:updateAP} with additional new propositions.
+We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_k$ in Eq. \eqref{Eq:updateAP} with additional new propositions. 
 
-In order to obtain a mission specification and a robot plan that can react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include formulas outside LTL, in order to allow ``self-adapting" missions (Problem \ref{Prob:newSpec}). Then, we need to define the specific mechanics of the new specification, which will allow new propositions $\pi_{mk} \in AP_{k+1}$ to be incorporated in LTL formulas (Sections \ref{abstractions}, \ref{openworld}).
+Notice the assumption regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
+
+\begin{myAssumption}\label{Ass:noRemove}
+	The open world model $\W$ only models the addition of new propositions as a result of new elements of the open world. That is, $AP_{k} \subset AP_{k+1}$. In other words, no elements are removed from the open world.
+\end{myAssumption}
+
+However, Assumption \ref{Ass:noRemove} is not really limiting, since a proposition can be in $AP$ without being part of the discrete strategy. Furthermore, if necessary, the value of a proposition can be restricted by adding safety requirements $\varphi_t^{e,s}$. The disadvantage of not being able to remove propositions no longer pertinent to the mission is that the synthesis algorithm is searching for a winning strategy over a larger graph, which increases computation time.
+% Feedback on this Assumption + comments.
+% graph, game structure, something else?
+
+In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include formulas outside LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanics that will allow new propositions $\pi \in AP_{k+1} \backslash AP_{k}$ to be incorporated in the mission's LTL formulas.
 
 The problem of rewriting a specification to allow for adding new propositions is formally stated below:
 
