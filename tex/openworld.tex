@@ -1,55 +1,62 @@
-\textbf{Change section title?} % <---
-
+%\textbf{Change section title?} % <---
 \subsection{Defining Tasks over Open Worlds}
 
-We will now leverage the power of the abstractions introduced in Section \ref{abstractions} to specify robot tasks over open worlds. \ldots
+We will now leverage the power of the abstractions introduced in Section \ref{abstractions} to specify robot tasks over open worlds. We revisit Example \ref{Ex:mailbot1} and make use of the open world abstractions introduced in Section \ref{abstractions}.
 
 \begin{myExample}\label{Ex:mailbot2} Autonomous Mailbot (revisited)\\
-	Using the open world abstractions introduced in Section \ref{abstractions}, we could express one of the robot's objectives as follows: 
-\texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}, where \texttt{Letters} and \texttt{Offices} are groups of environment and robot (region) propositions, respectively.
-%\texttt{each CarryLetter is set on PickupLetter and the corresponding Letter and reset on DeliverLetter}, where \texttt{CarryLetter} and \texttt{Letter} are groups of robot and environment propositions, respectively, and \texttt{PickupLetter} is a robot proposition that abstracts an actuator (e.g. a hand or gripper). 
+\texttt{Group Letters is letter1, letter2}\\
+\texttt{Group Offices is office1, office2}\\
+\texttt{Letters correspond to Offices}\\
+\texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}\\ 
+\texttt{Letters} and \texttt{Offices} are groups of environment and robot (region) propositions, respectively. Notice how the task above does not refer to any specific letters (\texttt{letter1}, \texttt{letter2}) or offices (\texttt{office1}, \texttt{office2}). In fact, even if the group \texttt{Letters} was empty (\texttt{Group Letters is empty}), the user would still be able to specify the task.
 \end{myExample}
 
-Now all we need to do is add new letters to the group \texttt{Letters}.
+If a new letter is received, .i.e., sensed by a sensor $d_{m} \in \mathcal{D}$, a new proposition, $\pi_{mk} = $\texttt{letterNew}, would be added to $AP_k$. There are two requirements for the task in Example \ref{Ex:mailbot2} to reflect the addition of the new proposition. First, \texttt{letterNew} has to be added to the group \texttt{Letters}. Second, a new office proposition, e.g. \texttt{officeNew}, has to be created and added to the group \texttt{Offices}, in order to maintain the correspondence between \texttt{Letters} and \texttt{Offices}. The two requirements define a subproblem of Problem \ref{Prob:newSpec}
 
-Oops, notice the problem that arises with groups not corresponding to each other anymore!
-
-%\begin{myDefinition}\label{Def:spec}
-%	\textbf{(Open World Mission Specification):} ...
-%	
-%	\end{myDefinition} 
-
-\begin{myProblem}\label{Prob:mission}
-	\textbf{(Maintaining Correspondence):}
-	...
+\begin{myProblem}\label{Prob:correspondence}
+	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_{\varphi [k]}$, and a new proposition $\pi_{mk} = A(m, k)$, define a mechanism for (i) adding $\pi_{mk}$ to a group of propositions $G$ in $\mathcal{M}_{\varphi [k]}$, and (ii) creating additional propositions, if necessary, and adding them to the corresponding groups $C(G)$.
 \end{myProblem}
-
-\begin{myAssumption}
-	The correspondence, i,e., the relationship of new elements of the open world to the robot's mission, is provided either by the robot's low-level sensors, or by prompting the human user. That is, for a new proposition $\pi_{mk} = A(m, k)$, additional propositions $C(\pi_{mk})$ can be inferred. They still have to be added to groups.
-	% Rephrase when Problem 2 is stated. Remember, you can use Groups now!
-\end{myAssumption}
-
-Explain mechanics of \texttt{add to} operation and how it handles corrrespondences. \ldots
-
-For instance, in Example \ref{Ex:mailbot2}, the information on the letters themselves provides the correspondence between each letter and the location of the recipient's office. Then, during execution, as new letters are received, those groups are populated with new propositions, the robot's discrete abstraction is updated, the mission specification is translated into LTL formulas accordingly, and a new discrete strategy is constructed. These steps are described in the remainder of this section.
 
 \subsection{Rewriting the Specification} % Re-synthesis (not local yet)
 
-Stuff to mention:
-\begin{itemize}
-	\item "add to / remove from" groups of propositions
-	\item BFS/DFS
-	\item new liveness requirements
-	\item re-synthesis
-	\item Not just LTL anymore (add to / remove from Group). First-order logic?
-	\item ...
-\end{itemize}
+To address Problem \ref{Prob:correspondence}, we introduce another element of our specification language, the \texttt{add to} operator.
+
+\begin{myDefinition}\label{Def:addto}
+	\textbf{(\texttt{add to}):}
+	\ldots
+\end{myDefinition}
+
+Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, we restate Definition \ref{Def:openworld} as follows:
+
+\begin{myDefinition}\label{Def:openworld2}	
+	\textbf{(Open World Model -- revisited):} We include the propositions added in order to maintain correspondence to the updated set of atomic propositions:
+	\begin{equation}\label{Eq:updateAP2}
+		AP_{k+1} = AP_k \bigcup_{m=1}^{M}A(m, k) \bigcup_{m=1}^{M}C(A(m, k)),
+	\end{equation}
+	and set the index $k$ to also be incremented when the specification is re-synthesized:
+	\begin{equation*}
+		k \leftarrow 
+		\begin{cases}
+			k + 1, & \text{if } \bigvee_{m=1}^{M} x_{d_m} \vee y_{\texttt{resynthesis}} \\
+			k, & \text{otherwise}
+		\end{cases}
+	\end{equation*}
+\end{myDefinition}
+
+\begin{myAssumption}
+	The correspondence, i,e., the relationship of new elements of the open world to the robot's mission, is provided either by the robot's low-level sensors, or by prompting the human user. That is, for a proposition $\pi_{mk} = A(m, k)$, added to a group of propositions, the semantics of additional propositions $C(\pi_{mk})$ can be inferred.
+	% Rephrase when Problem 2 is stated. Remember, you can use Groups now!
+\end{myAssumption}
+
+For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions \texttt{letterNew} and\texttt{officeNew}. The information for mapping \texttt{officeNew} to a location on the robot's workspace can be inferred from the letter itself (address), which the robot can look up in a map stored in its memory. If the new office is not part of the current map, the robot could prompt the user for its location, and add it.
 
 \subsection{Exploring the Physical Workspace}
 
 So far we have not made a distinction among the different types of propositions that are added to $AP_k$; environment, action, and region propositions. \ldots
 
 \textbf{Is there a distinction after all?}
+
+BFS/DFS \ldots
 
 %In the robotics domain, more often than not, the state-space has a physical subset: the workspace that the robot operates in. When defining tasks using the open world abstractions that were introduced in Section \ref{abstractions}, one needs to account for the fact that the robot could simply restrict itself to its current workspace, never discovering new regions, without violating the specification. Therefore, part of the specification has to direct the robot to expand its physical workspace, and incorporate newly discovered regions to the discrete abstraction and mission specification.
 
