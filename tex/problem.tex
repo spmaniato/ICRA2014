@@ -45,7 +45,7 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:A}, we state our interpreta
 	\begin{equation}\label{Eq:updateAP}
 		AP_{k+1} = AP_k \bigcup_{m=1}^{M}A(m, k),
 	\end{equation}
-	and the index $k$ is then updated only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
+	and the index $k$ is then incremented only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
 	\begin{equation*}
 		k \leftarrow 
 		\begin{cases}
@@ -63,7 +63,7 @@ Notice the assumption regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
 	The open world model $\W$ only models the addition of new propositions as a result of new elements of the open world. That is, $AP_{k} \subset AP_{k+1}$. In other words, no elements are removed from the open world.
 \end{myAssumption}
 
-However, Assumption \ref{Ass:noRemove} is not really limiting, since a proposition can be in $AP$ without being part of the discrete strategy. Furthermore, if necessary, the value of a proposition can be restricted by adding safety requirements $\varphi_t^{e,s}$. The disadvantage of not being able to remove propositions no longer pertinent to the mission is that the synthesis algorithm is searching for a winning strategy over a larger graph, which increases computation time.
+However, Assumption \ref{Ass:noRemove} is not really limiting, since a proposition can be in $AP$ without being part of the discrete strategy. Furthermore, if necessary, the value of a proposition can be restricted by adding safety requirements to $\varphi_t^{e,s}$. The disadvantage of not being able to remove propositions no longer pertinent to the mission is that the synthesis algorithm is searching for a winning strategy over a larger graph, which increases computation time.
 % Feedback on this Assumption + comments.
 % graph, game structure, something else?
 
