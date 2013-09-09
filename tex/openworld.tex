@@ -11,36 +11,27 @@ We will now leverage the power of the abstractions introduced in Section \ref{ab
 \texttt{Letters} and \texttt{Offices} are groups of environment and robot (region) propositions, respectively. Notice how the task above does not refer to any specific letters (\texttt{letter1}, \texttt{letter2}) or offices (\texttt{office1}, \texttt{office2}). In fact, even if the group \texttt{Letters} was empty (\texttt{Group Letters is empty}), the user would still be able to specify the task.
 \end{myExample}
 
-If a new letter is received, .i.e., sensed by a sensor $d_{m} \in \mathcal{D}$, a new proposition, $\pi_{mk} = $\texttt{letterNew}, would be added to $AP_k$. There are two requirements for the task in Example \ref{Ex:mailbot2} to reflect the addition of the new proposition. First, \texttt{letterNew} has to be added to the group \texttt{Letters}. Second, a new office proposition, e.g. \texttt{officeNew}, has to be created and added to the group \texttt{Offices}, in order to maintain the correspondence between \texttt{Letters} and \texttt{Offices}. The two requirements define a subproblem of Problem \ref{Prob:newSpec}
+If a new letter is received, .i.e., sensed by a sensor $d_{m} \in \mathcal{D}$, a new proposition, $\pi_{mk} = $\texttt{letterNew}, would be added to $AP_k$. There are two requirements for the task in Example \ref{Ex:mailbot2} to reflect the addition of the new proposition. First, \texttt{letterNew} has to be added to the group \texttt{Letters}. Second, a new office proposition, e.g. \texttt{officeNew}, has to be created and added to the group \texttt{Offices}, in order to maintain the correspondence between \texttt{Letters} and \texttt{Offices}. The two requirements define a subproblem of Problem \ref{Prob:newSpec}:
 
 \begin{myProblem}\label{Prob:correspondence}
-	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_{\varphi [k]}$, and a new proposition $\pi_{mk} = A(m, k)$, define a mechanism for (i) adding $\pi_{mk}$ to a group of propositions $G$ in $\mathcal{M}_{\varphi [k]}$, and (ii) creating additional propositions, if necessary, and adding them to the corresponding groups $C(G)$.
+	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}$, and a new proposition $\pi_{mk} = D(m, k)$, define a mechanism for (i) adding $\pi_{mk}$ to a group of propositions $G$ in $\mathcal{M}$, and (ii) creating additional propositions, if necessary, and adding them to the corresponding groups $C(G)$.
 \end{myProblem}
 
 \subsection{Rewriting the Specification} % Re-synthesis (not local yet)
 
-To address Problem \ref{Prob:correspondence}, we introduce another element of our specification language, the \texttt{add to} operator.
+To address Problem \ref{Prob:correspondence}, we introduce another element of our specification language $\Lambda$, the \texttt{add to Group} operator.
 
 \begin{myDefinition}\label{Def:addto}
-	\textbf{(\texttt{add to}):}
-	\ldots
+	\textbf{(\texttt{add to Group}):} When used in a sentence of $\mathcal{M}$, the \texttt{add to Group} operator takes the new proposition $\pi = D(m,k)$, by reading the sensor preceding the operator, and adds it to \texttt{Group}. Furthermore, it creates additional propositions $\mathcal{C}(\pi)$, using either a predefined naming scheme or information from the low-level sensor, and adds them to groups $\mathcal{C}(\texttt{GroupName})$. In Structured English, it is used as follows: \texttt{if you are sensing somethingNew then add to GroupName}, where \texttt{somethingNew} $\in \mathcal{D}$.
 \end{myDefinition}
 
-Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, we restate Definition \ref{Def:openworld} as follows:
+Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, as a direct result of the open world, we have to restate Definition \ref{Def:openworld} as follows:
 
 \begin{myDefinition}\label{Def:openworld2}	
-	\textbf{(Open World Model -- revisited):} We include the propositions added in order to maintain correspondence to the updated set of atomic propositions:
+	\textbf{(Open World Model -- revisited):} Our model $\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\}$ is now updated such that the propositions added in order to maintain correspondence are also added to the set of atomic propositions. That is, 
 	\begin{equation}\label{Eq:updateAP2}
-		AP_{k+1} = AP_k \bigcup_{m=1}^{M}A(m, k) \bigcup_{m=1}^{M}C(A(m, k)),
+		AP_{k+1} = AP_k \bigcup_{m=1}^{M}D(m, k) \bigcup_{m=1}^{M}\mathcal{C}(D(m, k)),
 	\end{equation}
-	and set the index $k$ to also be incremented when the specification is re-synthesized:
-	\begin{equation*}
-		k \leftarrow 
-		\begin{cases}
-			k + 1, & \text{if } \bigvee_{m=1}^{M} x_{d_m} \vee y_{\texttt{resynthesis}} \\
-			k, & \text{otherwise}
-		\end{cases}
-	\end{equation*}
 \end{myDefinition}
 
 \begin{myAssumption}
@@ -50,13 +41,37 @@ Since we are now adding propositions besides those added by the detection sensor
 
 For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions \texttt{letterNew} and\texttt{officeNew}. The information for mapping \texttt{officeNew} to a location on the robot's workspace can be inferred from the letter itself (address), which the robot can look up in a map stored in its memory. If the new office is not part of the current map, the robot could prompt the user for its location, and add it.
 
-\subsection{Exploring the Physical Workspace}
+All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{\varphi [k]}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpec}. However, for the updates to be reflected in the robot's discrete strategy, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. We call this process ``re-synthesis" and associate the robot proposition \texttt{resynthesize} with it. For example, in the setting of Example \ref{Ex:mailbot2}, we could say:
+\texttt{if you are sensing newLetter then add to Letters and resynthesize}. In this case, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
 
-So far we have not made a distinction among the different types of propositions that are added to $AP_k$; environment, action, and region propositions. \ldots
+\begin{myExample}\label{Ex:SnS} Search and Rescue Specification (partial)\\
+	\texttt{Requests correspond to RegionsOfInterest}\\
+	\texttt{if you are activating any Requests then go to corresponding RegionsOfInterest}\\
+	\texttt{if you are sensing newRequest then add to Requests and do needToResynthesize}\\
+%	\texttt{needToResynthesize is set on newRequest and reset on resynthesize}\\
+	\texttt{do resynthesize if and only if you are not activating rescueSurvivor and you are activating needToResynthesize}\\
+	where \texttt{needToResynthesize} is a memory robot proposition that enables the robot to remember it detected a new request and that is has to re-synthesize eventually.
+\end{myExample}
 
-\textbf{Is there a distinction after all?}
+The definition of the \texttt{add to Group} operator and the \texttt{resynthesize} proposition conclude our discussion of the augmented specification language $\Lambda$, which is translated to LTL by the parser $\mathcal{P}$. 
 
-BFS/DFS \ldots
+%
+%Finally, we set the index $k$ (Definitions \ref{Def:openworld}, \ref{Def:openworld2} to also be incremented when re-synthesis takes place:
+%	\begin{equation*}
+%		k \leftarrow 
+%		\begin{cases}
+%			k + 1, & \text{if } \bigvee_{m=1}^{M} x_{d_m} \vee y_{\texttt{resynthesize}} \\
+%			k, & \text{otherwise}
+%		\end{cases}
+%	\end{equation*}
+
+%\subsection{Exploring the Physical Workspace}
+%
+%So far we have not made a distinction among the different types of propositions that are added to $AP_k$; environment, action, and region propositions. \ldots
+%
+%\textbf{Is there a distinction after all?}
+%
+%BFS/DFS \ldots
 
 %In the robotics domain, more often than not, the state-space has a physical subset: the workspace that the robot operates in. When defining tasks using the open world abstractions that were introduced in Section \ref{abstractions}, one needs to account for the fact that the robot could simply restrict itself to its current workspace, never discovering new regions, without violating the specification. Therefore, part of the specification has to direct the robot to expand its physical workspace, and incorporate newly discovered regions to the discrete abstraction and mission specification.
 
