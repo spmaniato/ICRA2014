@@ -27,9 +27,9 @@ Let $\W$ be a sequence of sets of atomic propositions:
 \end{equation} 
 where $\mathcal{D} = \left\{ d_1, \ldots, d_m, \ldots, d_M \right\} \subseteq \mathcal{X}_k \subset AP_k, \forall k$. The abstract sensors in $\mathcal{D}$ are responsible for detecting $M$ types of new elements of the open world. For instance, one sensor $d$ may detect new letters, whereas another new offices.
 
-In addition, let $A$ be a function which reads the sensors that environment propositions $\mathcal{D}$ abstract, and returns a new proposition if they detected an unmodeled element of the world:
-\begin{equation}\label{Eq:A}
-	A(m, k) = 
+In addition, let $D$ be a function which reads the sensors that environment propositions $\mathcal{D}$ abstract, and returns a new proposition if they detected an unmodeled element of the world:
+\begin{equation}\label{Eq:detection}
+	D(m, k) = 
 	\begin{cases}
 		\left\{ \pi_{mk} \right\}, & \text{if } x_{d_m} \\ % Refers to valuation {0,1}
 		\left\{ \right\}, &  \text{if } \neg x_{d_m}
@@ -37,13 +37,13 @@ In addition, let $A$ be a function which reads the sensors that environment prop
 \end{equation}¥
 where $x_{d_m} \in \Sigma_\mathcal{D}$ is the valuation of the $m$-th detection sensor, and $\pi_{mk} \not \in AP_k$. The new proposition $\pi_{mk}$ can be either an environment, or an action, or a region proposition.
 
-Putting together Equations \eqref{Eq:W} -- \eqref{Eq:A}, we state our interpretation of an open world model.
+Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state our interpretation of an open world model.
 
 \begin{myDefinition}\label{Def:openworld}	
 	\textbf{(Open World Model):}
 	The sequence $\W$ is an open world model if the sets $AP_k$ are iteratively defined:
 	\begin{equation}\label{Eq:updateAP}
-		AP_{k+1} = AP_k \bigcup_{m=1}^{M}A(m, k),
+		AP_{k+1} = AP_k \bigcup_{m=1}^{M}D(m, k),
 	\end{equation}
 	and the index $k$ is then incremented only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
 	\begin{equation*}
@@ -67,7 +67,7 @@ However, Assumption \ref{Ass:noRemove} is not really limiting, since a propositi
 % Feedback on this Assumption + comments.
 % graph, game structure, something else?
 
-In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include formulas outside LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanics that will allow new propositions $\pi \in AP_{k+1} \backslash AP_{k}$ to be incorporated in the mission's LTL formulas.
+In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include formulas outside LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanics that will allow new propositions $\pi = D(m,k)$ to be incorporated in the mission's LTL formulas.
 
 The problem of rewriting a specification to allow for adding new propositions is formally stated below:
 
@@ -84,7 +84,7 @@ The problem of rewriting a specification to allow for adding new propositions is
 	% Also include a constraint on safeties and livenesses.
 \end{myProblem}
 
-The restrictions on $\varphi [k+1]$, the updated GR(1) specification, ensure that its initial conditions are compatible with the current ($k$) environment and robot state. Also, these restrictions set the values $x,y$ of any new propositions $\pi \in AP_{k+1} \backslash AP_{k}$. Furthermore, the notation $\mathcal{M}_{\varphi [k]}$ means that a subset of a mission specification $\mathcal{M}$ is equivalent to the GR(1) formula $\varphi[k]$. In other words $\mathcal{M}_{\varphi [k]}$ consists of a fixed part and a part that is updated when $\varphi[k]$ is updated.
+The restrictions on $\varphi [k+1]$, the updated GR(1) specification, ensure that its initial conditions are compatible with the current ($k$) environment and robot state. Also, these restrictions set the values $x,y$ of any new propositions $\pi \in AP_{k+1} \backslash AP_{k}$. Furthermore, the notation $\mathcal{M}_{\varphi [k]}$ means that a subset of a mission specification $\mathcal{M}$ is equivalent to the GR(1) formula $\varphi[k]$. In other words $\mathcal{M}_{\varphi [k]}$ consists of a fixed part and a part that is updated when $\varphi[k]$ is updated. For brevity, we will often drop the subscript $\varphi [k]$ from $\mathcal{M}$.
 
 Notice that the specification language $\Lambda$ and the parser $\mathcal{P}$ only provide the semantics and mechanics for updating $\varphi[k]$. The resulting formula, $\varphi [k+1]$, depends on the settings of the user-defined mission specification $\mathcal{M}$.
 
