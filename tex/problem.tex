@@ -1,25 +1,26 @@
-\subsection{Motivation}
+%\subsection{Motivation}
+%
+%\begin{myExample}\label{Ex:mailbot1} Autonomous Mailbot (Fig. \ref{Fig:pr3})\\
+%	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available at the time the mission specification is defined.
+%\end{myExample}
+%
+%\begin{figure}[ht]
+%	\centering
+%	\includegraphics[width=0.7\columnwidth, clip]{./img/pr3.jpg}
+%	\caption{Our implementation of a mailbot. A Nao humanoid robot (ref ???) is mounted on a segway platform. The actuation and perception capabilities of the former are complemented by the localization, navigation and mobility advantages of the latter.}
+%	\label{Fig:pr3}
+%\end{figure}
+%
+%In Example \ref{Ex:mailbot1}, notice that the robot does not operate serially, i.e., collecting one letter, delivering it, and returning for the next one. Rather, it is allowed to carry multiple letters at once, collect letters on its way to delivering a different letter, etc. Therefore, the specification must make sure that the robot only delivers letters at the correct location, that it is aware of which letters it is carrying, and that it does not forget to deliver a letter altogether. The open world aspect of the mission comes from the fact that new letters that correspond to new recipients may be collected by the robot during execution. Therefore, it is not possible to explicitly write a specification in the form of individual delivery tasks, e.g., \texttt{if you are sensing letter\_John\_Doe then do PickUp\_Letter and go to John\_Does\_office}. Notice that the detection of a letter addressed to a new recipient necessitates both its modeling, as a proposition, and the addition of another objective in the specification.
+%
+%\subsection{Problem Statement}
 
-Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world in the current context. Specifically, the closed world assumption implies that $AP$, the set of atomic propositions with which LTL specifications are constructed from, is fixed. That is, if the robot encounters a new element of its world, which is not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
+Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world. Specifically, in our framework, the closed world assumption implies that $AP$, the set of atomic propositions from which LTL specifications are constructed, is fixed. That is, if the robot encounters a new element in its world (such as a new object), which was not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
 
-Three main reasons motivate the need for open world mission specification and planning. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy, i.e., add new propositions to $AP$. Finally, the mission's set of atomic propositions $AP$ may be too large for the user to enumerate a priori.  To clarify these reasons, we introduce an illustrative example:
+Three main reasons motivate the need for open world mission specification and planning. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy, i.e., add new propositions to $AP$. Finally, the mission's set of atomic propositions $AP$ may be too large for the user to enumerate a priori.  
+%To clarify these reasons, we introduce an illustrative example:
 
-\begin{myExample}\label{Ex:mailbot1} Autonomous Mailbot (Fig. \ref{Fig:pr3})\\
-	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available at the time the mission specification is defined.
-\end{myExample}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.7\columnwidth, clip]{./img/pr3.jpg}
-	\caption{Our implementation of a mailbot. A Nao humanoid robot (ref ???) is mounted on a segway platform. The actuation and perception capabilities of the former are complemented by the localization, navigation and mobility advantages of the latter.}
-	\label{Fig:pr3}
-\end{figure}
-
-In Example \ref{Ex:mailbot1}, notice that the robot does not operate serially, i.e., collecting one letter, delivering it, and returning for the next one. Rather, it is allowed to carry multiple letters at once, collect letters on its way to delivering a different letter, etc. Therefore, the specification must make sure that the robot only delivers letters at the correct location, that it is aware of which letters it is carrying, and that it does not forget to deliver a letter altogether. The open world aspect of the mission comes from the fact that new letters that correspond to new recipients may be collected by the robot during execution. Therefore, it is not possible to explicitly write a specification in the form of individual delivery tasks, e.g., \texttt{if you are sensing letter\_John\_Doe then do PickUp\_Letter and go to John\_Does\_office}. Notice that the detection of a letter addressed to a new recipient necessitates both its modeling, as a proposition, and the addition of another objective in the specification.
-
-\subsection{Problem Statement}
-
-We begin our formal analysis of the problem by defining a model of the open world, compatible with the current setting; that of controller synthesis.
+We begin our formal analysis of the problem by defining a model of the open world.
 
 Let $\W$ be a sequence of sets of atomic propositions:
 \begin{equation}\label{Eq:W}
