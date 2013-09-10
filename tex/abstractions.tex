@@ -1,44 +1,55 @@
 \subsection{Groups of Propositions} 
 
-In order to write meaningful specifications over propositions without referring to them explicitly, we allow our specification language $\Lambda$ to abstract propositions into groups. 
-This allows us to specify our desired reactive behaviors in terms of groups of propositions and add new propositions to the appropriate group(s) when needed, making use of the existing logic in the specification. 
-A proposition group is simply an ordered collection of propositions that are all of the same type (i.e. sensors, actions, or regions). 
-Our Structured English grammar allows us to define proposition groups in a specification with sentences of the form: 
-``group \textit{groupName} is \textit{proposition1}, \textit{proposition2}, \textit{proposition3}, ... , \textit{propositionN}''. 
-This generalizes the work in \cite{BingxinRSS2012} focusing on groups of region propositions. 
-Note that this syntax is just one possible implementation of the abstractions we describe. 
-An alternative implementation would be possible in a natural language processor like SLURP \cite{RamanRSS2013}, for instance. 
+In order to write meaningful specifications over propositions without referring to them explicitly, we allow our specification language $\Lambda$ to include elements of first-order logic. 
+Specifically, $\Lambda$ allows quantification over sets of propositions, which we refer to as groups. 
+This allows users to specify reactive behaviors in terms of groups of propositions and add new propositions to the appropriate group(s) when needed, making use of the existing semantics in the specification. 
+For the purpose of translating mission semantics in $\Lambda$ into LTL specifications, we further constrain groups to be ordered sets of propositions that are all of the same type (i.e. sensors, actions, or regions). 
+This generalizes the work in \cite{BingxinRSS2012}, which focused on groups of region propositions. 
+A mission in $\Lambda$ can define a group with a sentence providing a unique name for the group and a list of the propositions contained in the group. 
+Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, will vary. 
+For instance, alternative implementations of $\Lambda$ would be possible in a formal grammar like Structured English and in a natural language processor like SLURP \cite{RamanRSS2013}, with different syntax in both. 
 
 \subsection{Group Quantifiers} 
 
-Unlike atomic propositions or boolean formulas of propositions, proposition groups don't have an intrinsic truth value. 
+After a group has been defined, it can be referred to by its name in the mission specification. 
+However, unlike atomic propositions or boolean formulas of propositions, proposition groups cannot be evaulated to a simple truth value. 
 A proposition group used in a specification must be paired with a quantifier to produce a truth-valued logical formula. 
-Our Structured English grammar supports three quantifiers: any, all, and each. 
-To explain the semantics of these quantifiers, we will use $S(g)$ to denote the logical formula produced by translating a sentence with a quantifier and group name treated as a single proposition, $g$. 
-We will also use $G$ to denote the set of propositions in a group. 
+$\Lambda$ contains three quantifiers, which we will call `any', `all', and `each'. 
+To explain the semantics of these quantifiers, we will use $\bar{\varphi}$ to denote the translation of a sentence in $\Lambda$ into first-order logic. 
+$\bar{\varphi}$ is an intermediate step in translation containing only LTL operators and quantified groups. Using $g$ to denote a group name, we can write the first-order quantification of groups in $\bar{\varphi}$ as `any($g$)', `all($g$)', or `each($g$)'. 
+We will also use $G$ to denote the set of propositions in the group named by $g$ and $[y/x]\bar{\varphi}$ to denote the expression that results from replacing all occurrances of $x$ in $\bar{\varphi}$ with $y$. 
 \par
-The phrase ``any \textit{groupName}'' in a sentence is simply translated as the logical disjunction of every proposition in the group named by \textit{groupName}. 
-That is, the complete translation of the sentence $S$ is: 
+The quantifier `any($g$)' in a sentence is simply translated as the logical disjunction of every proposition in the group named by $g$. 
+That is, $\bar{\varphi}$ is translated into: 
 \begin{equation*}
-	S( \bigvee \limits_{\phi_i \in G} \phi_i )
+	[ t / \text{any}(g)] \bar{\varphi}
+\end{equation*}
+Where: 
+\begin{equation*}
+	t = \bigvee \limits_{\phi_i \in G} \phi_i
 \end{equation*}
 \par
-The phrase ``all \textit{groupName}'' in a sentence is translated as the logical conjunction of every proposition in the group named by \textit{groupName}. 
-The complete translation of the sentence $S$ is: 
+The quantifier `all($g$)' in a sentence is translated as the logical conjunction of every proposition in the group named by $g$. 
+$\bar{\varphi}$ is therefore translated into: 
 \begin{equation*}
-	S( \bigwedge \limits_{\phi_i \in G} \phi_i )
+	[ t / \text{all}(g)] \bar{\varphi}
+\end{equation*}
+Where:
+\begin{equation*}
+	t = \bigwedge \limits_{\phi_i \in G} \phi_i
 \end{equation*}
 \par
-The quantifier ``each'' is similar to ``all'', but acts with a different semantic scope. 
-The phrase ``each \textit{groupName}'' in a sentence denotes that the entire sentence is true for each of the propositions in \textit{groupName} separately. 
-The complete translation of the sentence $S$ is:
+The quantifier `each($g$)' is similar to `all($g$)', but acts with a different semantic scope. 
+`each($g$)' in a sentence denotes that the entire sentence is true for each of the propositions in $G$ separately. 
+$\bar{\varphi}$ is translated into:
 \begin{equation*}
- 	\bigwedge\limits_{\phi_i \in G} S(\phi_i)
+ 	\bigwedge\limits_{\phi_i \in G} [\phi_i / \text{each}(g)] \bar{\varphi}
 \end{equation*}
 \par
 For sentences that contain multiple quantifier phrases, the parser applies these translation operations in the order that the quantifiers appear in the sentence. 
 With these abstractions, we can write compact, expressive, and intuitive specifications. 
 \par
+%TODO: The following example shouldn't use structured english...
 \begin{myExample}\label{Ex:quantifiers} 	
 	Consider a scenario where a robot is helping to manage a hotel. 
 	The robot has a group of regions called \texttt{room} a group of sensors called \texttt{roomsOccupied} with a proposition for every room, and actions called \texttt{cleanRoom}, \texttt{welcomeGuests}, and \texttt{apologizeToGuests}. 
@@ -50,29 +61,27 @@ With these abstractions, we can write compact, expressive, and intuitive specifi
 
 \subsection{Proposition Correspondence} 
 A consequence of abstracting specifications away from individual propositions is that relationships between propositions become more difficult to denote. 
-To address this difficulty, our Structured English grammar allows the definition of correspondences between propositions in groups. 
+To address this difficulty, $\Lambda$ allows the definition of correspondences between propositions in groups. 
 A correspondence is a mapping from individual propositions to sets of propositions that contain at most one proposition from each group defined in the specification. 
-We allow two sentence forms for defining correspondence: 
-\begin{itemize}
-	\item ``\textit{PropA1}, \textit{PropA2}, ... , \textit{PropAN} correspond to \textit{PropB1}, \textit{PropB2}, ... , \textit{PropBN}''
-	\item ``\textit{GroupName1} corresponds to \textit{GroupName2}''
-\end{itemize} 
-In the second form, propositions are paired in the ordering of their respective groups. 
-Once correspondence has been defined in a specification, we can use the ``corresponding'' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. 
-When a sentence contains the phrase ``the corresponding \textit{groupName}'', the parser will find the nearest previous reference to another proposition group in the sentence. 
-The parser will then produce a copy of the sentence for each proposition in that first group, replacing occurrences of the two group names with the elements of each that correspond. 
-The translation of the original sentence is then the conjunction of these sentences. 
-We can state this more formally: Let $S(g_1,g_2)$ represent the LTL translation of a sentence with quantified groups $g_1$ and $g_2$ treated as single propositions. 
-If ``corresponding'' is used with $g_2$, then the complete translation of the sentence is:
+$\Lambda$ allows users to define correspondence either by explicitly mapping atomic propositions to one another or by mapping one group onto another. 
+For a group to correspond to another group, both groups must have the same number of elements. 
+The correspondence of individual propositions within the groups follows the ordering of each group. 
+Once correspondence has been defined in a specification, $\Lambda$ allows the use of a `corresponding' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. 
+To use our previous notation of $\bar{\varphi}$, $g$, and $G$, the `corresponding' operator can be written as `corresponding($g$)'. 
+The `corresponding' operator is different from the quantifiers described earlier because its semantics depend on the presence of another quantified group in the same sentence. 
+We can demonstrate this dependency with two English sentences: ``Go to the corresponding rooms'' and ``Take all of the guests to their corresponding rooms''.
+The first sentence is unclear because it is lacking the index of correspondence provided in the second sentence, namely ``all of the guests''. 
+Therefore a sentence using correspondence has two relevant groups: $g_q$, the quantified group, and $g_c$, the `corresponding' group. 
+Finally, we will define a function $\mathcal{C}$ which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to. 
+We can now express the translation of $\bar{\varphi}$ for a sentence using correspondence as:
 \begin{equation*}
-	\bigwedge \limits_{\phi_i \in G_1} S(\phi_i, C(\phi_i) \cap G_2)
+	\bigwedge \limits_{\phi_i \in G_q} [\phi_i / g_q] [\mathcal{C}(\phi_i) \cap G_c / \text{corresponding}(g_c)] \bar{\varphi}
 \end{equation*}
-Where $G_1$ and $G_2$ are the sets of propositions in groups $g_1$ and $g_2$ respectively.
-$C$ is the correspondence function such that $C(\phi_i)$ represents the set of propositions that $\phi_i$ corresponds to. 
-In our implementation, $C$ is a dictionary with atomic propositions as the keys and lists of corresponding propositions as the values. 
+Where $G_q$ and $G_c$ are the sets of propositions in groups $g_q$ and $g_c$ respectively. 
 Note from our earlier definition of correspondence that the set intersection in this expression results in at most one element (correspondences may contain at most one element from any group). 
 If the intersection is empty, meaning that a correspondence has not been properly defined, then the sentence produces a syntax error. 
 
+%TODO: Structured english shouldn't be here either!!
 \begin{myExample}\label{Ex:corresponding}
 	Correspondence is useful in a scenario in which a robot performs an identical task over many sets of related propositions, such as waiting on tables at a restaurant. 
 	Our specification can define a group \texttt{tables} of region propositions, representing the tables in a restaurant, and a group \texttt{calls} of sensor propositions, representing the robot being signalled by specific tables. We can specify our desired behavior as follows: 
