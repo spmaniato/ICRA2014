@@ -1,8 +1,27 @@
-In recent years, tools and ideas from the formal methods and hybrid system analysis have been applied to robot motion and task planning. The resulting approaches succeed in coupling low-level feedback controllers \cite{} with high-level, discrete plans \cite{}. This gave rise to a number of methodologies that translate high-level tasks to discrete and subsequently low-level continuous controllers in a correct-by-contstruction manner \cite{}.
+For robots to become widely accessible, users have to be able to command them by specifying high-level behaviors, not by programming low-level robot controllers.
+This has recently become possible by applying tools and ideas from the formal methods and hybrid systems to robotics. The resulting methodologies translate high-level tasks to discrete and subsequently low-level continuous controllers in a correct-by-contstruction manner \cite{}.
+\emph{Reactive} approaches are of particular interest, since they account for a dynamic, and possibly adversarial, environment. For example, the framework in \cite{KGFP_TRO09} takes a logic formula that contains the mission specification, and by solving a two-player game between the robot and its environment, outputs a hybrid controller that is guaranteed to accomplish the mission. Other reactive approaches have been proposed in \cite{Wongpiromsarn2010} and, more recently, in \cite{Belta2013RSS}.
 
-However, the initial approaches did not account for a dynamic and possibly adversarial environment. In \cite{KGFP_TRO09}, the authors present a framework for reactive motion and task planning. The approach takes a logic formula that contains the mission specifications, which is based on a discrete abstraction of the problem, and by solving a two-player game between the robot and its environment, outputs a hybrid controller that is guaranteed to achieve the mission. Other reactive approaches have also been proposed in \cite{Wongpiromsarn2010} and more recently in \cite{Belta2013RSS}.
+However, the initial approaches operate under the closed world assumption, whereas robots have moved from the reclusive workspace of the assembly line to the highly unstructured site of the Fukushima Daiichi nuclear disaster. 
+Thus, there is a need for high-level robot controllers that adapt to the discrepancies between the robot's model of the world and reality. 
+In addition, robots are also asked to incorporate new functions during execution. 
+Examples include reconfigurable modular robots, as well as robots that learn on-the-fly \cite{SaxenaIJRR2012} or inquire online knowledge repositories \cite{rapyuta2013}. 
+Finally, new mission requirements may be added after the robot has been deployed, as in the case of robotic search and rescue tasks \cite{MatthiasAI2010}, personal robots \cite{}, and autonomous space and planetary exploration missions \cite{spaceXplore2006}. 
+%Uncertainty and partial a priori knowledge are inherent aspects of future robot missions, not problems that we should attempt to avoid encountering.
 
-Reactivity was the first step towards a more ambitious goal: open world planning. Similar to modern software \cite{open-world-sw}, robots are tasked with operating in less structured and highly uncertain environments. Thus, there is a need for planning algorithms that adapt their behavior in order to account for discrepancies between the robot's model of the world and reality. In addition, robots are now asked to incorporate new functions during execution. Examples include reconfigurable modular robots, as well as robots that learn on-the-fly \cite{SaxenaIJRR2012} or inquire online knowledge repositories \cite{rapyuta2013}. Finally, new mission requirements may be added after the robot has been deployed, as in the case of robotic search and rescue tasks \cite{MatthiasAI2010}, or autonomous space and planetary exploration missions \cite{spaceXplore2006}. Uncertainty and partial a priori knowledge are inherent aspects of future robot missions, not problems that we should attempt to avoid encountering.
+For example, consider the setting where a robotic courier (mailbot) is used to deliver mails in a school or company building (see Fig. \ref{Fig:pr3}). It is tasked with collecting letters and delivering them to the recipients' offices. 
+This mission is relatively simple, and yet the robot's world is already open with respect to (w.r.t.) letters addressed to recipients the robot does not know about. % Na to kana entelws nia-nia dew?
+Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available a priori.
+%\begin{myExample}\label{Ex:mailbot1} Autonomous Mailbot (Fig. \ref{Fig:pr3})\\
+%	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available at the time the mission specification is defined.
+%\end{myExample}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\columnwidth, clip]{./img/pr3.jpg}
+	\caption{Our implementation of a mailbot. A Nao humanoid robot (ref ???) is mounted on a segway platform. The actuation and perception capabilities of the former are complemented by the localization, navigation and mobility advantages of the latter.}
+	\label{Fig:pr3}
+\end{figure}
 
 However, in order to design provably-correct open world planners, a number of challenges have to be overcome. 
 First, there is the assumption that a robot has full knowledge of the structure of its workspace. This issue has been tackled in \cite{MurrayICRA2012} and \cite{MurrayICRA2013a}, where the authors introduced local re-synthesis as a way to account for local topological changes in the robot's workspace. 
