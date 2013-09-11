@@ -1,95 +1,100 @@
-%\subsection{Motivation}
-%
-%\begin{myExample}\label{Ex:mailbot1} Autonomous Mailbot (Fig. \ref{Fig:pr3})\\
-%	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available at the time the mission specification is defined.
-%\end{myExample}
-%
-%\begin{figure}[ht]
-%	\centering
-%	\includegraphics[width=0.7\columnwidth, clip]{./img/pr3.jpg}
-%	\caption{Our implementation of a mailbot. A Nao humanoid robot (ref ???) is mounted on a segway platform. The actuation and perception capabilities of the former are complemented by the localization, navigation and mobility advantages of the latter.}
-%	\label{Fig:pr3}
-%\end{figure}
-%
-%In Example \ref{Ex:mailbot1}, notice that the robot does not operate serially, i.e., collecting one letter, delivering it, and returning for the next one. Rather, it is allowed to carry multiple letters at once, collect letters on its way to delivering a different letter, etc. Therefore, the specification must make sure that the robot only delivers letters at the correct location, that it is aware of which letters it is carrying, and that it does not forget to deliver a letter altogether. The open world aspect of the mission comes from the fact that new letters that correspond to new recipients may be collected by the robot during execution. Therefore, it is not possible to explicitly write a specification in the form of individual delivery tasks, e.g., \texttt{if you are sensing letter\_John\_Doe then do PickUp\_Letter and go to John\_Does\_office}. Notice that the detection of a letter addressed to a new recipient necessitates both its modeling, as a proposition, and the addition of another objective in the specification.
-%
-%\subsection{Problem Statement}
+Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world. Specifically, in our framework, the world is closed if and only if that $AP$, the set of atomic propositions from which LTL specifications are constructed, is fixed. That is, if the robot encounters a new element in its world (such as a new object), which was not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
 
-Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world. Specifically, in our framework, the closed world assumption implies that $AP$, the set of atomic propositions from which LTL specifications are constructed, is fixed. That is, if the robot encounters a new element in its world (such as a new object), which was not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
-
-Three main reasons motivate the need for open world mission specification and planning. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new function and components to its strategy, i.e., add new propositions to $AP$. Finally, the mission's set of atomic propositions $AP$ may be too large for the user to enumerate a priori.  
+Three main reasons motivate the need for open world mission specification and planning. First of all, in real-world applications, such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new functions and respond to unexpected events during execution, i.e., add new propositions to $AP$ on-the-fly. Finally, the mission's set of atomic propositions $AP$ may be too large for the user to enumerate a priori.
 %To clarify these reasons, we introduce an illustrative example:
 
 We begin our formal analysis of the problem by defining a model of the open world.
 
 Let $\W$ be a sequence of sets of atomic propositions:
 \begin{equation}\label{Eq:W}
-	\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\}, \quad k \in \NN,
-\end{equation} 
-where $\mathcal{D} = \left\{ d_1, \ldots, d_m, \ldots, d_M \right\} \subseteq \mathcal{X}_k \subset AP_k, \forall k$. The abstract sensors in $\mathcal{D}$ are responsible for detecting $M$ types of new elements of the open world. For instance, one sensor $d$ may detect new letters, whereas another new offices.
+	\W = \left\{ AP_0, AP_1, \ldots, AP_k, \ldots \right\},
+\end{equation}
+where $AP_{k+1} \not = AP_k$, and $k \in \NN$.
 
-In addition, let $D$ be a function that reads the sensors that environment propositions $\mathcal{D}$ abstract, and returns a new proposition if they detected an unmodeled element of the world:
+Also, let $\mathcal{D} = \left\{ d_1, \ldots, d_m, \ldots, d_M \right\} \subseteq \mathcal{X}_k \subset AP_k, \forall k$ abstract the sensors that are responsible for detecting $M$ types of new elements of the open world, $M \in \NN$. For instance, one sensor $d$ may detect new letters, whereas another, new offices.
+
+In addition, let $D$ be a function that reads the sensors that the environment propositions $\mathcal{D}$ abstract, and returns a new proposition if they detected an unmodeled element of the world:
 \begin{equation}\label{Eq:detection}
-	D(m, k) = 
+	D(m, t) = 
 	\begin{cases}
-		\left\{ \pi_{mk} \right\}, & \text{if } x_{d_m} \\ % Refers to valuation {0,1}
-		\left\{ \right\}, &  \text{if } \neg x_{d_m}
+		\left\{ \pi_{mt} \right\}, & \text{if } d_m[t] = \texttt{True} \\
+		\left\{ \right\}, &  \text{if } d_m[t] = \texttt{False}
 	\end{cases}
 \end{equation}¥
-where $x_{d_m} \in \Sigma_\mathcal{D}$ is the valuation of the $m$-th detection sensor, and $\pi_{mk} \not \in AP_k$. The new proposition $\pi_{mk}$ can be either an environment, or an action, or a region proposition.
+where $d_m[t]$ denotes the value of the binary sensor $d_m$ at position $t$ of the infinite sequence $\sigma$ (Section \ref{preliminariesA}), and $\pi_{mt} \not \in AP$. The new proposition $\pi_{mt}$ can be either an event, an action, or a region proposition. % event or environment or sensor?
 
 Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state our interpretation of an open world model.
 
 \begin{myDefinition}\label{Def:openworld}	
 	\textbf{(Open World Model):}
-	The sequence $\W$ is an open world model if the sets $AP_k$ are iteratively defined:
+	The sequence $\W$, is an open world model if the set of atomic propositions $AP$ is updated as follows:
 	\begin{equation}\label{Eq:updateAP}
-		AP_{k+1} = AP_k \bigcup_{m=1}^{M}D(m, k),
+		AP_{t+1} = AP_t \bigcup_{m=1}^{M}D(m, t),
 	\end{equation}
-	and the index $k$ is then incremented only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
-	\begin{equation*}
-		k \leftarrow 
-		\begin{cases}
-			k + 1, & \text{if } \bigvee_{m=1}^{M} x_{d_m} \\
-			k, & \text{otherwise}
-		\end{cases}
-	\end{equation*}
+	and $\W$ is incremented if $AP$ changed:
+	\begin{equation}
+	\W = 
+	\begin{cases}
+		\W \cup \left\{ AP_{t+1} \right\}, & \text{if } \bigvee_{m=1}^{M} (d_m[t] = \texttt{True}) \\
+		\W, & \text{otherwise}
+	\end{cases}
+	\end{equation}
+If the world is closed w.r.t. elements sensed by the sensors in $\mathcal{D}$, then $|\W| = 1, \forall t$.
+%	and the index $k$ is then incremented only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
+%	\begin{equation*}
+%		k \leftarrow 
+%		\begin{cases}
+%			k + 1, & \text{if } \bigvee_{m=1}^{M} x_{d_m} \\
+%			k, & \text{otherwise}
+%		\end{cases}
+%	\end{equation*}
 	\end{myDefinition} 
 
-We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_k$ in Eq. \eqref{Eq:updateAP} with additional new propositions. 
+We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_t$ in Eq. \eqref{Eq:updateAP} with additional new propositions. 
 
-Notice the assumption regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
+Notice the assumptions regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
 
 \begin{myAssumption}\label{Ass:noRemove}
-	The open world model $\W$ only models the addition of new propositions as a result of new elements of the open world. That is, $AP_{k} \subset AP_{k+1}$. In other words, no elements are removed from the open world.
+	The open world model $\W$ only models the addition of propositions as a result of new elements of the open world. That is, $AP_{k} \subset AP_{k+1}$. In other words, once added, propositions are never removed.
 \end{myAssumption}
 
-However, Assumption \ref{Ass:noRemove} is not really limiting, since a proposition can be in $AP$ without being part of the discrete strategy. Furthermore, if necessary, the value of a proposition can be restricted by adding safety requirements to $\varphi_t^{e,s}$. The disadvantage of not being able to remove propositions no longer pertinent to the mission is that the synthesis algorithm is searching for a winning strategy over a larger graph, which increases computation time.
-% Feedback on this Assumption + comments.
-% graph, game structure, something else?
+\begin{myAssumption}\label{Ass:onlyM}
+	The open world model $\W$ models a world that is open only w.r.t. new elements of $M$ different types; those elements that can be sensed by the sensors $\mathcal{D}$. 
+	\end{myAssumption}
 
-In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include formulas outside LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanics that will allow new propositions $\pi = D(m,k)$ to be incorporated in the mission's LTL formulas.
+Assumption \ref{Ass:noRemove} is not limiting, since a proposition can be in $AP$ without being part of the discrete strategy. Furthermore, the value of a proposition can be restricted by adding safety requirements to $\varphi_t^{e,s}$, if necessary. The disadvantage of not removing propositions that are no longer pertinent to the mission is that the synthesis algorithm \cite{piterman_06} will be searching for a winning strategy over a larger graph, which has higher computation time.
+Assumption \ref{Ass:onlyM} limits the events to which an open world robot will react, to those that it can sense and that are relevant to the mission. For instance, the mailbot (Ex. \ref{Ex:mailbot1}) should update its mission if it senses a new letter recipient, but not if someone tries to hand it a trash bag.
+
+In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include operators outside of LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanism that will allow new propositions $\pi_{mt}$ to be incorporated in the mission's LTL formulas.
 
 The problem of rewriting a specification to allow for adding new propositions is formally stated below:
 
 \begin{myProblem}\label{Prob:newSpec}
-	\textbf{(Mission Specification Update):} Define a specification language $\Lambda$, and a parser $\mathcal{P}$ for it. Then, given a mission specification $\mathcal{M}$ written in $\Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions $AP_{k+1}$, the LTL specification is updated:
-	\begin{equation}\label{Eq:newSpec}
-		\varphi [k+1] = \mathcal{P} (\mathcal{M}_{\varphi [k]}, AP_{k+1}),
-	\end{equation}
-	such that
-	\begin{align*} % This is NOT right! The automaton has not been updated yet...
-		x_{k+1} &\models \varphi_i^e [k+1], \; x_{k+1} \in \Sigma_{\mathcal{X}_{k+1}} = \Sigma_{\mathcal{X}_{k}} \cup \Sigma_{\mathcal{X}_{k+1} \backslash \mathcal{X}_{k}} \\
-		y_{k+1} &\models \varphi_i^s [k+1], \; y_{k+1} \in \Sigma_{\mathcal{Y}_{k+1}} = \Sigma_{\mathcal{Y}_{k}} \cup \Sigma_{\mathcal{Y}_{k+1} \backslash \mathcal{Y}_{k}}
-	\end{align*}
+	\textbf{(Mission Specification Update):} Let $\Lambda$ be a specification language and $\mathcal{P}$ a parser for it. Augment $\Lambda$ and $\mathcal{P}$, such that given a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are updated as follows:
+	\begin{subequations}\label{Eq:newSpec}
+		\begin{align}
+			\mathcal{M}_{k+1} &= \mathcal{M}(AP_{k+1}),\\
+			\varphi [k+1] &= \mathcal{P} (\mathcal{M}_{k+1}, AP_{k+1}),
+		\end{align}
+	\end{subequations}
+	The initial conditions of $\varphi [k+1]$ are set such that $\sigma (t)\models \varphi_i^{e}[k+1] \wedge \varphi_i^{s}[k+1]$, where $\sigma (t)$ are the current truth assignments to the atomic propositions $\pi \in AP_k$.
+%	such that
+%	\begin{align*} % This is NOT right! The automaton has not been updated yet...
+%		x_{k+1} &\models \varphi_i^e [k+1], \; x_{k+1} \in \Sigma_{\mathcal{X}_{k+1}} = \Sigma_{\mathcal{X}_{k}} \cup \Sigma_{\mathcal{X}_{k+1} \backslash \mathcal{X}_{k}} \\
+%		y_{k+1} &\models \varphi_i^s [k+1], \; y_{k+1} \in \Sigma_{\mathcal{Y}_{k+1}} = \Sigma_{\mathcal{Y}_{k}} \cup \Sigma_{\mathcal{Y}_{k+1} \backslash \mathcal{Y}_{k}}
+%	\end{align*}
 	% Also include a constraint on safeties and livenesses.
 \end{myProblem}
 
-The restrictions on $\varphi [k+1]$, the updated GR(1) specification, ensure that its initial conditions are compatible with the current ($k$) environment and robot state. Also, these restrictions set the values $x,y$ of any new propositions $\pi \in AP_{k+1} \backslash AP_{k}$. Furthermore, the notation $\mathcal{M}_{\varphi [k]}$ means that a subset of a mission specification $\mathcal{M}$ is equivalent to the GR(1) formula $\varphi[k]$. In other words $\mathcal{M}_{\varphi [k]}$ consists of a fixed part and a part that is updated when $\varphi[k]$ is updated. For brevity, we will often drop the subscript $\varphi [k]$ from $\mathcal{M}$.
+The restrictions on $\varphi [k+1]$, the updated GR(1) specification, ensure that its initial conditions are compatible with the current environment and robot state. The initial values of the new propositions $\pi \in AP_{k+1} \backslash AP_{k}$ are set according to the sensor readings and the constraints in $\mathcal{M}_{k+1}$.
+%Also, these restrictions set the values $x,y$ of any new propositions $\pi \in AP_{k+1} \backslash AP_{k}$. Furthermore, the notation $\mathcal{M}_{\varphi [k]}$ means that a subset of a mission specification $\mathcal{M}$ is equivalent to the GR(1) formula $\varphi[k]$. In other words $\mathcal{M}_{\varphi [k]}$ consists of a fixed part and a part that is updated when $\varphi[k]$ is updated. For brevity, we will often drop the subscript $\varphi [k]$ from $\mathcal{M}$.
 
 Notice that the specification language $\Lambda$ and the parser $\mathcal{P}$ only provide the semantics and mechanics for updating $\varphi[k]$. The resulting formula, $\varphi [k+1]$, depends on the settings of the user-defined mission specification $\mathcal{M}$.
 
-Given the problem statement above, we begin our definition of the new specification language $\Lambda$ with the notion of \emph{open world abstractions}. These abstractions allow us to specify tasks without explicitly referring to individual propositions. In Section \ref{abstractions} we show how they enable the systematic addition of new propositions to $AP_k$,  as well as the meaningful rewriting of $\varphi[k]$.
+%Given the problem statement above, we begin our definition of the specification language $\Lambda$ with the notion of \emph{open world abstractions}. These abstractions allow us to specify tasks without explicitly referring to individual propositions. In Section \ref{abstractions} we show how they enable the systematic addition of new propositions to $AP_k$,  as well as the meaningful rewriting of $\mathcal{M}_k$ and subsequently $\varphi[k]$.
+Given the problem statement above, we first augment the specification language $\Lambda$ with \emph{open world abstractions} in Section \ref{abstractions}.
+These abstractions allow us to specify tasks without explicitly referring to individual propositions. 
+In Section \ref{openworld} we show how an additional mechanism of $\Lambda$ leverages the expressive power of open world abstractions to enable the systematic addition of new propositions to $AP_k$,  and consequently the meaningful rewriting of $\mathcal{M}_k$ and $\varphi[k]$.
 
 % END
 
