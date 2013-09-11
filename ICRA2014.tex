@@ -29,6 +29,9 @@
 \usepackage{hyperref}
 %\usepackage[options]{nohyperref}
 
+%\setlength{\textfloatsep}{\baselineskip plus 0.2\baselineskip minus 0.2\baselineskip}
+\setlength{\textfloatsep}{10pt}
+
 % New commands:
 \newcommand{\empha}[1]{ \textbf{\emph{#1}}}
 \DeclareMathOperator{\F}{\rotatebox[origin=c]{45}{$\Box$}}
@@ -125,10 +128,10 @@
 \section{OPEN WORLD ABSTRACTIONS}\label{abstractions}
 \input{tex/abstractions.tex}
 
-\section{OPEN--WORLD MISSION SPECIFICATION}\label{openworld}
+\section{OPEN--WORLD MISSION SPECIFICATION}\label{openworld}g
 \input{tex/openworld.tex}
 
-\section{SIMULATION: Open--World Exploration}\label{simulation}  % or make exploration a subsection in pref section
+\section{SIMULATION IN LTLMOP}\label{simulation}  % or make exploration a subsection in pref section
 \input{tex/simulation.tex}
 
 \section{CONCLUSIONS AND FUTURE WORK}\label{conclusion}
@@ -154,6 +157,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{ieeetran}
-\bibliography{spyros-biblio.bib,matt-biblio.bib}
+\bibliography{spyros-biblio,matt-biblio}
 
 \end{document}
