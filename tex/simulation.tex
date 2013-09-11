@@ -7,58 +7,60 @@ In order to demonstrate our proposed approach to open world mission planning, we
 \begin{algorithm}
 	\textbf{Mission specification:} Autonomous Mailbot\\
 	{\small
+	
+	\textbf{Group declarations:}\\
 	\texttt{Group Letters is empty}\\
 	\texttt{Group CarryingLetters is empty}\\
 	\texttt{Group Offices is empty}\\
 	
+	\textbf{Correspondence definitions:}\\
 	\texttt{CarryingLetters correspond to Letters}\\
 	\texttt{Offices correspond to Letters}\\
 	\texttt{DeliverLetter correspond to Letters}\\
 	
+	\textbf{Mission tasks:}\\
 	\texttt{each CarryingLetter is set on PickUp and the corresponding Letter and reset on the corresponding DeliverLetter}\\
 	
 	\texttt{if you are not activating any CarryingLetter then \ldots}\\
 	\texttt{...}\\
-	}
 	
 	\textbf{Open World Settings:}\\
-	{\small
-	\texttt{...} 
+	\texttt{if you are sensing newLetter then add to Letters and stay there and do resynthesis} 
 	}
 \end{algorithm}
 
 \ldots
 
-\begin{myExample}\label{Ex:restaurant} Robotic Waiter \\
-	Overview of task \ldots
-\end{myExample}
-
-\begin{algorithm}
-	\textbf{Mission specification:} Robotic Waiter\\
-	{\small
-	\texttt{Group Customers is empty}\\
-	\texttt{Group Orders is empty}\\
-	\texttt{Group ... is empty}\\
-	\texttt{Group ... is empty}\\
-	
-	\texttt{Orders correspond to Customers}\\
-	\texttt{... correspond to...}\\
-	
-	\texttt{if you are activating any Orders then go to kitchen and do corresponding FoodPickUp and go to corresponding Customer and do corresponding ServeFood}\\
-	\texttt{...}\\
-	
-	\texttt{...}\\
-	}
-	
-	\textbf{Open World Settings:}\\
-	{\small
-	\texttt{if you are sensing newOrder then add to Orders}\\ % TODO: ... and add to corr. groups?
-	\texttt{...} 
-	}
-\end{algorithm}
-
 % END
-
+%
+%\begin{myExample}\label{Ex:restaurant} Robotic Waiter \\
+%	Overview of task \ldots
+%\end{myExample}
+%
+%\begin{algorithm}
+%	\textbf{Mission specification:} Robotic Waiter\\
+%	{\small
+%	\texttt{Group Customers is empty}\\
+%	\texttt{Group Orders is empty}\\
+%	\texttt{Group ... is empty}\\
+%	\texttt{Group ... is empty}\\
+%	
+%	\texttt{Orders correspond to Customers}\\
+%	\texttt{... correspond to...}\\
+%	
+%	\texttt{if you are activating any Orders then go to kitchen and do corresponding FoodPickUp and go to corresponding Customer and do corresponding ServeFood}\\
+%	\texttt{...}\\
+%	
+%	\texttt{...}\\
+%	}
+%	
+%	\textbf{Open World Settings:}\\
+%	{\small
+%	\texttt{if you are sensing newOrder then add to Orders}\\ % TODO: ... and add to corr. groups?
+%	\texttt{...} 
+%	}
+%\end{algorithm}
+%
 %\begin{myExample}\label{Ex:planetxplore} Autonomous Planetary Exploration\\
 %	Consider now the more futuristic scenario of autonomous planetary exploration using rovers. In order to lessen the dependency of the rover from the engineers on Earth, the rover will be given a mission specification that it should carry out autonomously. However, the need to redefine the mission will arise as the rover discovers interesting elements of its environment, such as new types of rock and regions interest. In these cases, the engineers and scientists on Earth should be able to extend the rover's mission specification without sacrificing correctness or rewriting the specification from scratch.
 %	
