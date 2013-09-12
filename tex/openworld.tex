@@ -1,59 +1,74 @@
-%\textbf{Change section title?} % <---
 \subsection{Defining Tasks over Open Worlds}
 
-We will now leverage the power of the abstractions introduced in Section \ref{abstractions} to specify robot tasks over open worlds. We revisit Example \ref{Ex:mailbot1} and make use of the open world abstractions introduced in Section \ref{abstractions}.
+We will now leverage the expressive power of the abstractions introduced in Section \ref{abstractions} to specify robot tasks over open worlds. We revisit Example \ref{Ex:mailbot1} and make use of the open world abstractions. For illustration purposes, we use Structured English as the specification language $\Lambda$.
 
 \begin{myExample}\label{Ex:mailbot2} Autonomous Mailbot (revisited)\\
 \texttt{Group Letters is letter1, letter2}\\
 \texttt{Group Offices is office1, office2}\\
 \texttt{Letters correspond to Offices}\\
 \texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}\\ 
-\texttt{Letters} and \texttt{Offices} are groups of environment and robot (region) propositions, respectively. Notice how the task above does not refer to any specific letters (\texttt{letter1}, \texttt{letter2}) or offices (\texttt{office1}, \texttt{office2}). In fact, even if the group \texttt{Letters} was empty (\texttt{Group Letters is empty}), the user would still be able to specify the task.
+where \texttt{Letters} and \texttt{Offices} are groups of environment and robot (region) propositions, respectively. Notice how the sentence describing the task (lines 4-5) does not refer to any specific letters (\texttt{letter1}, \texttt{letter2}) or offices (\texttt{office1}, \texttt{office2}). In fact, even if the group \texttt{Letters} was empty (\texttt{Group Letters is empty}), the user would still be able to specify the mission above.
 \end{myExample}
 
-If a new letter is received, .i.e., sensed by a sensor $d_{m} \in \mathcal{D}$, a new proposition, $\pi_{mk} = $\texttt{letterNew}, would be added to $AP_k$. There are two requirements for the task in Example \ref{Ex:mailbot2} to reflect the addition of the new proposition. First, \texttt{letterNew} has to be added to the group \texttt{Letters}. Second, a new office proposition, e.g. \texttt{officeNew}, has to be created and added to the group \texttt{Offices}, in order to maintain the correspondence between \texttt{Letters} and \texttt{Offices}. The two requirements define a subproblem of Problem \ref{Prob:newSpec}:
+If a new letter is received, .i.e., sensed by a ``new letter sensor" $d_{m} \in \mathcal{D}$, a new proposition, $\pi_{mt} = $\texttt{letterNew}, would be added to $AP_t$. There are two requirements for the mission in Example \ref{Ex:mailbot2} to reflect the addition of the new proposition. First, \texttt{letterNew} has to be added to the group \texttt{Letters}, not just the set $AP_t$. Second, an office proposition, e.g. \texttt{officeNewLetter}, has to be created, if necessary, and added to the group \texttt{Offices}, in order to maintain the correspondence between \texttt{Letters} and \texttt{Offices}. The two requirements define a subproblem of Problem \ref{Prob:newSpec}:
 
 \begin{myProblem}\label{Prob:correspondence}
-	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}$, and a new proposition $\pi_{mk} = D(m, k)$, define a mechanism for (i) adding $\pi_{mk}$ to a group of propositions $G$ in $\mathcal{M}$, and (ii) creating additional propositions, if necessary, and adding them to the corresponding groups $C(G)$.
+	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism for (i) adding $\pi_{mt}$ to a group of propositions $G_m$ in $\mathcal{M}$, and (ii) creating additional propositions, if necessary, and adding them to the corresponding groups $C(G_m)$.
 \end{myProblem}
 
 \subsection{Rewriting the Specification} % Re-synthesis (not local yet)
 
-To address Problem \ref{Prob:correspondence}, we introduce another element of our specification language $\Lambda$, the \texttt{add to Group} operator.
+To address Problem \ref{Prob:correspondence}, we introduce another element to the specification language $\Lambda$, the ``add to Group" operator.
 
 \begin{myDefinition}\label{Def:addto}
-	\textbf{(\texttt{add to Group}):} When used in a sentence of $\mathcal{M}$, the \texttt{add to Group} operator takes the new proposition $\pi = D(m,k)$, by reading the sensor preceding the operator, and adds it to \texttt{Group}. Furthermore, it creates additional propositions $\mathcal{C}(\pi)$, using either a predefined naming scheme or information from the low-level sensor, and adds them to groups $\mathcal{C}(\texttt{GroupName})$. In Structured English, it is used as follows: \texttt{if you are sensing somethingNew then add to GroupName}, where \texttt{somethingNew} $\in \mathcal{D}$.
+	\textbf{(add to Group):} When used in a sentence of $\mathcal{M} \in \Lambda$, the \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, by reading the sensor preceding the operator, and adds it to its argument, a group of propositions $G_m$. 
+	Furthermore, it creates additional propositions $\mathcal{C}(\pi_{mt})$, and adds them to the corresponding groups $\mathcal{C}(G_m)$. 
+	
+	More concisely:
+	\begin{equation}
+	\begin{split}
+		\X d_m \Leftrightarrow &((G_m = G_m \cup \left\{ \pi_{mt} \right\}) \\
+		\bigwedge_{G_i \in \mathcal{C}(G_m)} &(G_i = G_i \cup \left\{ \mathcal{C}(\pi_{mt}) \right\}))
+	\end{split}
+	\end{equation}
 \end{myDefinition}
+In Structured English, it would be used as follows: \texttt{if you are sensing somethingNew then add to GroupName}, where \texttt{somethingNew} $\in \mathcal{D}$. The new propositions are named either by a predefined naming scheme, by prompting the human user, or using information from the low-level sensor abstracted by $d_m \in \mathcal{D}$.
 
-Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, as a direct result of the open world, we have to restate Definition \ref{Def:openworld} as follows:
+Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, as a direct result of the world being open, we have to restate Definition \ref{Def:openworld} as follows:
 
 \begin{myDefinition}\label{Def:openworld2}	
 	\textbf{(Open World Model -- revisited):} Our model $\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\}$ is now updated such that the propositions added in order to maintain correspondence are also added to the set of atomic propositions. That is, 
 	\begin{equation}\label{Eq:updateAP2}
-		AP_{k+1} = AP_k \bigcup_{m=1}^{M}D(m, k) \bigcup_{m=1}^{M}\mathcal{C}(D(m, k)),
+		AP_{t+1} = AP_t \bigcup_{m=1}^{M}D(m, t) \bigcup_{m=1}^{M}\mathcal{C}(D(m, t)),
 	\end{equation}
+	replaces Eq. \eqref{Eq:updateAP}. Eq. \eqref{Eq:updateW} remains the same.
 \end{myDefinition}
 
 \begin{myAssumption}
-	The correspondence, i,e., the relationship of new elements of the open world to the robot's mission, is provided either by the robot's low-level sensors, or by prompting the human user. That is, for a proposition $\pi_{mk} = A(m, k)$, added to a group of propositions, the semantics of additional propositions $C(\pi_{mk})$ can be inferred.
+	The grounding \cite{Grounding2013} of new propositions 
+%	$\left\{ \pi_{mt}, \mathcal{C}(\pi_{mt}) \right\}$ 
+$\pi \in AP_{k+1} \backslash AP_k$ to the robot's physical world is either obtained from the robot's low-level sensors $d \in \mathcal{D}$, or by prompting the human user.
+Some auxiliary propositions, such as robot memory propositions, do not require grounding to the physical world.
+%	The correspondence, i,e., the relationship of new elements of the open world to the robot's mission, is provided either by the robot's low-level sensors, or by prompting the human user. That is, for a proposition $\pi_{mk} = A(m, k)$, added to a group of propositions, the semantics of additional propositions $C(\pi_{mk})$ can be inferred.
 	% Rephrase when Problem 2 is stated. Remember, you can use Groups now!
 \end{myAssumption}
 
-For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions \texttt{letterNew} and\texttt{officeNew}. The information for mapping \texttt{officeNew} to a location on the robot's workspace can be inferred from the letter itself (address), which the robot can look up in a map stored in its memory. If the new office is not part of the current map, the robot could prompt the user for its location, and add it.
+For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions, e.g. \texttt{letterNew} and\texttt{officeNew}. The sensor proposition \texttt{letterNew} would be grounded to the recipient's name on the letter. The information for grounding \texttt{officeNew} to a location on the robot's workspace can be inferred from the letter itself (address field), which the robot can look up in a digital map. If the new office is not part of the current map, the robot could prompt the user for its location, and then add it to its discrete abstraction of the workspace.
 
-All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{\varphi [k]}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpec}. However, for the updates to be reflected in the robot's discrete strategy, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. We call this process ``re-synthesis" and associate the robot proposition \texttt{resynthesize} with it. For example, in the setting of Example \ref{Ex:mailbot2}, we could say:
-\texttt{if you are sensing newLetter then add to Letters and resynthesize}. In this case, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
+All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpec}. However, for the updates to be reflected in the robot's discrete strategy, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``re-synthesis" \cite{BingxinRSS2012}. We associate a robot proposition, e.g. \texttt{resynthesis}, with it. For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
+\texttt{if you are sensing newLetter then add to Letters and do resynthesis}. 
+
+Notice that the user chooses when re-synthesis will take place. Given the task above, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
 
 \begin{myExample}\label{Ex:SnS} Search and Rescue Specification (partial)\\
-	\texttt{Requests correspond to RegionsOfInterest}\\
-	\texttt{if you are activating any Requests then go to corresponding RegionsOfInterest}\\
-	\texttt{if you are sensing newRequest then add to Requests and do needToResynthesize}\\
-%	\texttt{needToResynthesize is set on newRequest and reset on resynthesize}\\
-	\texttt{do resynthesize if and only if you are not activating rescueSurvivor and you are activating needToResynthesize}\\
-	where \texttt{needToResynthesize} is a memory robot proposition that enables the robot to remember it detected a new request and that is has to re-synthesize eventually.
+	\texttt{Group Regions is \ldots}\\
+	\texttt{visit each Region if and only if you are not activating rescueSurvivor}\\
+	\texttt{if you are sensing newRegion then add to Regions and do needToResynthesize}\\
+	\texttt{do resynthesis if and only if you are not activating rescueSurvivor and you are activating needToResynthesize}\\
+	where \texttt{needToResynthesize} is a robot memory proposition that enables the robot to remember it detected a new region and that is has to re-synthesize eventually.
 \end{myExample}
 
-The definition of the \texttt{add to Group} operator and the \texttt{resynthesize} proposition conclude our discussion of the augmented specification language $\Lambda$, which is translated to LTL by the parser $\mathcal{P}$. 
+The definition of the \emph{add to Group} operator and \emph{resynthesis} conclude the augmentation of the specification language $\Lambda$.
 
 % Stuff on initial conditions, goal reordering?
 
