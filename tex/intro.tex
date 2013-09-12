@@ -2,23 +2,20 @@ In order for robots to become widely accessible, users must be able to command t
 This type of robot control has recently become possible by applying tools and ideas from formal methods and hybrid systems to the field of robotics. The resulting methodologies translate high-level tasks to discrete and subsequently low-level continuous controllers in a correct-by-contstruction manner \cite{BBEFKP06, BhatiaRAM2011}.
 \emph{Reactive} approaches account for a dynamic, and possibly adversarial, environment, and are thus of particular interest. For example, the framework in \cite{KGFP_TRO09} takes a logic formula that contains the mission specification and, by solving a two-player game between the robot and its environment \cite{piterman_06}, outputs a hybrid controller that is guaranteed to accomplish the mission. Other reactive approaches have been proposed, e.g., in \cite{Wongpiromsarn2010} and \cite{Belta2013RSS}.
 
-However, these approaches operate under the closed world assumption, while robots have moved from the cloistered assembly line to such highly unstructured workspaces as the Fukushima Daiichi nuclear disaster site. 
+These approaches operate under the closed world assumption, i.e., the robot only knows what was modeled before execution, and no information can be added. 
+% Ref: http://c2.com/cgi/wiki?ClosedWorldAssumption
+However, robots have moved from the cloistered assembly line to such highly unstructured workspaces as the Fukushima Daiichi nuclear disaster site. 
 %Thus, there is a need for high-level robot controllers that adapt to the discrepancies between the robot's model of the world and reality. 
 Robots are also asked to incorporate new functions during execution. 
 Examples include reconfigurable modular robots, as well as robots that learn on-the-fly \cite{SaxenaIJRR2012} or query online knowledge repositories \cite{rapyuta2013}. 
 Finally, the world may be open with respect to (w.r.t.) goals added after the robot has been deployed, as in the case of robotic search and rescue tasks \cite{MatthiasAI2010}, military scenarios \cite{gda2013}, and autonomous space and planetary exploration missions \cite{spaceXplore2006}. 
-%Uncertainty and partial a priori knowledge are inherent aspects of future robot missions, not problems that we should attempt to avoid encountering.
 
 \begin{myExample}\label{Ex:mailbot1}
-%For example, consider 
 Consider a robotic courier (mailbot; see Fig. \ref{Fig:mailbot}) deployed in a school or company building. 
 Its task is to collect letters and deliver them to the recipients' offices. 
 This mission is relatively simple, and yet the robot's world is already open w.r.t. letters addressed to recipients about which the robot does not know. % Na to kana entelws nia-nia dew?
 %Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available a priori.
 \end{myExample}
-%\begin{myExample}\label{Ex:mailbot1} Autonomous Mailbot (Fig. \ref{Fig:pr3})\\
-%	A robotic courier (mailbot) operates within a school or company building. It is tasked with collecting letters and delivering them to the recipients' offices. Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available at the time the mission specification is defined.
-%\end{myExample}
 
 \begin{figure}[ht]
 	\centering
@@ -27,19 +24,18 @@ This mission is relatively simple, and yet the robot's world is already open w.r
 	\label{Fig:mailbot}
 \end{figure}
 
-% Rewrite this 1-2 sentences. Don't enumerate assumptions/challenges.
-In order to obtain controllers for worlds open w.r.t new elements, a number of challenges have to be overcome. 
-First, there is the assumption that a robot has full knowledge of the structure of its workspace. This issue has been tackled in \cite{MurrayICRA2012} and \cite{MurrayICRA2013a}, where the authors introduced local re-synthesis as a way to account for local topological changes in the robot's workspace. 
+In order to obtain controllers for open worlds, a number of challenges have to be overcome. 
+First, the world can be open w.r.t its spatial components. An aspect of this issue has been tackled in \cite{MurrayICRA2012} and \cite{MurrayICRA2013a}, where the authors introduced local re-synthesis as a way to account for local topological changes in the robot's workspace. 
 Additionally, an approach that addresses the unreactive equivalent of the same problem appeared in \cite{Dimos2013ICRA}. 
 Furthermore, the aforementioned approaches assume that the size of the workspace is known, i.e., that only its internal structure changes. In addition, they do not account for augmenting the mission with additional objectives, a situation that may arise if the robot can discover new regions or objects of interest. 
 The work in \cite{BingxinRSS2012} allows the robot's workspace to expand, but does not account for the discovery of non-spatial aspects of the world, such as learning new actions or responding to unexpected events.
-%A true open world planner must be able to adapt to changes in other parts of the robot's world model as well, such as available sensors and actions. 
-Moreover, there is the the challenge of specifying open world missions in the first place, since the world is only partially known prior to execution. The specification language and abstractions necessary for this have been approached with both semantic \cite{Joshi2012, MatthiasAI2010} and statistical \cite{Tellex2011} methods, but so far no solution provides the guarantees on behavior of which a formal, correct-by-construction system is capable. 
+Moreover, there is the the challenge of specifying open world missions in the first place, since the world is only partially known prior to execution. The specification language and abstractions necessary for this have been approached with both semantic \cite{Joshi2012, MatthiasAI2010} and statistical \cite{Tellex2011} methods, but so far no solution provides the guarantees on behavior that a formal, correct-by-construction system is capable of. % Matt, could you make this more politically correct please?
 
-In this paper, we first propose an approach to writing high-level missions such that the robot's tasks are not specified only in terms of elements in the world that are known prior to execution. This is accomplished via \emph{open world abstractions}, which allow us to specify behaviors implicitly. 
+In this paper, we first propose an approach to writing high-level missions such that the robot's tasks can be specified in terms of elements in the world that are unknown prior to execution. This is accomplished via \emph{open world abstractions}, which allow us to specify behaviors implicitly. 
 Furthermore, they allow the specification to be updated as new elements of interest are discovered. The new elements include, but are not limited to, the sensing of a new objects and events, and the discovery of new regions of the workspace. They may even lead to new mission goals.
-Finally, we show how the mission specification can be systematically and automatically rewritten in order to correctly incorporate these new elements of the open world. 
+We show how the mission specification can be systematically and automatically rewritten during execution, in order to correctly incorporate these new elements of the open world. 
+Finally, our high-level approach allows the user to control how the new elements will be accounted for, and when the updated specification should be translated to a new execution strategy. % plan, hybrid controller?
 
-The paper is organized as follows: Section \ref{preliminaries} provides the necessary background on logic-based reactive mission planning. Section \ref{problem} states the problem. The proposed abstractions, which we will use to specify tasks over open worlds, are treated in Section \ref{abstractions}. Section \ref{openworld} presents our approach to systematically rewriting the mission specification. Simulations of the mailbot scenario (Example \ref{Ex:mailbot1}), which is revisited throughout the paper, are provided in Section \ref{simulation}. Finally, our conclusions, as well as possible research directions, are summarized in Section \ref{conclusion}.
+The paper is organized as follows: Section \ref{preliminaries} provides the necessary background on logic-based reactive mission planning. Section \ref{problem} states the problem. The proposed abstractions, which we will use to specify tasks over open worlds, are defined in Section \ref{abstractions}. Section \ref{openworld} presents our approach to systematically rewriting the mission specification. Simulations of the mailbot scenario (Example \ref{Ex:mailbot1}), which is revisited throughout the paper, are provided in Section \ref{simulation}. Finally, our conclusions, as well as possible research directions, are summarized in Section \ref{conclusion}.
 
 % END
