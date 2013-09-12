@@ -68,43 +68,12 @@ Notice that the user chooses when re-synthesis will take place. Given the task a
 	where \texttt{needToResynthesize} is a robot memory proposition that enables the robot to remember it detected a new region and that is has to re-synthesize eventually.
 \end{myExample}
 
-The definition of the \emph{add to Group} operator and \emph{resynthesis} conclude the augmentation of the specification language $\Lambda$.
+The definition of the \emph{add to Group} operator and \emph{resynthesis} conclude the augmentation of the specification language $\Lambda$. Our approach is graphically summarized in Fig. \ref{Fig:approach}, where  the part of $\mathcal{M}_{k+1}$ denoted as \texttt{Tasks} is immutable throughout the rewriting and re-synthesis processes.
 
-% Stuff on initial conditions, goal reordering?
-
-%
-%Finally, we set the index $k$ (Definitions \ref{Def:openworld}, \ref{Def:openworld2} to also be incremented when re-synthesis takes place:
-%	\begin{equation*}
-%		k \leftarrow 
-%		\begin{cases}
-%			k + 1, & \text{if } \bigvee_{m=1}^{M} x_{d_m} \vee y_{\texttt{resynthesize}} \\
-%			k, & \text{otherwise}
-%		\end{cases}
-%	\end{equation*}
-
-%\subsection{Exploring the Physical Workspace}
-%
-%So far we have not made a distinction among the different types of propositions that are added to $AP_k$; environment, action, and region propositions. \ldots
-%
-%\textbf{Is there a distinction after all?}
-%
-%BFS/DFS \ldots
-
-%In the robotics domain, more often than not, the state-space has a physical subset: the workspace that the robot operates in. When defining tasks using the open world abstractions that were introduced in Section \ref{abstractions}, one needs to account for the fact that the robot could simply restrict itself to its current workspace, never discovering new regions, without violating the specification. Therefore, part of the specification has to direct the robot to expand its physical workspace, and incorporate newly discovered regions to the discrete abstraction and mission specification.
-
-%\begin{myAssumption}
-%	New regions are discovered when the robot visits an adjacent region. The structure of the new region becomes known to the robot at that time instant. In the future, we will remove this assumption and add a mapping aspect. \ldots
-%\end{myAssumption}
-%
-%To this end, we dedicate a portion of the mission specification to this ``exploration sub-task". It is worth noting that (i) the approach is still valid in the case that the robot already has full knowledge of its workspace, and (ii) that, since exploration is part of the specification, the user can define how the robot will deal with the open world, and under which conditions it will perform actions such as exploration or re-synthesis. The statements in this sub-task are instructions on how the robot should visit newly discovered regions.
-%
-%Putting everything together, we create the following template for defining specifications that have mixed mission and exploration tasks. Specifically, the specification is broken into three parts. The first part is the actual mission specification and its content does not depend on whether the robot is operating in an open world. The last part is the exploration sub-task mentioned above, and is the same for all scenarios involving exploration of the physical workspace. Therefore, it can be automatically generated, and appended to any specification. In the intermediate part, dubbed ``exploration settings", the user creates a link between the mission and exploration tasks. On one end of the spectrum, the user may choose to have the robot always be in exploration mode (e.g. \texttt{always do exploreMODE}). On the other end, the user may decide to ignore the open world aspect of the problem and restrict the mission to the currently known state-space. In between the two extremes, the user can set conditions for when the robot is allowed to explore. For example, in a search and rescue scenario, it would be sensible for the exploration settings to include the following constraint: \texttt{do exploreMODE if and only if you are not activating rescuingSurvivor}. This would prevent the robot from exploring a disaster area while attempting to help a survivor and guide him to a safe location. Note that \texttt{exploreMODE} is just a name for a binary robot proposition. Finally, the exploration settings also contain instructions for adding non-region propositions, such as new sensors and actions, to their corresponding groups.
-
-%\begin{algorithm}
-%	\textbf{Exploration sub-task:}\\
-%	{\small
-%	\texttt{...}
-%	}
-%\end{algorithm}
-
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\columnwidth, clip]{./img/approach.pdf}
+	\caption{\ldots}
+	\label{Fig:approach}
+\end{figure}
 % END
