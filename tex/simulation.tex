@@ -9,25 +9,45 @@ Revisiting (Example \ref{Ex:mailbot3}) \ldots.
 	{\small
 	
 	\textbf{Group declarations:}\\
-	\texttt{Group Letters is empty}\\
-	\texttt{Group CarryingLetters is empty}\\
-	\texttt{Group Offices is empty}\\
+	\texttt{Group Letters is empty} \\
+	\texttt{Group LetterSlots is empty} \\
+	\texttt{Group Delivery is empty} \\
+	\texttt{Group Offices is empty} \\
+	\texttt{Group PatrolRooms is mailRoom, hall\_w, hall\_n}\\ % FIXME: I don't like 'hall_x"s
 	
-	\textbf{Correspondence definitions:}\\
-	\texttt{CarryingLetters correspond to Letters}\\
-	\texttt{Offices correspond to Letters}\\
-	\texttt{DeliverLetter correspond to Letters}\\
+	\textbf{Correspondence definitions:}\\ %FIXME: Add more for add_to to work?
+	\texttt{Letters correspond to LetterSlots, Delivery, Offices}\\ %FIXME: This isn't implemented
+	\texttt{LetterSlots correspond to Letters}\\
+	\texttt{LetterSlots correspond to Delivery}\\
+	\texttt{Delivery correspond to LetterSlots}\\
+	\texttt{Delivery correspond to Offices}\\
 	
+%	\hrulefill\\
 	\textbf{Mission tasks:}\\
-	\texttt{each CarryingLetter is set on PickUp and the corresponding Letter and reset on the corresponding DeliverLetter}\\
+	\texttt{Each LetterSlot is set on the corresponding Letter and pickUp and reset on the corresponding Delivery}\\
 	
-	\texttt{if you are not activating any CarryingLetter then \ldots}\\
-	\texttt{...}\\
+	\texttt{Do pickUp if and only if you are sensing any Letters}\\
+	\texttt{If you are activating pickUp then stay there}\\
 	
-	\textbf{Open World Settings:}\\
-	\texttt{if you are sensing newLetter then add to Letters and stay there and do resynthesis} 
+	\texttt{Do each Delivery if and only if you are in the corresponding Office and you are activating the corresponding LetterSlot}\\
+	
+	\texttt{Infinitely often not each LetterSlot}\\
+	\texttt{If you are not activating any LetterSlots then visit each PatrolRooms}\\
+	
+	\textbf{Open--World settings:}\\
+	\texttt{If you are sensing newLetter then add to group Letters and resynthesize}\\
+		
+	\textbf{Environment fairness assumption:}\\
+	\texttt{Infinitely often not any letters}\\
 	}
 \end{algorithm}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.99\columnwidth, clip]{./img/mailbotMap.jpg}
+	\caption{\ldots} % TODO: Write stuff here
+	\label{Fig:map}
+\end{figure}
 
 \ldots
 
