@@ -1,15 +1,11 @@
-Discussion:
-\begin{itemize}
-	\item Summary
-	\item As demonstrated in Example \ref{Ex:SnS}, the rewriting rules and the time of re-synthesis are defined in the spec; by the user (unlike lit).
-	\item \ldots
-\end{itemize}
+In this paper, we presented an approach to specifying and updating robot missions that take place in worlds open with respect to new elements, such as new objects and regions of interest. During execution, the new elements are translated into new propositions, which are automatically incorporated into the mission specification. This is possible via (i) \emph{open-world abstractions}, which enable us to specify high-level behaviors without explicitly referring to individual propositions, and (ii) the \emph{add to Group} mechanism, which systematically augments subsets of propositions with new elements. A notable advantage of our approach is that it allows the user to specify how the new elements will be incorporated into the mission, and under which conditions the updates will be reflected in the robot's controller.
 
-Future work:
-\begin{itemize}
-	\item Open World Model allowed to contract, not only expand.
-	\item Local/Incremental re-synthesis
-	\item Prompt user for feedback re newly discovered propositions via a dialogue interface.
-	\item First-order logic: Set manipulations during execution, specs like ``do action iff Group is empty", \ldots
-	\item Modular robots can create new actuators (action propositions)
-\end{itemize}¥
+The open-world model defined in this paper is strictly expanding, i.e., it only permits the addition of propositions. Thus, a future research direction is to generalize our model in order to account for the removal of elements that are no longer pertinent to the mission. 
+In addition, our method of translating an updated specification to a new execution strategy is that of globally re-synthesis. We will investigate \emph{local} re-synthesis approaches, in the direction of \cite{MurrayICRA2012, MurrayICRA2013a}.
+The ability to remove propositions, coupled with the efficiency of local re-synthesis will allow us to deal with large-scale open worlds without synthesis becoming a computational bottleneck.
+Furthermore, we intend to generalize and formalize the introduction of elements of first-order logic to our specification language.
+%Furthermore, we will explore the use of additional first-order logic elements, in order to enhance the expressivity of our mission specifications.
+
+On the implementation side, we are interested in a human-robot dialogue interface that would allow robots to prompt the user regarding their response to new elements in the world.
+Finally, we would like to apply our approach to modular robots \cite{ModularIROS2011} with the ability to assimilate new components found in the open world, and then use them to reconfigure themselves in order to extend their functionality on-the-fly.
+% END

@@ -2,7 +2,7 @@ This section provides the background information on which the remainder of the p
 
 \subsection{Controller Synthesis}\label{preliminariesA}
 
-\subsubsection*{Discrete Abstraction}\label{discreteAbs}
+\subsubsection*{Discrete Abstraction}
 
 First, the robot's workspace is partitioned using a finite number of cells. The Boolean region propositions $\left\{r_1, r_2, \ldots, r_{N_1} \right\}$ denote the location of the robot in the partition, and are thus mutually exclusive. In addition, the robot can perform actions $\left\{\alpha_1, \alpha_2, \ldots, \alpha_{N_2} \right\}$, which can involve the use of actuators, e.g. grasping an object, turning an on-board camera on, or the activation of memory propositions, e.g. having visited a region at least once. Region and action propositions together form the set of \emph{robot} propositions:
  \begin{equation*}
@@ -13,17 +13,17 @@ Furthermore, the robot has sensors, whose value, whether continuous or discrete,
 The sensor propositions allow the robot to react to its environment. 
 %Together, $\mathcal{X}$ and $\mathcal{Y}$ are the discrete abstraction of the world.
 
-\subsubsection*{Linear Temporal Logic}\label{LTL}
+\subsubsection*{Linear Temporal Logic}
 
 We are interested in missions with complex requirements, such as surveillance, avoidance, and response to events. 
 Thus, we use Linear Temporal Logic (LTL) formulas to specify the desired high-level behaviors. LTL consists of Boolean ($\neg, \wedge, \lor$) and temporal (next, $\X$, and until, $\mathcal{U}$) operators. 
 Additional temporal operators, eventually, $\F$, and always, $\G$, can be derived. 
 In our setting, LTL formulas are constructed from atomic propositions $\pi \in AP = \mathcal{X} \cup \mathcal{Y}$. 
 The semantics of an LTL formula $\varphi$ are defined over an infinite sequence $\sigma$ of truth assignments to the atomic propositions. 
-Let $t \in \NN$ be the position index of $\sigma$. Then, $\sigma (t)$ is the set of propositions that are true at position $t$ of the sequence $\sigma$. 
+Let $t \in \NN$ be the position index of $\sigma$. Then, $\sigma (t)$ denotes the subset of propositions $\pi \in AP$ that are \texttt{True} at position $t$ of the sequence $\sigma$, and $\pi [t]$ denotes the valuation of a particular proposition.
 
-\subsubsection*{Reactive Synthesis}\label{GR(1)}
-Specifically, we use the GR(1) fragment of LTL, because its synthesis is tractable \cite{piterman_06}. GR(1) formulas have an assume-guarantee structure between the environment ($e$) and the robot (system, $s$):
+\subsubsection*{Reactive Synthesis}
+Specifically, we use the GR(1) fragment of LTL, because its synthesis is tractable \cite{piterman_06}. GR(1) formulas $\varphi$ have an assume-guarantee structure between the environment ($e$) and the robot (system, $s$):
 \begin{align*}
 	\varphi &= (\varphi_e \Rightarrow \varphi_s),\\
 	\varphi_e &= \varphi_i^e \wedge \varphi_t^e \wedge \varphi_g^e,\\
@@ -39,5 +39,5 @@ If the formula $\varphi$ is realizable, a discrete robot strategy $\mathcal{S}$ 
 % TODO: Rename section to "LTL from Structured English" ?
 
 The Linear Temporal Logic Mission Planner (LTLMoP) \cite{Finucane2010} is a Python-based, open-source toolkit for controlling physical and simulated robots using high-level behavior specifications.\footnote{http://ltlmop.github.io} 
-LTLMoP allows users to specify missions in either pure LTL, natural language via a module called SLURP, or a formal grammar called Structured English. Structured English is the most commonly used specification language and will be used for demonstration in this paper. Specifications in Structured English are parsed using a feature-based context-free grammar and translated into formulas of LTL for controller synthesis. 
+LTLMoP allows users to specify missions in either pure LTL, natural language, via a module called SLURP \cite{RamanRSS2013}, or a formal grammar called Structured English \cite{JFRKGICRA12}. Structured English is the most commonly used specification language and will be used for demonstration in this paper. Specifications in Structured English are parsed using a feature-based context-free grammar and translated into formulas of LTL for controller synthesis. 
 %END

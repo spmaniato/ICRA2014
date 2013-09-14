@@ -57,7 +57,7 @@
 {
 	\refstepcounter{examplecounter}%
 	\textbf{Example \arabic{examplecounter}:}% Example #.
-	\quad							% Let's give our text some space :-)
+	\,							% Let's give our text some space :-)
 }
 
 % Define a "Definition" environment with its own counter    
@@ -91,9 +91,9 @@
 	Open--World Mission Specification for Reactive Robots
 }
 
-\author{Spyros Maniatopoulos, Matthew Blair, and Hadas Kress-Gazit% 	<-this % stops a space
+\author{Spyros Maniatopoulos, Matthew Blair, Cameron Finucane and Hadas Kress-Gazit% 	<-this % stops a space
 %\thanks{*This work was not supported by any organization}% 			<-this % stops a space
-\thanks{The authors are with the Autonomous Systems Lab, Sibley School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA, {\tt \{sm2296, meb286, hadaskg\}\nolinkurl{@cornell.edu}}}%
+\thanks{The authors are with the Autonomous Systems Lab, Sibley School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA, {\tt \{sm2296, meb286, cpf37, hadaskg\}\nolinkurl{@cornell.edu}}}%
 %\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University,
 %        Dayton, OH 45435, USA
  %     {\tt\small b.d.researcher@ieee.org}}%
@@ -110,7 +110,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 
-\ldots
+Recent advances have enabled the automatic generation of correct-by-construction robot controllers from high-level mission specifications. 
+However, most current approaches operate under the closed-world assumption, i.e., only \emph{a priori} knowledge about the world is taken into account during execution. 
+In this paper, we tackle the problem of specifying and updating the missions of robots operating in worlds that are open with respect to new elements, such as new objects and regions of interest.
+%Our approach consists of two main parts. 
+%First, we enable the specification of high-level behaviors over unknown elements of the world, rather than just the ones the user accounted for before deploying the robot.
+%Then, we provide an automatic and systematic way of adding newly discovered elements of the world on-the-fly, and rewriting the specification in order to incorporate them.
+We demonstrate our approach in a scenario featuring a robotic courier whose world is open with respect to letters addressed to new recipients.
 
 \end{abstract}
 %

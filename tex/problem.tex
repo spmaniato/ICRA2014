@@ -11,7 +11,8 @@ Let $\W$ be a sequence of sets of atomic propositions:
 \end{equation}
 where $AP_{k+1} \not = AP_k$, and $k \in \NN$.
 
-Also, let $\mathcal{D} = \left\{ d_1, \ldots, d_m, \ldots, d_M \right\} \subseteq \mathcal{X}_k \subset AP_k, \forall k$ abstract the sensors that are responsible for detecting $M$ types of new elements of the open world, $M \in \NN$. For instance, one sensor $d$ may detect new letters, whereas another, new offices.
+Also, let $\mathcal{D} = \left\{ d_1, \ldots, d_m, \ldots, d_M \right\} \subseteq \mathcal{X}_k \subset AP_k, \forall k$ abstract the sensors that are responsible for detecting $M$ different \emph{classes} of new elements of the open world, $M \in \NN$. For instance, one sensor $d$ may detect new letters (objects), whereas another, new offices (regions). 
+The number of new elements that can be detected is not bound by $M$, since each sensor in $\mathcal{D}$ can trigger multiple times over the course of a robotic mission.
 
 In addition, let $D$ be a function that reads the sensors that the environment propositions $\mathcal{D}$ abstract, and returns a new proposition if they detected an unmodeled element of the world:
 \begin{equation}\label{Eq:detection}
@@ -21,7 +22,7 @@ In addition, let $D$ be a function that reads the sensors that the environment p
 		\left\{ \right\}, &  \text{if } d_m[t] = \texttt{False}
 	\end{cases}
 \end{equation}¥
-where $d_m[t]$ denotes the value of the binary sensor $d_m$ at position $t$ of the infinite sequence $\sigma$ (Section \ref{preliminariesA}), and $\pi_{mt} \not \in AP$. The new proposition $\pi_{mt}$ can be either an event, an action, or a region proposition. % event or environment or sensor?
+where $d_m[t]$ denotes the value of the binary sensor $d_m$ at position $t$ of the infinite sequence $\sigma$ (Section \ref{preliminariesA}), and $\pi_{mt} \not \in AP$. The new proposition $\pi_{mt}$ can be either a sensor, an action, or a region proposition.
 
 Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state the open world model that we consider in this paper.
 
@@ -62,7 +63,7 @@ Notice the assumptions regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
 	$\W$ models a world that is open only w.r.t. new elements of $M$ different types; those elements that can be sensed by the sensors $\mathcal{D}$. 
 	\end{myAssumption}
 
-Assumption \ref{Ass:noRemove} is not limiting, since a proposition can be in $AP$ without being part of the discrete strategy. Furthermore, the value of a proposition can be restricted by adding safety requirements to $\varphi_t^{e,s}$, if necessary. The disadvantage of not removing propositions that are no longer pertinent to the mission is that the synthesis algorithm \cite{piterman_06} will be searching for a winning strategy over a larger graph, which has higher computation time.
+Assumption \ref{Ass:noRemove} is not limiting, since a proposition can be in $AP$ without being part of the robot's controller. Furthermore, the value of a proposition can be restricted by adding safety requirements to $\varphi_t^{e,s}$, if necessary. The disadvantage of not removing propositions that are no longer pertinent to the mission is that the synthesis algorithm \cite{piterman_06} will be searching for a winning strategy over a larger graph, which has higher computation time.
 Assumption \ref{Ass:onlyM} limits the events to which an open world robot will react, to those that it can sense and that are relevant to the mission. For instance, the mailbot (Ex. \ref{Ex:mailbot1}) should update its mission if it senses a new letter recipient, but not if someone tries to hand it a trash bag.
 
 In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include operators outside of LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanism that will allow new propositions $\pi_{mt}$ to be incorporated in the mission's LTL formulas.
