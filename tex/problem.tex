@@ -71,12 +71,12 @@ In order to obtain a mission specification and a robot plan that react to unmode
 The problem of rewriting a specification to allow for adding new propositions is formally stated below:
 
 \begin{myProblem}\label{Prob:newSpec}
-	\textbf{(Mission Specification Update):} Let $\Lambda$ be a specification language and $\mathcal{P}$ a parser for it. % mention CFG?
-	Augment $\Lambda$ and $\mathcal{P}$, such that given a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are automatically updated as follows:
+	\textbf{(Mission Specification Update):} Let $\Lambda$ be a specification language and $\mathcal{P}_{\Lambda}$ a parser for it. % mention CFG?
+	Augment $\Lambda$ and $\mathcal{P}_{\Lambda}$, such that given a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are automatically updated as follows:
 	\begin{subequations}\label{Eq:newSpec}
 		\begin{align}
 			\mathcal{M}_{k+1} &= \mathcal{M}(AP_{k+1}),\\
-			\varphi [k+1] &= \mathcal{P} (\mathcal{M}_{k+1}, AP_{k+1}),
+			\varphi [k+1] &= \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1}),
 		\end{align}
 	\end{subequations}
 	The initial conditions of the GR(1) formula $\varphi [k+1]$ are set such that $\sigma (t^+)\models \varphi_i^{e}[k+1] \wedge \varphi_i^{s}[k+1]$, where $\sigma (t^+)$ are the current truth assignments to the atomic propositions $\pi \in AP_{k+1}$ right after $AP_k$ is updated.
@@ -91,7 +91,7 @@ The problem of rewriting a specification to allow for adding new propositions is
 The restrictions on $\varphi [k+1]$, should ensure that its initial conditions are compatible with the current environment and robot state. The initial valuations of the new propositions $\pi \in AP_{k+1} \backslash AP_{k}$ are set according to the sensor readings and the constraints in $\mathcal{M}_{k+1}$.
 %Also, these restrictions set the values $x,y$ of any new propositions $\pi \in AP_{k+1} \backslash AP_{k}$. Furthermore, the notation $\mathcal{M}_{\varphi [k]}$ means that a subset of a mission specification $\mathcal{M}$ is equivalent to the GR(1) formula $\varphi[k]$. In other words $\mathcal{M}_{\varphi [k]}$ consists of a fixed part and a part that is updated when $\varphi[k]$ is updated. For brevity, we will often drop the subscript $\varphi [k]$ from $\mathcal{M}$.
 
-Notice that the specification language $\Lambda$ and the parser $\mathcal{P}$ only provide the semantics and mechanics for updating $\varphi[k]$. The resulting formula, $\varphi [k+1]$, depends on the settings of the user-defined mission specification $\mathcal{M}$.
+Notice that the specification language $\Lambda$ and the parser $\mathcal{P}_{\Lambda}$ only provide the semantics and mechanics for updating $\varphi[k]$. The resulting formula, $\varphi [k+1]$, depends on the settings of the user-defined mission specification $\mathcal{M}$.
 
 %Given the problem statement above, we begin our definition of the specification language $\Lambda$ with the notion of \emph{open world abstractions}. These abstractions allow us to specify tasks without explicitly referring to individual propositions. In Section \ref{abstractions} we show how they enable the systematic addition of new propositions to $AP_k$,  as well as the meaningful rewriting of $\mathcal{M}_k$ and subsequently $\varphi[k]$.
 Given the problem statement above, we first augment the specification language $\Lambda$ with \emph{open world abstractions} in Section \ref{abstractions}.
