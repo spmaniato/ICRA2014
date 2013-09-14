@@ -1,49 +1,60 @@
 \subsection{Groups of Propositions} 
 
-In order to write meaningful specifications over propositions without referring to them explicitly, we allow our specification language $\Lambda$ to include elements of first-order logic. 
-Specifically, $\Lambda$ allows quantification over sets of propositions, which we refer to as groups. 
-This allows users to specify reactive behaviors in terms of groups of propositions and add new propositions to the appropriate group(s) when needed, making use of the existing semantics in the specification. 
-For the purpose of translating mission semantics in $\Lambda$ into LTL specifications, we further constrain groups to be ordered sets of propositions that are all of the same type (i.e. sensors, actions, or regions). 
-This generalizes the work in \cite{BingxinRSS2012}, which focused on groups of region propositions. 
-A mission in $\Lambda$ can define a group with a sentence providing a unique name for the group and a list of the propositions contained in the group. 
-Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, will vary. 
-For instance, alternative implementations of $\Lambda$ would be possible in a formal grammar like Structured English and in a natural language processor like SLURP \cite{RamanRSS2013}, with different syntax in both. 
+In order to write meaningful specifications over propositions without referring to them explicitly, we borrow notions of first-order logic in $\Lambda$. 
+First-order logic differs from propositional logic and LTL by its use of predicates and quantification over entities, of which our approach is only concerned with quantification. 
+Two types of quantification are allowed in first-order logic: universal quantification using $\forall$ and existential quantification using $\exists$. 
+\par $\Lambda$ allows quantification over sets of propositions, which we refer to as groups. 
+This allows users to specify reactive behaviors in terms of groups of propositions instead of explicitly naming propositions. 
+We further constrain groups to be sets of propositions that are all of the same type (i.e. sensors, actions, or regions). 
+In summary, a group $G$ has the following properties:
+\begin{subequations}
+\begin{align}
+	&G \subseteq AP_t \\
+	&\pi \in S_t \forall \pi \in G | \pi \in A_t \forall \pi \in G | \pi \in R_t \forall \pi \in G
+\end{align}
+\end{subequations}
+Where $S_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $A_t \subseteq AP_t$ is the set of action propositions at time $t$, and $R_t \subseteq AP_t$ is the set of region propositions at time $t$. 
+A mission in $\Lambda$ can define any group satisfying these properties.
+This generalizes the work in \cite{BingxinRSS2012}, which focused only on groups of region propositions. 
+Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, is not fixed. 
+For instance, alternative implementations of $\Lambda$ would be possible in a formal grammar like Structured English\cite{Finucane2010} and in a natural language processor like SLURP\cite{RamanRSS2013}, with different syntax in both. 
 
-\subsection{Group Quantifiers} 
+\subsection{Group Quantifiers}
 
-After a group has been defined, it can be referred to by its name in the mission specification. 
-However, unlike atomic propositions or boolean formulas of propositions, proposition groups cannot be evaulated to a simple truth value. 
-A proposition group used in a specification must be paired with a quantifier to produce a truth-valued logical formula. 
-$\Lambda$ contains three quantifiers, which we will call `any', `all', and `each'. 
+For an expression in $\Lambda$ to be quantified over a group of propositions, the expression must have both a reference to the group (e.g. the name of the group) and a quantifier. 
+$\Lambda$ contains three quantifiers, which we call `any', `all', and `each'. 
+For quantification to be meaningful in a robot's behavior the parser $\mathcal{P}$ must be able to translate the semantics of these first-order logic operations into LTL formulas in $\varphi$.
+In this section we define LTL interpretations of quantification in $\Lambda$.  
 To explain the semantics of these quantifiers, we will use $\bar{\varphi}$ to denote the translation of a sentence in $\Lambda$ into first-order logic. 
-$\bar{\varphi}$ is an intermediate step in translation containing only LTL operators and quantified groups. Using $g$ to denote a group name, we can write the first-order quantification of groups in $\bar{\varphi}$ as `any($g$)', `all($g$)', or `each($g$)'. 
-We will also use $G$ to denote the set of propositions in the group named by $g$ and $[y/x]\bar{\varphi}$ to denote the expression that results from replacing all occurrances of $x$ in $\bar{\varphi}$ with $y$. 
+\par Let $\bar{\varphi}$ be the translation of and expression in $\Lambda$ into an expression containing only LTL operators and quantified groups. 
+Using $G$ to denote a group, we can write the quantification of groups in $\bar{\varphi}$ as `any($G$)', `all($G$)', or `each($G$)'. 
+We will also use $[y/x]\bar{\varphi}$ to denote the expression that results from replacing all occurrances of $x$ in $\bar{\varphi}$ with $y$. 
 \par
-The quantifier `any($g$)' in a sentence is simply translated as the logical disjunction of every proposition in the group named by $g$. 
+The quantifier `any($G$)' in a sentence is simply translated as the logical disjunction of every proposition in the group named by $G$. 
 That is, $\bar{\varphi}$ is translated into: 
 \begin{equation*}
-	[ t / \text{any}(g)] \bar{\varphi}
+	[ t / \text{any}(G)] \bar{\varphi}
 \end{equation*}
 Where: 
 \begin{equation*}
 	t = \bigvee \limits_{\phi_i \in G} \phi_i
 \end{equation*}
 \par
-The quantifier `all($g$)' in a sentence is translated as the logical conjunction of every proposition in the group named by $g$. 
+The quantifier `all($G$)' in a sentence is translated as the logical conjunction of every proposition in the group named by $G$. 
 $\bar{\varphi}$ is therefore translated into: 
 \begin{equation*}
-	[ t / \text{all}(g)] \bar{\varphi}
+	[ t / \text{all}(G)] \bar{\varphi}
 \end{equation*}
 Where:
 \begin{equation*}
 	t = \bigwedge \limits_{\phi_i \in G} \phi_i
 \end{equation*}
 \par
-The quantifier `each($g$)' is similar to `all($g$)', but acts with a different semantic scope. 
-`each($g$)' in a sentence denotes that the entire sentence is true for each of the propositions in $G$ separately. 
+The quantifier `each($G$)' is similar to `all($G$)', but acts with a different semantic scope. 
+`each($G$)' in a sentence denotes that the entire sentence is true for each of the propositions in $G$ separately. 
 $\bar{\varphi}$ is translated into:
 \begin{equation*}
- 	\bigwedge\limits_{\phi_i \in G} [\phi_i / \text{each}(g)] \bar{\varphi}
+ 	\bigwedge\limits_{\phi_i \in G} [\phi_i / \text{each}(G)] \bar{\varphi}
 \end{equation*}
 \par
 For sentences that contain multiple quantifier phrases, the parser applies these translation operations in the order that the quantifiers appear in the sentence. 
@@ -65,19 +76,18 @@ To address this difficulty, $\Lambda$ allows the definition of correspondences b
 A correspondence is a mapping from individual propositions to sets of propositions that contain at most one proposition from each group defined in the specification. 
 $\Lambda$ allows users to define correspondence either by explicitly mapping atomic propositions to one another or by mapping one group onto another. 
 For a group to correspond to another group, both groups must have the same number of elements. 
-The correspondence of individual propositions within the groups follows the ordering of each group. 
+The correspondence of individual propositions within the groups follows the order in which propositions were added to each group. 
 Once correspondence has been defined in a specification, $\Lambda$ allows the use of a `corresponding' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. 
-To use our previous notation of $\bar{\varphi}$, $g$, and $G$, the `corresponding' operator can be written as `corresponding($g$)'. 
+To use our previous notation of $\bar{\varphi}$ and $G$, the `corresponding' operator can be written as `corresponding($G$)'. 
 The `corresponding' operator is different from the quantifiers described earlier because its semantics depend on the presence of another quantified group in the same sentence. 
 We can demonstrate this dependency with two English sentences: ``Go to the corresponding rooms'' and ``Take all of the guests to their corresponding rooms''.
 The first sentence is unclear because it is lacking the index of correspondence provided in the second sentence, namely ``all of the guests''. 
-Therefore a sentence using correspondence has two relevant groups: $g_q$, the quantified group, and $g_c$, the `corresponding' group. 
+Therefore a sentence using correspondence has two relevant groups: $G_q$, the quantified group, and $G_c$, the `corresponding' group. 
 Finally, we will define a function $\mathcal{C}$ which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to. 
 We can now express the translation of $\bar{\varphi}$ for a sentence using correspondence as:
 \begin{equation*}
-	\bigwedge \limits_{\phi_i \in G_q} [\phi_i / g_q] [\mathcal{C}(\phi_i) \cap G_c / \text{corresponding}(g_c)] \bar{\varphi}
+	\bigwedge \limits_{\phi_i \in G_q} [\phi_i / G_q] [\mathcal{C}(\phi_i) \cap G_c / \text{corresponding}(G_c)] \bar{\varphi}
 \end{equation*}
-Where $G_q$ and $G_c$ are the sets of propositions in groups $g_q$ and $g_c$ respectively. 
 Note from our earlier definition of correspondence that the set intersection in this expression results in at most one element (correspondences may contain at most one element from any group). 
 If the intersection is empty, meaning that a correspondence has not been properly defined, then the sentence produces a syntax error. 
 
