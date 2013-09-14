@@ -83,8 +83,8 @@ For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new pro
 
 \subsection{Updating the Controller}
 
-All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpec}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``re-synthesis" \cite{BingxinRSS2012}. We associate a robot proposition, e.g. \texttt{resynthesis}, with it. For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
-\texttt{if you are sensing newLetter then add to Letters and do resynthesis}. 
+All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpec}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``re-synthesis" \cite{BingxinRSS2012}. We associate a robot proposition, e.g. \texttt{resynthesize}, with it. For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
+\texttt{if you are sensing newLetter then add to group Letters and resynthesize}. 
 
 Notice that the user chooses when re-synthesis will take place. Given the task above, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
 
@@ -92,7 +92,7 @@ Notice that the user chooses when re-synthesis will take place. Given the task a
 	\texttt{Group Regions is \ldots}\\
 	\texttt{visit each Region if and only if you are not activating rescueSurvivor}\\
 	\texttt{if you are sensing newRegion then add to Regions and do needToResynthesize}\\
-	\texttt{do resynthesis if and only if you are not activating rescueSurvivor and you are activating needToResynthesize}\\
+	\texttt{resynthesize if and only if you are not activating rescueSurvivor and you are activating needToResynthesize}\\
 	where \texttt{needToResynthesize} is a robot memory proposition that enables the robot to remember it detected a new region and that is has to re-synthesize eventually.
 \end{myExample}
 
