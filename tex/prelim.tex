@@ -28,7 +28,7 @@ Specifically, we use the GR(1) fragment of LTL, because its synthesis is tractab
 \end{align*}
 where $i$ denotes initial conditions, $t$ safety assumptions/requirements, and $g$ liveness assumptions/requirements (goals) for the environment and the robot, respectively.
 
-For example, to specify the robot task ``starting in region $r_1$, repeatedly visit the region $r_2$ if you are not sensing a fire", we would write: $r_1 \wedge \left(\X(\neg x_{\text{alarm}}) \Rightarrow \G\F r_2 \right)$.
+For example, to specify the robot task ``starting in region $r_1$, repeatedly visit the region $r_2$ if you are not sensing an alarm", we would write: $r_1 \wedge \G\F \left(\neg x_{\text{alarm}} \Rightarrow  r_2 \right)$.
 
 If the formula $\varphi$ is realizable, a discrete robot strategy $\mathcal{S}$ is computed by solving a two-player game between the robot and the environment (adversarial player) \cite{piterman_06}. The strategy, which is guaranteed to be winning for the robot, is augmented with simple low-level controllers to form a hybrid controller \cite{KGFP_TRO09}.
 
