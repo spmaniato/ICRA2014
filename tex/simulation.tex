@@ -1,9 +1,9 @@
-We implemented the proposed approach to open-world mission specification in LTLMoP (Linear Temporal Logic Mission Planner, `Section \ref{preliminariesB}). We augmented Structured English, one of LTLMoP's available specification languages, with the \emph{open-world abstractions}, the \emph{add to group} operator, and a \emph{re-synthesis} action.
+We implemented the proposed approach to open-world mission specification in LTLMoP (the Linear Temporal Logic Mission Planning toolkit; see Section \ref{preliminariesB}). We augmented Structured English, one of LTLMoP's available specification languages, with \emph{open-world abstractions} (groups, quantifiers, and correspondences), the \emph{add to group} operator, and a \emph{resynthesis} action.
 
-\begin{myExample}\label{Ex:mailbot3} We revisit the mailbot scenario in Examples \ref{Ex:mailbot1} and \ref{Ex:mailbot2}, and present the full mission specification, $\mathcal{M}_0$. The robot's workspace is depicted in Fig. \ref{Fig:map}.
+\begin{myExample}\label{Ex:mailbot3} We revisit the mailbot scenario from Examples \ref{Ex:mailbot1} and \ref{Ex:mailbot2}, and present the full mission specification, $\mathcal{M}_0$. The robot's workspace is depicted in Fig. \ref{Fig:map}.
 \end{myExample}
 
-Initially, the robot has no information about letter recipients. Therefore, it is patrolling the regions in \texttt{PatrolRooms}. If it senses a new letter, it will add it a proposition to the group \texttt{Letters}. In simulation, LTLMoP prompts the user for the name of the proposition, e.g. \texttt{letter1}. Additionally, the \emph{add to} operator has to add a proposition to the group \texttt{Offices}, in order to maintain the correspondence. LTLMoP prompts the user a second time, and he inputs one of the region names, \texttt{r1}-\texttt{r6}. The two user prompts simulate the process of scanning the letter for the recipient's name and address, in order to name and ground the new propositions (see Assumption \ref{Ass:grounding}).
+Initially, the robot has no information about specific letters or their recipients. Therefore, it patrols the regions in \texttt{PatrolRooms}. If it senses a new letter, it will add a proposition to the group \texttt{Letters}. In simulation, LTLMoP prompts the user for the name of the proposition, e.g. \texttt{letter1}. Additionally, the \emph{add to} operator has to add a proposition to the group \texttt{Offices}, in order to maintain the correspondence. LTLMoP prompts the user a second time, and he inputs one of the region names, \texttt{r1}--\texttt{r6}. The two user prompts simulate the process of scanning the letter for the recipient's name and address, in order to name and ground the new propositions (see Assumption \ref{Ass:grounding}).
 
 \begin{algorithm}
 	\textbf{Mission specification:} Autonomous Mailbot
@@ -69,7 +69,7 @@ After the specification is rewritten, the LTL formula $\varphi [k]$ changes to $
 	\G\F\left( \texttt{letter1} \Rightarrow \texttt{r1} \right)
 \end{equation*}
 
-After re-synthesis occurs, the robot sensing a letter can mean two things. First, the letter could be addressed to the same recipient as \texttt{letter1}. In this case, \texttt{letter1} will become \texttt{True}, and the robot will deliver the letter to \texttt{r1}. Second, the letter could be addressed to a new recipient. In that case, the sensor \texttt{newLetter} will become \texttt{True}, and the \emph{add to group} operator will add new propositions to \texttt{Letters} and \texttt{Offices}.
+After resynthesis, the robot can now sense letters in two ways. First, it could detect a letter addressed to the same recipient as \texttt{letter1}. In this case, \texttt{letter1} will become \texttt{True}, and the robot will deliver the letter to \texttt{r1}. Second, it could detect a letter addressed to a new recipient. In that case, the sensor \texttt{newLetter} will become \texttt{True}, and the \emph{add to group} operator will once again cause new propositions to be added to \texttt{Letters} and \texttt{Offices}.
 
 % END
 %
