@@ -19,7 +19,7 @@ In addition, let $D$ be a function that reads the sensors that the environment p
 	D(m, t) = 
 	\begin{cases}
 		\left\{ \pi_{mt} \right\}, & \text{if } d_m[t] = \texttt{True} \\
-		\left\{ \right\}, &  \text{if } d_m[t] = \texttt{False}
+		\emptyset, &  \text{if } d_m[t] = \texttt{False}
 	\end{cases}
 \end{equation}¥
 where $d_m[t]$ denotes the value of the binary sensor $d_m$ at position $t$ of the infinite sequence $\sigma$ (Section \ref{preliminariesA}), and $\pi_{mt} \not \in AP_t$. The new proposition $\pi_{mt}$ can be either a sensor, an action, or a region proposition.
