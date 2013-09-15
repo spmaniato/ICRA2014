@@ -9,7 +9,7 @@ Finally, we provide a mechanism that allows the user to explicitly specify when 
 
 The first requirement on specifications $\mathcal{M}_0 = \mathcal{M}(AP_0) \in \Lambda$ is the definition of groups of propositions $G_i$ and the definition of correspondence, $\mathcal{C}$, between groups of propositions. Then, tasks that refer to individual propositions $\pi \in G_i$ can be replaced by tasks over $G_i$ and $G_j^i \in \mathcal{C}(G_i), \; j \not = i$. The superscript $i$ will often be omitted for clarity of notation.
 
-An advantage of open-world abstractions is the ability to specify a mission even if the groups contain no propositions prior to execution, i.e., $G_i = \left\{ \right\}$, $G_i \in \mathcal{M}_0$. In this case, the groups will be populated on-the-fly as new elements in the world are discovered (see Section \ref{rewriting}, and Examples \ref{Ex:SnS}, \ref{Ex:mailbot3}).
+An advantage of open-world abstractions is the ability to specify a mission even if the groups contain no propositions prior to execution, i.e., $G_i = \emptyset$, $G_i \in \mathcal{M}_0$. In this case, the groups will be populated on-the-fly as new elements in the world are discovered (see Section \ref{rewriting}, and Examples \ref{Ex:SnS}, \ref{Ex:mailbot3}).
 
 \begin{myExample}\label{Ex:mailbot2}We revisit Example \ref{Ex:mailbot1} and make use of the open world abstractions. For illustrative purposes, we use Structured English \cite{JFRKGICRA12} as the specification language $\Lambda$.
 \begin{algorithm}
