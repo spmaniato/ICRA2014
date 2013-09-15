@@ -1,27 +1,37 @@
 This section describes our approach to specifying and updating robot missions taking place in open worlds. 
 Our presentation takes the form of requirements on a specification language $\Lambda$, such that mission specifications $\mathcal{M}(AP) \in \Lambda$, parsed by $\mathcal{P}_{\Lambda}$ satisfy Eq. \eqref{Eq:newSpec}. 
 
-First, we leverage the expressive power of open-world abstraction to specify high-level behaviors without referring to individual propositions $\pi \in AP_k$ exclusively. 
-Then, we show that the addition of propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules in order to maintain the correspondence $\mathcal{C}: AP \rightarrow AP^{n}$ between propositions. Finally, we provide a mechanism that allows the user to explicitly specify when the updated specification $\mathcal{M}_{k+1} \mathcal{M}(AP_{k+1})$, and consequently the GR(1) formula $\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1})$, should be translated into a revised robot controller.
+First, we leverage the expressive power of open-world abstraction to specify high-level behaviors without referring to individual propositions $\pi \in AP_k$. 
+Then, we show that the addition of new propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules, such that correspondence $\mathcal{C}: AP \rightarrow AP^{n-1}$ between groups of propositions is maintained.
+Finally, we provide a mechanism that allows the user to explicitly specify when the updated specification $\mathcal{M}_{k+1} = \mathcal{M}(AP_{k+1})$, and consequently the GR(1) formula $\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1})$, should be translated into a revised robot controller.
 
 \subsection{Defining Tasks over Open Worlds}
 
-The first requirement on missions $\mathcal{M}(AP) \in \Lambda$ is the definition of groups of propositions $G_i$ and the definition of correspondence between propositions or groups of propositions. Then, tasks that refer to individual propositions $\pi \in G_i$ can be replaced by tasks over $G_i$ and $G_j^i \in \mathcal{C}(G_i), \; j \not = i$. The superscript $i$ will often be omitted for clarity of notation.
+The first requirement on specifications $\mathcal{M}_0 = \mathcal{M}(AP_0) \in \Lambda$ is the definition of groups of propositions $G_i$ and the definition of correspondence, $\mathcal{C}$, between groups of propositions. Then, tasks that refer to individual propositions $\pi \in G_i$ can be replaced by tasks over $G_i$ and $G_j^i \in \mathcal{C}(G_i), \; j \not = i$. The superscript $i$ will often be omitted for clarity of notation.
 
-We revisit Example \ref{Ex:mailbot1} and make use of the open world abstractions. For illustrative purposes, we use Structured English \cite{JFRKGICRA12} as the specification language $\Lambda$.
+An advantage of open-world abstractions is the ability to specify a mission even if the groups contain no propositions prior to execution, i.e., $G_i = \left\{ \right\}$, $G_i \in \mathcal{M}_0$. In this case, the groups will be populated on-the-fly as new elements in the world are discovered (see Section \ref{rewriting}, and Examples \ref{Ex:SnS}, \ref{Ex:mailbot3}).
 
-\begin{myExample}\label{Ex:mailbot2} Autonomous Mailbot (revisited)\\
-Subset of mission specification, $\mathcal{M}_k \in \Lambda$:\\
-\texttt{Group Letters is letter1, letter2} \# $G_1$ \\
-\texttt{Group Offices is office1, office2} \# $G_2$ \\
-\texttt{Letters correspond to Offices} \# $G_2 \in \mathcal{C}(G_1)$\\
-\texttt{if you are sensing any Letter then do PickUp and go to corresponding Office}\\ 
-where $G_1 = \texttt{Letters}$ and $G_2 = \texttt{Offices}$ are groups of environment and robot (region) propositions, respectively.
-\end{myExample}
-Notice how the task in lines 4-5 does not refer to any particular letters (\texttt{letter1}, \texttt{letter2}) or offices (\texttt{office1}, \texttt{office2}). 
-In fact, even if the groups were empty, i.e., $G_1, G_2 = \left\{ \right\}$, the user would still be able to specify the mission above.
-Moreover, the reason we used the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, is that $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2^1, G_3^1, \ldots\right\}$. 
+\begin{myExample}\label{Ex:mailbot2}We revisit Example \ref{Ex:mailbot1} and make use of the open world abstractions. For illustrative purposes, we use Structured English \cite{JFRKGICRA12} as the specification language $\Lambda$.
+\begin{algorithm}
+\textbf{Mission specification:} (partial) Autonomous Mailbot
+	
+	\vspace{-6 pt}
+	\hrulefill\\
+	{\small
+\texttt{1: Group Letters is letter1, letter2} \\
+\texttt{2: Group Offices is office1, office2} \\
+\texttt{3: Letters correspond to Offices} \\
+\texttt{4: If you are sensing any Letter then do}\\
+\indent \indent \texttt{pickUp and go to corresponding Office}\\ 
+}
+\vspace{-10 pt}
+\end{algorithm}
+
+Let $G_1 = \texttt{Letters}$ and $G_2 = \texttt{Offices}$. Line 3 establishes correspondence from $G_1$ to $G_2$, .i.e., $G_2 \in \mathcal{C}(G_1)$. We use the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, because $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2^1, G_3^1, \ldots\right\}$. 
+Notice how the task in line 4 does not refer to any particular letters or offices. 
+As already mentioned, even if $G_1, G_2 \in \mathcal{M}_0$ were empty, the user would still be able to specify the mission above.
 %In the special case where $G_j^i = \mathcal{C}(G_i)$, we can drop the superscript $i$, and write $G_j$, as in this example.
+\end{myExample}
 
 If a letter corresponding to a new recipient is sensed by a ``new letter sensor", $d_{m} = \texttt{newLetter} \in \mathcal{D}$, a new proposition, $\pi_{mt} = $\texttt{letter3}, would be added to $AP_t$. 
 There are two requirements for the specification $\mathcal{M}_{k+1}$ to reflect the addition of the new proposition. 
@@ -34,33 +44,33 @@ The two requirements are generalized in Problem \ref{Prob:correspondence}, which
 	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, containing $n$ groups of propositions, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism (i) for adding $\pi_{mt}$ to any number of groups
 %	$$G_i^{m} \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$ 
 	$$G_i \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$
-	and (ii) for creating additional propositions $\pi_{mt}^{ij}$, if necessary, and adding them to the corresponding groups 
+	and (ii) for creating additional propositions $\pi^{ij}$, if necessary, and adding them to their corresponding groups 
 %	$$G_j^i \in \mathcal{C}(G_i^m), \; j \in \left\{ 1, \ldots, i-1, i+1, \ldots, | \mathcal{C}(G_i^m)| \right\}.$$
-	$$G_j^i \in \mathcal{C}(G_i), \; j \in \left\{ 1, \ldots, i-1, i+1, \ldots, | \mathcal{C}(G_i)| \right\}.$$
+	$$G_j^i, \forall G_j^i \in \mathcal{C}(G_i), \forall G_i \; j \not = i.$$
 \end{myProblem}
 
-\subsection{Rewriting the Mission Specification}
+\subsection{Rewriting the Mission Specification}\label{rewriting}
 
 To address Problem \ref{Prob:correspondence}, we introduce another element to the specification language $\Lambda$, the ``add to Group" operator.
 
 \begin{myDefinition}\label{Def:addto}
-	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to a single group or to multiple groups of propositions, $\mathbb{G} = \left\{ G_i \right\}, \; i \in \left\{ 1, \ldots, n \right\}, \; |\mathbb{G}| \leq n$.
+	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to a single group, or to multiple groups, of propositions, $\mathbb{G} = \left\{ G_i | i \in \left\{ 1, \ldots, n \right\}\right\}, |\mathbb{G}| \leq n$.
 	Furthermore, it creates additional propositions $\pi^{ij}$, and adds them to the corresponding groups $\mathcal{C}(G_i), \; \forall G_i \in \mathbb{G}$. 
 	That is,
 	\begin{equation}
-		(\mathbb{G}^\prime, \mathbb{G}_{\mathcal{C}}^\prime) = \texttt{add\_to}(\pi_{mt}, \mathbb{G}),
+		(\mathbb{G}^\prime, \mathbb{G}_{\mathcal{C}}^\prime) = \texttt{add\_to}(\pi_{mt}, \mathbb{G}, \mathcal{C}),
 	\end{equation}
 	where 
-	$$\mathbb{G}^\prime = \left\{ G_i \cup \left\{ \pi_{mt} \right\}\right\}, \; \forall G_i \in \mathbb{G},$$
+	$$\mathbb{G}^\prime = \left\{ G_i^\prime \: \middle| \: G_i^\prime = G_i \cup \left\{ \pi_{mt} \right\}, G_i \in \mathbb{G} \right\},$$
 	and
-	$$\mathbb{G}_{\mathcal{C}}^\prime = \left\{ G_j^i \cup \left\{ \pi^{ij} \right\} \right\}, \; \forall G_j^i \in \mathcal{C}(G_i), \; \forall G_i \in \mathbb{G}$$
+	$$\mathbb{G}_{\mathcal{C}}^\prime = \left\{{G_j^i}^\prime \: \middle| \: {G_j^i}^\prime = G_j^i \cup \left\{ \pi^{ij} \right\}, G_j^i \in \mathcal{C}(G_i), G_i \in \mathbb{G} \right\}.$$
 	%  = \mathcal{C}(\mathbb{G}_m^\prime) =
 \end{myDefinition}
 
 Returning to Example \ref{Ex:mailbot2}, the add to Group operator would be applied as follows: 
 $$ \texttt{add\_to}(\pi_{mt}, G_1) = (G_1, G_2),$$
 where $G_1 = \texttt{Letters}$ and $G_2 = \texttt{Offices}$.
-The Structured English task would be: \texttt{if you are sensing newLetter then add to group Letters}, where $\texttt{newLetter} = d_m \in \mathcal{D}$. The new propositions are named by either a predefined naming scheme, prompting the human user, or using information from the low-level sensor that is abstracted by the proposition $d_m$. For example, the new ``letter" proposition could be named after the recipient's name, e.g. $\pi_{mt} = \texttt{letter\_johnDoe} \in G_1$, while the ``office" proposition after the address printed on the letter, e.g. $ \pi^{12} = \texttt{Room\_153} \in G_2$.
+The equivalent Structured English task would be: \texttt{if you are sensing newLetter then add to group Letters}, where $\texttt{newLetter} = d_m \in \mathcal{D}$. The new propositions are named by either a predefined naming scheme, prompting the human user, or using information from the low-level sensor that is abstracted by the proposition $d_m$. For example, the new ``letter" proposition could be named after the recipient's name, e.g. $\pi_{mt} = \texttt{letter\_johnDoe} \in G_1$, while the ``office" proposition after the address printed on the letter, e.g. $ \pi^{12} = \texttt{Room\_153} \in G_2$.
 
 Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, as a direct result of the open world, we have to restate Definition \ref{Def:openworld} as follows:
 
@@ -88,20 +98,30 @@ All the specification rewriting described so far has resulted in mission specifi
 
 Notice that the user chooses when re-synthesis will take place. Given the task above, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
 
-\begin{myExample}\label{Ex:SnS} Search and Rescue Specification (partial)\\
-	\texttt{Group Regions is \ldots}\\
-	\texttt{visit each Region if and only if you are not activating rescueSurvivor}\\
-	\texttt{if you are sensing newRegion then add to Regions and do needToResynthesize}\\
-	\texttt{resynthesize if and only if you are not activating rescueSurvivor and you are activating needToResynthesize}\\
-	where \texttt{needToResynthesize} is a robot memory proposition that enables the robot to remember it detected a new region and that is has to re-synthesize eventually.
+\begin{myExample}\label{Ex:SnS} A robot is tasked with exploring a disaster site, and rescuing survivors. It is more sensible to have the robot finish a rescue and then re-synthesize, in order to incorporate new regions of interest into its mission.
+	\begin{algorithm}
+	\textbf{Mission specification:} (partial) Search and Rescue
+	
+	\vspace{-6 pt}
+	\hrulefill\\
+	{\small
+	\texttt{1: Group Regions is empty}\\
+	\texttt{2: Visit each Region if and only if you are not activating rescueSurvivor}\\
+	\texttt{3: If you are sensing newRegion then add to group Regions and do needToResynthesize}\\	
+	\texttt{4: Resynthesize if and only if you are not activating rescueSurvivor and you are activating needToResynthesize}\\
+	}
+	\vspace{-10 pt}
+	\end{algorithm}
+	
+The proposition \texttt{needToResynthesize} is a robot memory proposition (Section \ref{preliminariesA}) that enables the robot to remember it detected a new region and that is has to re-synthesize eventually.
 \end{myExample}
 
-The definition of the \emph{add to Group} operator and \emph{resynthesis} conclude the augmentation of the specification language $\Lambda$. Our approach is graphically summarized in Fig. \ref{Fig:approach}, where  the part of $\mathcal{M}_{k+1}$ denoted as \texttt{Tasks} is immutable throughout the rewriting and re-synthesis processes.
+The definition of the \emph{add to Group} operator and \emph{resynthesis} conclude the augmentation of the specification language $\Lambda$. Our approach is graphically summarized in Fig. \ref{Fig:approach}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.9\columnwidth, clip]{./img/approach.pdf}
-	\caption{Illustration of our approach, where, for clarity, a single new proposition $\pi_{m}$ is added to a single group $G_m$, i.e., $\texttt{add\_to}(\pi_{m}, G_m)$.} % TODO: Write stuff here
+	\caption{Illustration of our approach, where, for clarity, a single new proposition $\pi_{m}$ is added to a single group $G_m$, which has two corresponding groups $\mathcal{C}(G_m)$. The part of $\mathcal{M}_{k+1}$ denoted as \texttt{Tasks} is immutable throughout the rewriting and re-synthesis processes. $\mathcal{S}^\prime$ denotes the revised robot controller.} % TODO: Write stuff here
 	\label{Fig:approach}
 \end{figure}
 % END
