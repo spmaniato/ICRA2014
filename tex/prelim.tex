@@ -1,13 +1,10 @@
-This section provides the background information on which the remainder of the paper will build. First, we present an overview of our reactive controller synthesis process. We refer the reader to \cite{KGFP_TRO09} for a detailed presentation. Then, we briefly present the LTLMoP (Linear Temporal Logic MissiOn Planning) toolkit.
-
 \subsection{Controller Synthesis}\label{preliminariesA}
+
+We present an overview of our reactive controller synthesis process. We refer the reader to \cite{KGFP_TRO09} for a detailed presentation.
 
 \subsubsection*{Discrete Abstraction}
 
-First, the robot's workspace is partitioned using a finite number of cells. The Boolean region propositions $\left\{r_1, r_2, \ldots, r_{N_1} \right\}$ denote the location of the robot in the partition, and are thus mutually exclusive. In addition, the robot can perform actions $\left\{\alpha_1, \alpha_2, \ldots, \alpha_{N_2} \right\}$, which can involve the use of actuators, e.g. grasping an object, turning an on-board camera on, or the activation of memory propositions, e.g. having visited a region at least once. Region and action propositions together form the set of \emph{robot} propositions:
- \begin{equation*}
- 	\mathcal{Y} = \left\{ r_1, r_2, \ldots, r_{N_1}, a_1, a_2, \ldots, a_{N_2} \right\}
- \end{equation*}
+First, the robot's workspace is partitioned using a finite number of cells. The Boolean region propositions $\mathcal{R} = \left\{r_1, r_2, \ldots, r_{N_1} \right\}$ denote the location of the robot in the partition, and are thus mutually exclusive. In addition, the robot can perform actions $\mathcal{A} = \left\{\alpha_1, \alpha_2, \ldots, \alpha_{N_2} \right\}$, which can involve the use of actuators, e.g. grasping an object, turning an on-board camera on, or the activation of memory propositions, e.g. having visited a region at least once. Region and action propositions together form the set of \emph{robot} propositions $\mathcal{Y} = \mathcal{R} \cup \mathcal{A}$.
 
 Furthermore, the robot has sensors, whose value, whether continuous or discrete, is abstracted by the Boolean \emph{environment}/\emph{sensor} propositions $\mathcal{X} = \left\{ x_1, x_2, \ldots, x_{N_3} \right\}$. 
 The sensor propositions allow the robot to react to its environment. 
