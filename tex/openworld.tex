@@ -2,8 +2,11 @@ This section describes our approach to specifying and updating robot missions ta
 Our presentation takes the form of requirements on a specification language $\Lambda$, such that mission specifications $\mathcal{M}(AP) \in \Lambda$, parsed by $\mathcal{P}_{\Lambda}$ satisfy Eq. \eqref{Eq:newSpec}. 
 
 First, we leverage the expressive power of open-world abstraction to specify high-level behaviors without referring to individual propositions $\pi \in AP_k$. 
-Then, we show that the addition of new propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules, such that correspondence $\mathcal{C}: AP \rightarrow AP^{n-1}$ between groups of propositions is maintained.
-Finally, we provide a mechanism that allows the user to explicitly specify when the updated specification $\mathcal{M}_{k+1} = \mathcal{M}(AP_{k+1})$, and consequently the GR(1) formula $\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1})$, should be translated into a revised robot controller.
+Then, we show that the addition of new propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules, such that correspondence $\mathcal{C}: AP \rightarrow 2^{AP}$ between groups of propositions is maintained, where $2^{AP}$ denotes the power set of $AP$.
+Finally, we provide a mechanism that allows the user to explicitly specify when the updated specification $\mathcal{M}_{k+1} = \mathcal{M}(AP_{k+1})$, and consequently the GR(1) formula 
+%$\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1})$, 
+$\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1})$,
+should be synthesized into a revised robot controller.
 
 \subsection{Defining Tasks over Open Worlds}
 
@@ -27,13 +30,13 @@ An advantage of open-world abstractions is the ability to specify a mission even
 \vspace{-10 pt}
 \end{algorithm}
 
-Let $G_1 = \texttt{Letters}$ and $G_2 = \texttt{Offices}$. Line 3 establishes correspondence from $G_1$ to $G_2$, .i.e., $G_2 \in \mathcal{C}(G_1)$. We use the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, because $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2^1, G_3^1, \ldots\right\}$. 
+Let $G_1$ be \texttt{Letters} and $G_2$ be \texttt{Offices}. Line 3 establishes correspondence from $G_1$ to $G_2$, .i.e., $G_2 \in \mathcal{C}(G_1)$. We use the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, because $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2^1, G_3^1, \ldots\right\}$. 
 Notice how the task in line 4 does not refer to any particular letters or offices. 
 As already mentioned, even if $G_1, G_2 \in \mathcal{M}_0$ were empty, the user would still be able to specify the mission above.
 %In the special case where $G_j^i = \mathcal{C}(G_i)$, we can drop the superscript $i$, and write $G_j$, as in this example.
 \end{myExample}
 
-If a letter corresponding to a new recipient is sensed by a ``new letter sensor", $d_{m} = \texttt{newLetter} \in \mathcal{D}$, a new proposition, $\pi_{mt} = $\texttt{letter3}, would be added to $AP_t$. 
+Let a letter corresponding to a new recipient be sensed by a ``new letter sensor", $d_{m} \in \mathcal{D}$, e.g. labeled \texttt{newLetter}. Then, a new proposition, $\pi_{mt}$, e.g. labeled \texttt{letter3}, would be added to $AP_t$. 
 There are two requirements for the specification $\mathcal{M}_{k+1}$ to reflect the addition of the new proposition. 
 First, $\pi_{mt}$ has to be added to $G_1$, not just the set of all propositions $AP_t$. 
 Second, an office proposition, $\pi_{mt}^\prime = \texttt{office3}$, has to be created, if necessary, and added to $G_2$, in order to reestablish correspondence, i.e., $G_2 \in \mathcal{C}(G_1)$, where now $G_{1} = G_1 \cup \left\{ \pi_{mt} \right\}$, $G_{2} = G_2 \cup \{ \pi_{mt}^\prime \}$. 
@@ -41,10 +44,10 @@ Then, we would have $\pi_{mt}^\prime \in \mathcal{C}(\pi_{mt})$.
 The two requirements are generalized in Problem \ref{Prob:correspondence}, which is a subproblem of Problem \ref{Prob:newSpec}:
 
 \begin{myProblem}\label{Prob:correspondence} % Remove 'm' from sub/super-scripts?
-	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, containing $n$ groups of propositions, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism (i) for adding $\pi_{mt}$ to any number of groups
+	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, containing $n$ groups of propositions, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism for (i) adding $\pi_{mt}$ to any number of groups
 %	$$G_i^{m} \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$ 
 	$$G_i \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$
-	and (ii) for creating additional propositions $\pi^{ij}$, if necessary, and adding them to their corresponding groups 
+	and for (ii) creating additional propositions $\pi^{ij}$, if necessary, and adding them to their corresponding groups 
 %	$$G_j^i \in \mathcal{C}(G_i^m), \; j \in \left\{ 1, \ldots, i-1, i+1, \ldots, | \mathcal{C}(G_i^m)| \right\}.$$
 	$$G_j^i, \forall G_j^i \in \mathcal{C}(G_i), \forall G_i \; j \not = i.$$
 \end{myProblem}
@@ -82,7 +85,7 @@ Since we are now adding propositions besides those added by the detection sensor
 	replaces Eq. \eqref{Eq:updateAP}. Eq. \eqref{Eq:updateW} remains the same.
 \end{myDefinition}
 
-\begin{myAssumption}
+\begin{myAssumption}\label{Ass:grounding}
 	The \emph{grounding} \cite{Grounding2013} of new propositions $\pi \in AP_{k+1} \backslash AP_k$ to the robot's physical world is obtained either from the robot's low-level sensors, which propositions $d \in \mathcal{D}$ abstract, or by prompting the human user (Section \ref{simulation}).
 Some auxiliary propositions, such as robot memory propositions, do not require grounding to the physical world.
 %	The correspondence, i,e., the relationship of new elements of the open world to the robot's mission, is provided either by the robot's low-level sensors, or by prompting the human user. That is, for a proposition $\pi_{mk} = A(m, k)$, added to a group of propositions, the semantics of additional propositions $C(\pi_{mk})$ can be inferred.
