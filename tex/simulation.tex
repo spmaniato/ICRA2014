@@ -1,21 +1,23 @@
-Revisiting (Example \ref{Ex:mailbot3}) \ldots. 
+\ldots
 
-\begin{myExample}\label{Ex:mailbot3} Autonomous Mailbot (revisited)\\
-	Give all details of the spec \ldots
+\begin{myExample}\label{Ex:mailbot3} We revisit the mailbot scenario of Exaples \ref{Ex:mailbot1} and \ref{Ex:mailbot2}, and present the full mission specification, $\mathcal{M}_0$.
 \end{myExample}
 
 \begin{algorithm}
-	\textbf{Mission specification:} Autonomous Mailbot\\
+	\textbf{Mission specification:} Autonomous Mailbot
+	
+	\vspace{-7 pt}
+	\hrulefill\\
 	{\small
 	
 	\textbf{Group declarations:}\\
-	\texttt{Group Letters is empty} \\
-	\texttt{Group LetterSlots is empty} \\
-	\texttt{Group Delivery is empty} \\
-	\texttt{Group Offices is empty} \\
-	\texttt{Group PatrolRooms is mailRoom, hall\_w, hall\_n}\\ % FIXME: I don't like 'hall_x"s
+	\texttt{1: Group Letters is empty} \\
+	\texttt{2: Group LetterSlots is empty} \\
+	\texttt{3: Group Delivery is empty} \\
+	\texttt{4: Group Offices is empty} \\
+	\texttt{5: Group PatrolRooms is mailRoom, hall\_w, hall\_n}\\ % FIXME: I don't like 'hall_x"s
 	
-	\textbf{Correspondence definitions:}\\ %FIXME: Add more for add_to to work?
+	\textbf{Correspondence definitions:} (immutable)\\ %FIXME: Add more for add_to to work?
 	\texttt{Letters correspond to LetterSlots, Delivery, Offices}\\ %FIXME: This isn't implemented
 	\texttt{LetterSlots correspond to Letters}\\
 	\texttt{LetterSlots correspond to Delivery}\\
@@ -23,7 +25,12 @@ Revisiting (Example \ref{Ex:mailbot3}) \ldots.
 	\texttt{Delivery correspond to Offices}\\
 	
 %	\hrulefill\\
-	\textbf{Mission tasks:}\\
+	% TODO: We can't have initial conditions when we are re-synthesizing, right?
+%	\textbf{Initial conditions} (optional)\\
+%	\texttt{Robot starts in mailRoom with false}\\
+%	\texttt{Environment starts with false}\\
+	
+	\textbf{Mission tasks:} (immutable)\\
 	\texttt{Each LetterSlot is set on the corresponding Letter and pickUp and reset on the corresponding Delivery}\\
 	
 	\texttt{Do pickUp if and only if you are sensing any Letters}\\
@@ -34,12 +41,13 @@ Revisiting (Example \ref{Ex:mailbot3}) \ldots.
 	\texttt{Infinitely often not each LetterSlot}\\
 	\texttt{If you are not activating any LetterSlots then visit each PatrolRooms}\\
 	
-	\textbf{Open--World settings:}\\
+	\textbf{Open--World settings:} (immutable)\\
 	\texttt{If you are sensing newLetter then add to group Letters and resynthesize}\\
 		
-	\textbf{Environment fairness assumption:}\\
-	\texttt{Infinitely often not any letters}\\
+	\textbf{Environment fairness assumption:} (immutable)\\
+	\texttt{Infinitely often not any Letters}\\
 	}
+	\vspace{-10 pt}
 \end{algorithm}
 
 \begin{figure}[h]
