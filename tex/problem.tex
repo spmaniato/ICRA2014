@@ -56,11 +56,11 @@ We will return to this definition in Section \ref{openworld}, where we augment t
 Notice the assumptions regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
 
 \begin{myAssumption}\label{Ass:noRemove}
-	$\W$ only models the {\em addition} of propositions as a result of new elements of the open world. That is, $AP_{k} \subset AP_{k+1}$. In other words, once added, propositions are never removed. Hence, \emph{expanding} open world model.
+	$\W$ only models the {\em addition} of propositions as a result of new elements of the open world. That is, $AP_{k} \subset AP_{k+1}$. In other words, propositions cannot be removed. Hence, $\W$ is dubbed \emph{expanding} open world model.
 \end{myAssumption}
 
 \begin{myAssumption}\label{Ass:onlyM}
-	$\W$ models a world that is open only w.r.t. new elements of $M$ different types; those elements that can be sensed by the sensors $\mathcal{D}$. 
+	$\W$ models a world that is open only w.r.t. new elements of $M$ different types, i.e., those elements that can be sensed by the sensors $d_m \in \mathcal{D}$, $m \in \left\{ 1,\ldots, M \right\}$. 
 	\end{myAssumption}
 
 Assumption \ref{Ass:noRemove} is not limiting, since a proposition can be in $AP$ without being part of the robot's controller. Furthermore, the value of a proposition can be restricted by adding safety requirements to $\varphi_t^{e,s}$, if necessary. The disadvantage of not removing propositions that are no longer pertinent to the mission is that the synthesis algorithm \cite{piterman_06} will be searching for a winning strategy over a larger graph, which has higher computation time.
@@ -72,11 +72,12 @@ The problem of rewriting a specification to allow for adding new propositions is
 
 \begin{myProblem}\label{Prob:newSpec}
 	\textbf{(Mission Specification Update):} Let $\Lambda$ be a specification language and $\mathcal{P}_{\Lambda}$ a parser for it. % mention CFG?
-	Augment $\Lambda$ and $\mathcal{P}_{\Lambda}$, such that given a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are automatically updated as follows:
+	Augment $\Lambda$ and $\mathcal{P}_{\Lambda}$, such that given a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions, $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are automatically updated as follows:
 	\begin{subequations}\label{Eq:newSpec}
 		\begin{align}
 			\mathcal{M}_{k+1} &= \mathcal{M}(AP_{k+1}),\\
-			\varphi [k+1] &= \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1}),
+%			\varphi [k+1] &= \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1}),
+			\varphi [k+1] &= \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}),
 		\end{align}
 	\end{subequations}
 	The initial conditions of the GR(1) formula $\varphi [k+1]$ are set such that $\sigma (t^+)\models \varphi_i^{e}[k+1] \wedge \varphi_i^{s}[k+1]$, where $\sigma (t^+)$ are the current truth assignments to the atomic propositions $\pi \in AP_{k+1}$ right after $AP_k$ is updated.
