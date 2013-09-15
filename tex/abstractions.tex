@@ -64,7 +64,7 @@ With these abstractions, we can write compact, expressive, and intuitive specifi
 %TODO: The following example shouldn't use structured english...
 \begin{myExample}\label{Ex:quantifiers} 	
 	Consider a scenario where a robot is helping to manage a hotel. 
-	The robot has a group of regions called \texttt{room} a group of sensors called \texttt{roomsOccupied} with a proposition for every room, and actions called \texttt{cleanRoom}, \texttt{welcomeGuests}, and \texttt{apologizeToGuests}. 
+	The robot has a group of regions called \texttt{rooms} a group of sensors called \texttt{roomsOccupied} with a proposition for every room, and actions called \texttt{cleanRoom}, \texttt{welcomeGuests}, and \texttt{apologizeToGuests}. 
 	Part of the robot's specification might be: 
 	\texttt{If any roomsOccupied and not all roomsOccupied then do welcomeGuests. 
 	If all roomsOccupied then do apologizeToGuests. 
@@ -97,7 +97,7 @@ If the intersection is empty, meaning that a correspondence has not been properl
 	Correspondence is useful in a scenario in which a robot performs an identical task over many sets of related propositions, such as waiting on tables at a restaurant. 
 	Our specification can define a group \texttt{tables} of region propositions, representing the tables in a restaurant, and a group \texttt{calls} of sensor propositions, representing the robot being signalled by specific tables. We can specify our desired behavior as follows: 
 	\texttt{Calls correspond to tables. 
-	If you are sensing any calls then go to the corresponding tables.} 
+	If you are sensing any calls then go to the corresponding table.} 
 	The abstraction of propositions into groups makes the specification more compact and readable, less error-prone, and more easily extensible. 
 	To specify this behavior over another pair of call and table propositions, we need only add the new propositions to their appropriate groups and they will automatically become included in the reactive behavior. 
 \end{myExample}
