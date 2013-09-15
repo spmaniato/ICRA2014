@@ -75,9 +75,9 @@ The problem of rewriting a specification to allow for adding new propositions is
 	Augment $\Lambda$ and $\mathcal{P}_{\Lambda}$, such that given a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions, $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are automatically updated as follows:
 	\begin{subequations}\label{Eq:newSpec}
 		\begin{align}
-			\mathcal{M}_{k+1} &= \mathcal{M}(AP_{k+1}),\\
+			\mathcal{M}_{k+1} &= \mathcal{M}(AP_{k+1}), \label{Eq:newSpecA}\\ 
 %			\varphi [k+1] &= \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1}),
-			\varphi [k+1] &= \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}),
+			\varphi [k+1] &= \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}), \label{Eq:newSpecB}
 		\end{align}
 	\end{subequations}
 	The initial conditions of the GR(1) formula $\varphi [k+1]$ are set such that $\sigma (t^+)\models \varphi_i^{e}[k+1] \wedge \varphi_i^{s}[k+1]$, where $\sigma (t^+)$ are the current truth assignments to the atomic propositions $\pi \in AP_{k+1}$ right after $AP_k$ is updated.

@@ -64,7 +64,7 @@ Initially, the robot has no information about letter recipients. Therefore, it i
 	\label{Fig:map}
 \end{figure}
 
-After the specification was rewritten, the LTL formula $\varphi [k]$ changes to $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpec}. The change involved adding a new mission goal, the delivery of \texttt{letter1} to the corresponding office, e.g., \texttt{r1}. Specifically, compared to $\varphi_g^s [k]$, $\varphi_g^s [k+1]$ contains the additional liveness requirement:
+After the specification is rewritten, the LTL formula $\varphi [k]$ changes to $\varphi [k+1]$, according to Eqs. \eqref{Eq:newSpecA} and \eqref{Eq:newSpecB}. The change involved adding a new mission goal: the delivery of \texttt{letter1} to the corresponding office \texttt{r1}. Specifically, compared to $\varphi_g^s [k]$, $\varphi_g^s [k+1]$ contains the additional liveness requirement:
 \begin{equation*}
 	\G\F\left( \texttt{letter1} \Rightarrow \texttt{r1} \right)
 \end{equation*}

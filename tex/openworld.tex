@@ -1,5 +1,5 @@
 This section describes our approach to specifying and updating robot missions taking place in open worlds. 
-Our presentation takes the form of requirements on a specification language $\Lambda$, such that mission specifications $\mathcal{M}(AP) \in \Lambda$, parsed by $\mathcal{P}_{\Lambda}$ satisfy Eq. \eqref{Eq:newSpec}. 
+Our presentation takes the form of requirements on a specification language $\Lambda$, such that mission specifications $\mathcal{M}(AP) \in \Lambda$, parsed by $\mathcal{P}_{\Lambda}$ satisfy Eqs. \eqref{Eq:newSpecA} and \eqref{Eq:newSpecB}. 
 
 First, we leverage the expressive power of open-world abstraction to specify high-level behaviors without referring to individual propositions $\pi \in AP_k$. 
 Then, we show that the addition of new propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules, such that correspondence $\mathcal{C}: AP \rightarrow 2^{AP}$ between groups of propositions is maintained, where $2^{AP}$ denotes the power set of $AP$.
@@ -96,7 +96,7 @@ For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new pro
 
 \subsection{Updating the Controller}
 
-All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpec}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``resynthesis" \cite{BingxinRSS2012}. We associate a robot proposition, e.g. \texttt{resynthesize}, with it. For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
+All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpecB}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``resynthesis" \cite{BingxinRSS2012}. We associate a robot proposition, e.g. \texttt{resynthesize}, with it. For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
 \texttt{if you are sensing newLetter then add to group Letters and resynthesize}. 
 
 Notice that the user chooses when resynthesis will take place. Given the task above, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
