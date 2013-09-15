@@ -10,7 +10,7 @@ should be synthesized into a revised robot controller.
 
 \subsection{Defining Tasks over Open Worlds}
 
-The first requirement on specifications $\mathcal{M}_0 = \mathcal{M}(AP_0) \in \Lambda$ is the definition of groups of propositions $G_i$ and the definition of correspondence, $\mathcal{C}$, between groups of propositions. Then, tasks that refer to individual propositions $\pi \in G_i$ can be replaced by tasks over $G_i$ and $G_j^i \in \mathcal{C}(G_i), \; j \not = i$. The superscript $i$ will often be omitted for clarity of notation.
+The first requirement on specifications $\mathcal{M}_0 = \mathcal{M}(AP_0) \in \Lambda$ is the definition of groups of propositions $G_i$ and the definition of correspondence, $\mathcal{C}$, between groups of propositions. Then, tasks that refer to individual propositions $\pi \in G_i$ can be replaced by tasks over $G_i$ and $G_j \in \mathcal{C}(G_i), \; j \not = i$. The superscript $i$ will often be omitted for clarity of notation.
 
 An advantage of open-world abstractions is the ability to specify a mission even if the groups contain no propositions prior to execution, i.e., $G_i = \emptyset$, $G_i \in \mathcal{M}_0$. In this case, the groups will be populated on-the-fly as new elements in the world are discovered (see Section \ref{rewriting}, and Examples \ref{Ex:SnS}, \ref{Ex:mailbot3}).
 
@@ -30,7 +30,7 @@ An advantage of open-world abstractions is the ability to specify a mission even
 \vspace{-10 pt}
 \end{algorithm}
 
-Let $G_1$ be \texttt{Letters} and $G_2$ be \texttt{Offices}. Line 3 establishes correspondence from $G_1$ to $G_2$, .i.e., $G_2 \in \mathcal{C}(G_1)$. We use the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, because $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2^1, G_3^1, \ldots\right\}$. 
+Let $G_1$ be \texttt{Letters} and $G_2$ be \texttt{Offices}. Line 3 establishes correspondence from $G_1$ to $G_2$, .i.e., $G_2 \in \mathcal{C}(G_1)$. We use the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, because $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2, G_3, \ldots\right\}$. 
 Notice how the task in line 4 does not refer to any particular letters or offices. 
 As already mentioned, even if $G_1, G_2 \in \mathcal{M}_0$ were empty, the user would still be able to specify the mission above.
 %In the special case where $G_j^i = \mathcal{C}(G_i)$, we can drop the superscript $i$, and write $G_j$, as in this example.
@@ -41,39 +41,53 @@ There are two requirements for the specification $\mathcal{M}_{k+1}$ to reflect 
 First, $\pi_{mt}$ has to be added to $G_1$, not just the set of all propositions $AP_t$. 
 Second, an office proposition, $\pi_{mt}^\prime = \texttt{office3}$, has to be created, if necessary, and added to $G_2$, in order to reestablish correspondence, i.e., $G_2 \in \mathcal{C}(G_1)$, where now $G_{1} = G_1 \cup \left\{ \pi_{mt} \right\}$, $G_{2} = G_2 \cup \{ \pi_{mt}^\prime \}$. 
 Then, we would have $\pi_{mt}^\prime \in \mathcal{C}(\pi_{mt})$. 
-The two requirements are generalized in Problem \ref{Prob:correspondence}, which is a subproblem of Problem \ref{Prob:newSpec}:
+The two requirements are generalized in Problem \ref{Prob:correspondence}, which is a subproblem of Problem \ref{Prob:newSpec}.
 
 \begin{myProblem}\label{Prob:correspondence} % Remove 'm' from sub/super-scripts?
-	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, containing $n$ groups of propositions, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism for (i) adding $\pi_{mt}$ to any number of groups
+	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, containing $n$ groups of propositions, $\mathbb{G}_M = \left\{ G_1, G_2, \ldots, G_n \right\}$, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism for (i) adding $\pi_{mt}$ to any number of groups
 %	$$G_i^{m} \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$ 
-	$$G_i \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$
+%	$$G_i \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$
+%	$$ \mathbb{G} = \left\{ G_i \in \mathbb{G}_M \: \middle| \: ... \right\}$$
+	$$ \mathbb{G} \subseteq \mathbb{G}_M,$$
 	and for (ii) creating additional propositions $\pi^{ij}$, if necessary, and adding them to their corresponding groups 
 %	$$G_j^i \in \mathcal{C}(G_i^m), \; j \in \left\{ 1, \ldots, i-1, i+1, \ldots, | \mathcal{C}(G_i^m)| \right\}.$$
-	$$G_j^i, \forall G_j^i \in \mathcal{C}(G_i), \forall G_i \; j \not = i.$$
+%	$$G_j^i, \forall G_j^i \in \mathcal{C}(G_i), \forall G_i \; j \not = i.$$
+	$$ \mathbb{G}_\mathcal{C} = \left\{ G_j \in \mathbb{G}_M \: \middle| \: G_j \in \mathcal{C}(G_i), G_i \in \mathbb{G}, i \in \left\{ 1, \ldots, n \right\} \right\},$$
+	such that $\pi^{ij} \in \mathcal{C}(\pi_{mt})$.
 \end{myProblem}
 
 \subsection{Rewriting the Mission Specification}\label{rewriting}
 
-To address Problem \ref{Prob:correspondence}, we introduce another element to the specification language $\Lambda$, the ``add to Group" operator.
+To address Problem \ref{Prob:correspondence}, we introduce another element to the specification language $\Lambda$, the \emph{add to Group} operator.
 
 \begin{myDefinition}\label{Def:addto}
-	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to a single group, or to multiple groups, of propositions, $\mathbb{G} = \left\{ G_i | i \in \left\{ 1, \ldots, n \right\}\right\}, |\mathbb{G}| \leq n$.
-	Furthermore, it creates additional propositions $\pi^{ij}$, and adds them to the corresponding groups $\mathcal{C}(G_i), \; \forall G_i \in \mathbb{G}$. 
+	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to a single group, or to multiple groups, of propositions, 
+%	$\mathbb{G} = \left\{ G_i | i \in \left\{ 1, \ldots, n \right\}\right\}, |\mathbb{G}| \leq n$.
+	$ \mathbb{G} \subseteq \mathbb{G}_M$.
+	Furthermore, it adds additional propositions, $\pi^{ij}$, to the corresponding groups,
+%	$\mathcal{C}(G_i), \; \forall G_i \in \mathbb{G}$. 
+	$\mathbb{G}_\mathcal{C}$.
 	That is,
 	\begin{equation}
 		(\mathbb{G}^\prime, \mathbb{G}_{\mathcal{C}}^\prime) = \texttt{add\_to}(\pi_{mt}, \mathbb{G}, \mathcal{C}),
 	\end{equation}
-	where 
-	$$\mathbb{G}^\prime = \left\{ G_i^\prime \: \middle| \: G_i^\prime = G_i \cup \left\{ \pi_{mt} \right\}, G_i \in \mathbb{G} \right\},$$
-	and
-	$$\mathbb{G}_{\mathcal{C}}^\prime = \left\{{G_j^i}^\prime \: \middle| \: {G_j^i}^\prime = G_j^i \cup \left\{ \pi^{ij} \right\}, G_j^i \in \mathcal{C}(G_i), G_i \in \mathbb{G} \right\}.$$
+	where
+	\begin{subequations}
+	\begin{align*}
+		\mathbb{G}^\prime &= \left\{ G_i^\prime \: \middle| \: G_i^\prime = G_i \cup \left\{ \pi_{mt} \right\}, G_i \in \mathbb{G} \right\},\\
+		\mathbb{G}_{\mathcal{C}}^\prime &= \left\{{G_j}^\prime \: \middle| \: {G_j}^\prime = G_j \cup \left\{ \pi^{ij} \right\}, G_j \in \mathcal{C}(G_i), G_i \in \mathbb{G} \right\}.
+	\end{align*}
+	\end{subequations}
+%	$$\mathbb{G}_{\mathcal{C}}^\prime = \left\{{G_j^i}^\prime \: \middle| \: {G_j^i}^\prime = G_j^i \cup \left\{ \pi^{ij} \right\}, G_j^i \in \mathcal{C}(G_i), G_i \in \mathbb{G} \right\}.$$
 	%  = \mathcal{C}(\mathbb{G}_m^\prime) =
 \end{myDefinition}
 
+% Disjoint sets
+
 Returning to Example \ref{Ex:mailbot2}, the add to Group operator would be applied as follows: 
 $$ \texttt{add\_to}(\pi_{mt}, G_1) = (G_1, G_2),$$
-where $G_1 = \texttt{Letters}$ and $G_2 = \texttt{Offices}$.
-The equivalent Structured English task would be: \texttt{if you are sensing newLetter then add to group Letters}, where $\texttt{newLetter} = d_m \in \mathcal{D}$. The new propositions are named by either a predefined naming scheme, prompting the human user, or using information from the low-level sensor that is abstracted by the proposition $d_m$. For example, the new ``letter" proposition could be named after the recipient's name, e.g. $\pi_{mt} = \texttt{letter\_johnDoe} \in G_1$, while the ``office" proposition after the address printed on the letter, e.g. $ \pi^{12} = \texttt{Room\_153} \in G_2$.
+where $G_1$ and $G_2$ stand for \texttt{Letters} and \texttt{Offices}, respectively.
+The equivalent Structured English task would be: \texttt{if you are sensing newLetter then add to group Letters}, where \texttt{newLetter} is the label of a sensor $d_m \in \mathcal{D}$. The new propositions are named by either a predefined naming scheme, prompting the human user, or using information from the low-level sensor that is abstracted by the proposition $d_m$. For example, the new ``letter" proposition could be named after the recipient's name, e.g. \texttt{letter\_johnDoe}, while the ``office" proposition after the address printed on the letter, e.g. \texttt{Room\_155}.
 
 Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, as a direct result of the open world, we have to restate Definition \ref{Def:openworld} as follows:
 
