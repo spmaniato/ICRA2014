@@ -5,17 +5,15 @@ First-order logic differs from propositional logic and LTL by its use of predica
 Two types of quantification are allowed in first-order logic: universal quantification using $\forall$ and existential quantification using $\exists$. 
 \par $\Lambda$ allows quantification over sets of propositions, which we refer to as groups. 
 This allows users to specify reactive behaviors in terms of groups of propositions instead of explicitly naming propositions. 
-We further constrain groups to be sets of propositions that are all of the same type (i.e. sensors, actions, or regions). 
-In summary, a group $G$ has the following properties:
-\begin{subequations}
-\begin{align}
-	&G \subseteq AP_t \\
-	&\pi \in \mathcal{X}_t \; \forall \pi \in G | \pi \in \mathcal{A}_t \; \forall \pi \in G | \pi \in \mathcal{R}_t \;\forall \pi \in G
-\end{align}
-\end{subequations}
+The propositions within groups invariably appear in parallel constructions when groups are invoked in a specification, therefore they must all be grammatically interchangeable within a specification. 
+This interchangeability is a property of propositions of the same type (i.e. sensors, robot propositions, or regions), therefore we further constrain groups to be sets of propositions that are all of a isngle type. 
+In summary, a group $G$ has the following property:
+\begin{equation}
+	G \subseteq X_t | G \subseteq Y_t | G \subseteq R_t
+\end{equation}
 % TODO: The sets R, A, X are defined in section II. You can remove the explanations below. ~Spyros
-Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{A}_t \subseteq AP_t$ is the set of action propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
-A mission in $\Lambda$ can define any group satisfying these properties.
+Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{Y}_t \subseteq AP_t$ is the set of robot propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
+A mission in $\Lambda$ can define any group satisfying this property.
 This generalizes the work in \cite{BingxinRSS2012}, which focused only on groups of region propositions. 
 Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, is not fixed. 
 For instance, alternative implementations of $\Lambda$ would be possible in a formal grammar like Structured English\cite{Finucane2010} and in a natural language processor like SLURP\cite{RamanRSS2013}, with different syntax in both. 
@@ -58,17 +56,17 @@ $\bar{\varphi}$ is translated into:
  	\bigwedge\limits_{\phi_i \in G} [\phi_i / \text{each}(G)] \bar{\varphi}
 \end{equation*}
 \par
-For sentences that contain multiple quantifier phrases, the parser applies these translation operations in the order that the quantifiers appear in the sentence. 
 With these abstractions, we can write compact, expressive, and intuitive specifications. 
 \par
 %TODO: The following example shouldn't use structured english...
 \begin{myExample}\label{Ex:quantifiers} 	
 	Consider a scenario where a robot is helping to manage a hotel. 
-	The robot has a group of regions called \texttt{rooms} a group of sensors called \texttt{roomsOccupied} with a proposition for every room, and actions called \texttt{cleanRoom}, \texttt{welcomeGuests}, and \texttt{apologizeToGuests}. 
-	Part of the robot's specification might be: 
-	\texttt{If any roomsOccupied and not all roomsOccupied then do welcomeGuests. 
-	If all roomsOccupied then do apologizeToGuests. 
-	If not any roomsOccupied then go to each room and do cleanRoom. } 
+	The robot has a group of regions representing the rooms in the hotel, a group of sensors indicating whether rooms are occupied, with a proposition for every room, and actions for cleaning a room, welcoming guests, and apologizing to guests. 
+	Part of the robot's specification might be expressed in English as:
+	``If any rooms are occupied and not all rooms are occupied then welcome guests. 
+	If all rooms are occupied then apologize to guests. 
+	If not any rooms are occupied then go to each room and clean the room.''
+	Using the quantifiers in $\Lambda$, this behavior can be expressed without explicitly naming individual propositions. 
 \end{myExample}
 
 \subsection{Proposition Correspondence} 
@@ -84,10 +82,11 @@ The `corresponding' operator is different from the quantifiers described earlier
 We can demonstrate this dependency with two English sentences: ``Go to the corresponding rooms'' and ``Take all of the guests to their corresponding rooms''.
 The first sentence is unclear because it is lacking the index of correspondence provided in the second sentence, namely ``all of the guests''. 
 Therefore a sentence using correspondence has two relevant groups: $G_q$, the quantified group, and $G_c$, the `corresponding' group. 
-Finally, we will define a function $\mathcal{C}$ which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to. 
+The group acting as the index of correspondence may be paired with any of the available quantifiers, but the interpretation of quantified sentences using correspondence always results in conjunction over non-quantified sentences, as occurs with the `each' quantifier. 
+Finally, we will define a function $\mathcal{C}: AP_t \rightarrow 2^{AP_t}$ which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to. 
 We can now express the translation of $\bar{\varphi}$ for a sentence using correspondence as:
 \begin{equation*}
-	\bigwedge \limits_{\phi_i \in G_q} [\phi_i / G_q] [\mathcal{C}(\phi_i) \cap G_c / \text{corresponding}(G_c)] \bar{\varphi}
+	\bigwedge \limits_{\pi_i \in G_q} [\pi_i / G_q] [\mathcal{C}(\pi_i) \cap G_c / G_c] \bar{\varphi}
 \end{equation*}
 Note from our earlier definition of correspondence that the set intersection in this expression results in at most one element (correspondences may contain at most one element from any group). 
 If the intersection is empty, meaning that a correspondence has not been properly defined, then the sentence produces a syntax error. 
@@ -95,9 +94,9 @@ If the intersection is empty, meaning that a correspondence has not been properl
 %TODO: Structured english shouldn't be here either!!
 \begin{myExample}\label{Ex:corresponding}
 	Correspondence is useful in a scenario in which a robot performs an identical task over many sets of related propositions, such as waiting on tables at a restaurant. 
-	Our specification can define a group \texttt{tables} of region propositions, representing the tables in a restaurant, and a group \texttt{calls} of sensor propositions, representing the robot being signalled by specific tables. We can specify our desired behavior as follows: 
-	\texttt{Calls correspond to tables. 
-	If you are sensing any calls then go to the corresponding table.} 
+	Our specification can define a group of region propositions representing the tables in the restaurant and a group of sensor propositions representing the robot being signalled by specific tables. We can specify our desired behavior in English as follows: 
+	``Calls correspond to tables. 
+	If you are sensing any calls then go to the corresponding table.''
 	The abstraction of propositions into groups makes the specification more compact and readable, less error-prone, and more easily extensible. 
 	To specify this behavior over another pair of call and table propositions, we need only add the new propositions to their appropriate groups and they will automatically become included in the reactive behavior. 
 \end{myExample}
