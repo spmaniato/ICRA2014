@@ -77,7 +77,7 @@ Since we are now adding propositions besides those added by the detection sensor
 \begin{myDefinition}\label{Def:openworld2}
 	\textbf{(Expanding Open World Model -- revisited):} Our model $\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\}$ is now updated such that the propositions added in order to maintain correspondence are also added to the set of atomic propositions. That is, 
 	\begin{equation}\label{Eq:updateAP2}
-		AP_{t+1} = AP_t \bigcup_{m=1}^{M}D(m, t) \bigcup_{m=1}^{M}\mathcal{C}(D(m, t)),
+		AP_{t+1} = AP_t \cup \bigcup_{m=1}^{M}D(m, t) \cup \bigcup_{m=1}^{M}\mathcal{C}(D(m, t))
 	\end{equation}
 	replaces Eq. \eqref{Eq:updateAP}. Eq. \eqref{Eq:updateW} remains the same.
 \end{myDefinition}

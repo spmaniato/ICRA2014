@@ -30,7 +30,7 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state the op
 	\textbf{(Expanding Open World Model):}
 	The sequence $\W$, is an expanding open world model if the set of atomic propositions $AP$ is updated as follows:
 	\begin{equation}\label{Eq:updateAP}
-		AP_{t+1} = AP_t \bigcup_{m=1}^{M}D(m, t),
+		AP_{t+1} = AP_t \cup \bigcup_{m=1}^{M}D(m, t),
 	\end{equation}
 	and $\W$ is incremented if $AP$ changes:
 	\begin{equation}\label{Eq:updateW}
