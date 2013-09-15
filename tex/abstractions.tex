@@ -10,10 +10,11 @@ In summary, a group $G$ has the following properties:
 \begin{subequations}
 \begin{align}
 	&G \subseteq AP_t \\
-	&\pi \in S_t \forall \pi \in G | \pi \in A_t \forall \pi \in G | \pi \in R_t \forall \pi \in G
+	&\pi \in \mathcal{X}_t \; \forall \pi \in G | \pi \in \mathcal{A}_t \; \forall \pi \in G | \pi \in \mathcal{R}_t \;\forall \pi \in G
 \end{align}
 \end{subequations}
-Where $S_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $A_t \subseteq AP_t$ is the set of action propositions at time $t$, and $R_t \subseteq AP_t$ is the set of region propositions at time $t$. 
+% TODO: The sets R, A, X are defined in section II. You can remove the explanations below. ~Spyros
+Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{A}_t \subseteq AP_t$ is the set of action propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
 A mission in $\Lambda$ can define any group satisfying these properties.
 This generalizes the work in \cite{BingxinRSS2012}, which focused only on groups of region propositions. 
 Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, is not fixed. 
