@@ -1,7 +1,7 @@
 This section describes our approach to specifying and updating robot missions taking place in open worlds. 
 Our presentation takes the form of requirements on a specification language $\Lambda$, such that mission specifications $\mathcal{M}(AP) \in \Lambda$, parsed by $\mathcal{P}_{\Lambda}$ satisfy Eqs. \eqref{Eq:newSpecA} and \eqref{Eq:newSpecB}. 
 
-First, we leverage the expressive power of open-world abstraction to specify high-level behaviors without referring to individual propositions $\pi \in AP_k$. 
+First, we leverage the expressive power of open-world abstractions to specify high-level behaviors without referring to individual propositions $\pi \in AP_k$. 
 Then, we show that the addition of new propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules, such that correspondence $\mathcal{C}_G$ between groups of propositions is maintained.
 Finally, we provide a mechanism that allows the user to explicitly specify when the updated specification $\mathcal{M}_{k+1} = \mathcal{M}(AP_{k+1})$, and consequently the GR(1) formula 
 %$\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1})$, 
@@ -39,7 +39,7 @@ As already mentioned, even if $G_1, G_2 \in \mathcal{M}_0$ were empty, the user 
 Let a letter corresponding to a new recipient be sensed by a sensor $d_{m} \in \mathcal{D}$, e.g. labeled \texttt{newLetter}. Then, a new proposition, $\pi_{mt}$, e.g. labeled \texttt{letter3}, would be added to $AP_t$. 
 There are two requirements for the specification $\mathcal{M}_{k+1}$ to reflect the addition of the new proposition. 
 First, $\pi_{mt}$ has to also be added to the group $G_1$. 
-Second, an office proposition, $\pi^\prime = \texttt{office3}$, has to be created, if necessary, and added to $G_2$, in order to reestablish correspondence, i.e., $G_2 \in \mathcal{C}(G_1)$, where now $G_{1}^\prime = G_1 \cup \left\{ \pi_{mt} \right\}$, $G_{2}^\prime = G_2 \cup \{ \pi^\prime \}$. 
+Second, an office proposition, $\pi^\prime = \texttt{office3}$, has to be created, if necessary, and added to $G_2$, in order to re-establish correspondence, i.e., $G_2 \in \mathcal{C}(G_1)$, where now $G_{1}^\prime = G_1 \cup \left\{ \pi_{mt} \right\}$, $G_{2}^\prime = G_2 \cup \{ \pi^\prime \}$. 
 Then, we would have $\pi^\prime \in \mathcal{C}(\pi_{mt})$. 
 These two requirements are generalized in Problem \ref{Prob:correspondence}, which is a subproblem of Problem \ref{Prob:newSpec}.
 
