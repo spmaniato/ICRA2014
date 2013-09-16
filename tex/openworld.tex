@@ -30,7 +30,7 @@ An advantage of open-world abstractions is the ability to specify a mission even
 \vspace{-10 pt}
 \end{algorithm}
 
-Let $G_1$ be \texttt{Letters} and $G_2$ be \texttt{Offices}. Line 3 establishes correspondence from $G_1$ to $G_2$, .i.e., $G_2 \in \mathcal{C}(G_1)$. We use the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, because $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2, G_3, \ldots\right\}$. 
+Let $G_1$ be \texttt{Letters} and $G_2$ be \texttt{Offices}. Line 3 establishes correspondence from $G_1$ to $G_2$, i.e., $G_2 \in \mathcal{C}(G_1)$. We use the notation $G_2 \in \mathcal{C}(G_1)$, rather than $G_2 = \mathcal{C}(G_1)$, because $G_1$ could potentially correspond to more groups, e.g. $\mathcal{C}(G_1) = \left\{ G_2, G_3, \ldots\right\}$. 
 Notice how the task in line 4 does not refer to any particular letters or offices. 
 As already mentioned, even if $G_1, G_2 \in \mathcal{M}_0$ were empty, the user would still be able to specify the mission above.
 %In the special case where $G_j^i = \mathcal{C}(G_i)$, we can drop the superscript $i$, and write $G_j$, as in this example.
@@ -38,10 +38,10 @@ As already mentioned, even if $G_1, G_2 \in \mathcal{M}_0$ were empty, the user 
 
 Let a letter corresponding to a new recipient be sensed by a sensor $d_{m} \in \mathcal{D}$, e.g. labeled \texttt{newLetter}. Then, a new proposition, $\pi_{mt}$, e.g. labeled \texttt{letter3}, would be added to $AP_t$. 
 There are two requirements for the specification $\mathcal{M}_{k+1}$ to reflect the addition of the new proposition. 
-First, $\pi_{mt}$ has to be added to $G_1$, not just the set of all propositions $AP_t$. 
+First, $\pi_{mt}$ has to also be added to the group $G_1$. 
 Second, an office proposition, $\pi^\prime = \texttt{office3}$, has to be created, if necessary, and added to $G_2$, in order to reestablish correspondence, i.e., $G_2 \in \mathcal{C}(G_1)$, where now $G_{1}^\prime = G_1 \cup \left\{ \pi_{mt} \right\}$, $G_{2}^\prime = G_2 \cup \{ \pi^\prime \}$. 
 Then, we would have $\pi^\prime \in \mathcal{C}(\pi_{mt})$. 
-The two requirements are generalized in Problem \ref{Prob:correspondence}, which is a subproblem of Problem \ref{Prob:newSpec}.
+These two requirements are generalized in Problem \ref{Prob:correspondence}, which is a subproblem of Problem \ref{Prob:newSpec}.
 
 \begin{myProblem}\label{Prob:correspondence} % Remove 'm' from sub/super-scripts?
 	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, containing $n$ groups of propositions, $\mathbb{G}_M = \left\{ G_1, G_2, \ldots, G_n \right\}$, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism for (i) adding $\pi_{mt}$ to any number of groups
@@ -61,7 +61,7 @@ The two requirements are generalized in Problem \ref{Prob:correspondence}, which
 To address Problem \ref{Prob:correspondence}, we introduce another element to the specification language $\Lambda$, the \emph{add to Group} operator.
 
 \begin{myDefinition}\label{Def:addto}
-	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to a single group, or to multiple groups, of propositions, 
+	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to one or more proposition groups, 
 %	$\mathbb{G} = \left\{ G_i | i \in \left\{ 1, \ldots, n \right\}\right\}, |\mathbb{G}| \leq n$.
 	$ \mathbb{G} \subseteq \mathbb{G}_M$.
 	Furthermore, it adds additional propositions, $\pi^{ij}$, to the corresponding groups,
@@ -106,7 +106,7 @@ Some auxiliary propositions, such as robot memory propositions, do not require g
 	% Rephrase when Problem 2 is stated. Remember, you can use Groups now!
 \end{myAssumption}
 
-For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions, e.g. \texttt{letterNew} and \texttt{officeNew}. The sensor proposition \texttt{letterNew} would be grounded to letters bearing the new recipient's name. The information for grounding \texttt{officeNew} to a location on the robot's workspace can be inferred from the address on the letter, which the robot can look up in a digital map. If the new office is not part of the current map, the robot could prompt the user for its location, and then add it to its discrete abstraction of the workspace, as a region proposition.
+For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions \texttt{letterNew} and \texttt{officeNew}. The sensor proposition \texttt{letterNew} would be grounded to letters bearing the new recipient's name. The information for grounding \texttt{officeNew} to a location on the robot's workspace can be inferred from the address on the letter, which the robot can look up on a map. If the new office is not part of the current map, the robot could prompt the user for its location, and then add it to its discrete abstraction of the workspace as a region proposition.
 
 \subsection{Updating the Controller}
 
