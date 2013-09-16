@@ -7,7 +7,8 @@ We begin our formal analysis of the problem by defining a model of an open world
 
 Let $\W$ be a sequence of sets of atomic propositions:
 \begin{equation}\label{Eq:W}
-	\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\},
+%	\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\},
+	\W = AP_0 AP_1 \ldots AP_k,
 \end{equation}
 where $AP_{k+1} \not = AP_k$, and $k \in \NN$.
 
@@ -32,11 +33,11 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state the op
 	\begin{equation}\label{Eq:updateAP}
 		AP_{t+1} = AP_t \cup \bigcup_{m=1}^{M}D(m, t),
 	\end{equation}
-	and $\W$ is incremented if $AP$ changes:
+	and if $AP$ changes, $AP_{t+1}$ is appended to $\W$:
 	\begin{equation}\label{Eq:updateW}
 	\W = 
 	\begin{cases}
-		\W \cup \left\{ AP_{t+1} \right\}, & \text{if } \bigvee_{m=1}^{M} (d_m[t] = \texttt{True}) \\
+		\W \circ AP_{t+1}, & \text{if } \bigvee_{m=1}^{M} (d_m[t] = \texttt{True}) \\
 		\W, & \text{otherwise}
 	\end{cases}
 	\end{equation}
@@ -72,7 +73,7 @@ The problem of rewriting a specification to allow for adding new propositions is
 
 \begin{myProblem}\label{Prob:newSpec}
 	\textbf{(Mission Specification Update):} Let $\Lambda$ be a specification language and $\mathcal{P}_{\Lambda}$ a parser for it. % mention CFG?
-	Augment $\Lambda$ and $\mathcal{P}_{\Lambda}$, such that given a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions, $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are automatically updated as follows:
+	Augment $\Lambda$ and $\mathcal{P}_{\Lambda}$, such that given a mission specification written in $\Lambda$, $\mathcal{M}_k = \mathcal{M}(AP_k) \in \Lambda$, a GR(1) formula $\varphi [k]$, and the latest set of atomic propositions, $AP_{k+1} \supset AP_k$, the mission $\mathcal{M}_k$ and formula $\varphi_k$ are automatically updated as follows:
 	\begin{subequations}\label{Eq:newSpec}
 		\begin{align}
 			\mathcal{M}_{k+1} &= \mathcal{M}(AP_{k+1}), \label{Eq:newSpecA}\\ 
