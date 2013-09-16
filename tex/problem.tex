@@ -41,7 +41,7 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state the op
 		\W, & \text{otherwise}
 	\end{cases}
 	\end{equation}
-If the world is closed w.r.t. elements sensed by the sensors in $\mathcal{D}$, then $|\W| = 1, \forall t$.
+If the world is closed w.r.t. elements sensed by the sensors $d_m \in \mathcal{D}$, then $\W = AP_0, \forall t$.
 %	and the index $k$ is then incremented only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
 %	\begin{equation*}
 %		k \leftarrow 
@@ -65,11 +65,11 @@ Notice the assumptions regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
 	\end{myAssumption}
 
 Assumption \ref{Ass:noRemove} is not limiting, since a proposition can be in $AP$ without being part of the robot's controller. Furthermore, the value of a proposition can be restricted by adding safety requirements to $\varphi_t^{e,s}$, if necessary. The disadvantage of not removing propositions that are no longer pertinent to the mission is that the synthesis algorithm \cite{piterman_06} will be searching for a winning strategy over a larger graph, which has higher computation time.
-Assumption \ref{Ass:onlyM} limits the events to which an open world robot will react, to those that it can sense and that are relevant to the mission. For instance, the mailbot (Ex. \ref{Ex:mailbot1}) should update its mission if it senses a new letter recipient, but not if someone tries to hand it a trash bag.
+Assumption \ref{Ass:onlyM} limits the new events to which the robot will react, to those that it can sense and that are relevant to the mission. For instance, the mailbot (Example \ref{Ex:mailbot1}) should update its mission if it senses a new recipient, but not if someone tries to hand it a trash bag.
 
-In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First of all, we should allow specifications that include operators outside of LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanism that will allow new propositions $\pi_{mt}$ to be incorporated in the mission's LTL formulas.
+In order to obtain a mission specification and a robot plan that react to unmodeled elements of the world, we need to address two main problems. First, we should allow specifications that include operators outside of LTL, in order to enable the mission to adapt to $\W$. Then, we need to define the specific mechanism that will allow new propositions $\pi_{mt}$ to be incorporated in the mission's LTL formulas.
 
-The problem of rewriting a specification to allow for adding new propositions is formally stated below:
+The problem of rewriting a specification to allow for adding new propositions is stated below:
 
 \begin{myProblem}\label{Prob:newSpec}
 	\textbf{(Mission Specification Update):} Let $\Lambda$ be a specification language and $\mathcal{P}_{\Lambda}$ a parser for it. % mention CFG?
