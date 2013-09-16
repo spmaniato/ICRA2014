@@ -110,12 +110,15 @@ For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new pro
 
 \subsection{Updating the Controller}
 
-All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpecB}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``resynthesis" \cite{BingxinRSS2012}. We associate a robot proposition, e.g. \texttt{resynthesize}, with it. For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
+The specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpecB}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``resynthesis", and it is based on the work in \cite{BingxinRSS2012}.
+
+Since we want to enable the user to specify when resynthesis should take place,
+we associate a robot proposition, e.g. \texttt{resynthesize}, with it. 
+For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
 \texttt{if you are sensing newLetter then add to group Letters and resynthesize}. 
+In this task, the robot would update its strategy immediately after detecting a letter for a new recipient. In the search and rescue setting of Example \ref{Ex:SnS} below, it would make more sense for the robot to finish executing other actions before resynthesizing.
 
-Notice that the user chooses when resynthesis will take place. Given the task above, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
-
-\begin{myExample}\label{Ex:SnS} A robot is tasked with exploring a disaster site, and rescuing survivors. It is more sensible to have the robot finish a rescue and then re-synthesize, in order to incorporate new regions of interest into its mission.
+\begin{myExample}\label{Ex:SnS} A robot is tasked with exploring a disaster site, and rescuing survivors. It is more sensible to have the robot finish a rescue, and then resynthesize in order to incorporate new regions of interest into its mission.
 	\begin{algorithm}
 	\textbf{Mission specification:} (partial) Search and Rescue
 	
@@ -130,7 +133,7 @@ Notice that the user chooses when resynthesis will take place. Given the task ab
 	\vspace{-10 pt}
 	\end{algorithm}
 	
-The proposition \texttt{needToResynthesize} is a robot memory proposition (Section \ref{preliminariesA}) that enables the robot to remember it detected a new region and that it has to re-synthesize eventually.
+The proposition \texttt{needToResynthesize} is a robot memory proposition (Section \ref{preliminariesA}) that enables the robot to remember it detected a new region and that it has to resynthesize eventually.
 \end{myExample}
 
 The definition of the \emph{add to Group} operator and \emph{resynthesis} conclude the augmentation of the specification language $\Lambda$. Our approach is graphically summarized in Fig. \ref{Fig:approach}.
