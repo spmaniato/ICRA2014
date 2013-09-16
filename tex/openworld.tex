@@ -88,7 +88,7 @@ The equivalent Structured English task would be: \texttt{if you are sensing newL
 Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, as a direct result of the open world, we have to restate Definition \ref{Def:openworld} as follows:
 
 \begin{myDefinition}\label{Def:openworld2}
-	\textbf{(Expanding Open World Model -- revisited):} Our model $\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\}$ is now updated such that the propositions added in order to maintain correspondence are also added to the set of atomic propositions. That is, 
+	\textbf{(Expanding Open World Model -- revisited):} Our model $\W = AP_0 AP_1 \ldots AP_k$ is now updated such that the propositions added in order to maintain correspondence are also added to the set of atomic propositions. That is, 
 	\begin{equation}\label{Eq:updateAP2}
 		 AP_{t+1} = AP_t \cup \bigcup_{m=1}^{M}D(m, t) \cup \bigcup_{m=1}^{M} \smashoperator[r]{\bigcup_{\pi \in D(m, t)}}~ \mathcal{C}_{\pi}(\pi)
 	\end{equation}
