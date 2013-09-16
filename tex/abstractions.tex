@@ -36,7 +36,7 @@ That is, $\bar{\varphi}$ is translated into:
 \end{equation*}
 Where: 
 \begin{equation*}
-	t = \bigvee \limits_{\phi_i \in G} \phi_i
+	t = \bigvee \limits_{\pi_i \in G} \pi_i
 \end{equation*}
 \par
 The quantifier `all($G$)' in a sentence is translated as the logical conjunction of every proposition in the group named by $G$. 
@@ -46,14 +46,14 @@ $\bar{\varphi}$ is therefore translated into:
 \end{equation*}
 Where:
 \begin{equation*}
-	t = \bigwedge \limits_{\phi_i \in G} \phi_i
+	t = \bigwedge \limits_{\pi_i \in G} \pi_i
 \end{equation*}
 \par
 The quantifier `each($G$)' is similar to `all($G$)', but acts with a different semantic scope. 
 `each($G$)' in a sentence denotes that the entire sentence is true for each of the propositions in $G$ separately. 
 $\bar{\varphi}$ is translated into:
 \begin{equation*}
- 	\bigwedge\limits_{\phi_i \in G} [\phi_i / \text{each}(G)] \bar{\varphi}
+ 	\bigwedge\limits_{\pi_i \in G} [\pi_i / \text{each}(G)] \bar{\varphi}
 \end{equation*}
 \par
 With these abstractions, we can write compact, expressive, and intuitive specifications. 
@@ -65,7 +65,7 @@ With these abstractions, we can write compact, expressive, and intuitive specifi
 	Part of the robot's specification might be expressed in English as:
 	``If any rooms are occupied and not all rooms are occupied then welcome guests. 
 	If all rooms are occupied then apologize to guests. 
-	If not any rooms are occupied then go to each room and clean the room.''
+	If none of the rooms are occupied then go to each room and clean the room.''
 	Using the quantifiers in $\Lambda$, this behavior can be expressed without explicitly naming individual propositions. 
 \end{myExample}
 
@@ -75,7 +75,6 @@ To address this difficulty, $\Lambda$ allows the definition of correspondences b
 A correspondence is a mapping from individual propositions to sets of propositions that contain at most one proposition from each group defined in the specification. 
 $\Lambda$ allows users to define correspondence either by explicitly mapping atomic propositions to one another or by mapping one group onto another. 
 For a group to correspond to another group, both groups must have the same number of elements. 
-The correspondence of individual propositions within the groups follows the order in which propositions were added to each group. 
 Once correspondence has been defined in a specification, $\Lambda$ allows the use of a `corresponding' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. 
 To use our previous notation of $\bar{\varphi}$ and $G$, the `corresponding' operator can be written as `corresponding($G$)'. 
 The `corresponding' operator is different from the quantifiers described earlier because its semantics depend on the presence of another quantified group in the same sentence. 
@@ -98,5 +97,5 @@ If the intersection is empty, meaning that a correspondence has not been properl
 	``Calls correspond to tables. 
 	If you are sensing any calls then go to the corresponding table.''
 	The abstraction of propositions into groups makes the specification more compact and readable, less error-prone, and more easily extensible. 
-	To specify this behavior over another pair of call and table propositions, we need only add the new propositions to their appropriate groups and they will automatically become included in the reactive behavior. 
+	To specify this behavior over another pair of call and table propositions, we need only add the new propositions to their appropriate groups. 
 \end{myExample}
