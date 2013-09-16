@@ -2,7 +2,7 @@ This section describes our approach to specifying and updating robot missions ta
 Our presentation takes the form of requirements on a specification language $\Lambda$, such that mission specifications $\mathcal{M}(AP) \in \Lambda$, parsed by $\mathcal{P}_{\Lambda}$ satisfy Eqs. \eqref{Eq:newSpecA} and \eqref{Eq:newSpecB}. 
 
 First, we leverage the expressive power of open-world abstraction to specify high-level behaviors without referring to individual propositions $\pi \in AP_k$. 
-Then, we show that the addition of new propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules, such that correspondence $\mathcal{C}: AP \rightarrow 2^{AP}$ between groups of propositions is maintained, where $2^{AP}$ denotes the power set of $AP$.
+Then, we show that the addition of new propositions to a mission specification $\mathcal{M}_k = \mathcal{M}(AP_k)$ has to follow certain rules, such that correspondence $\mathcal{C}: AP_t \rightarrow 2^{AP_t}$ between groups of propositions is maintained.
 Finally, we provide a mechanism that allows the user to explicitly specify when the updated specification $\mathcal{M}_{k+1} = \mathcal{M}(AP_{k+1})$, and consequently the GR(1) formula 
 %$\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1}, AP_{k+1})$, 
 $\varphi [k+1] = \mathcal{P}_{\Lambda} (\mathcal{M}_{k+1})$,
