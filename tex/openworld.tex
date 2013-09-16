@@ -45,14 +45,10 @@ These two requirements are generalized in Problem \ref{Prob:correspondence}, whi
 
 \begin{myProblem}\label{Prob:correspondence} % Remove 'm' from sub/super-scripts?
 	\textbf{(New Propositions and Correspondence):} Given a mission specification $\mathcal{M}_k$, containing $n$ groups of propositions, $\mathbb{G}_M = \left\{ G_1, G_2, \ldots, G_n \right\}$, and a new proposition $\pi_{mt} = D(m, t)$, define a mechanism for (i) adding $\pi_{mt}$ to any number of groups
-%	$$G_i^{m} \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$ 
-%	$$G_i \in \mathcal{M}_k, \; i \in \left\{ 1, \ldots, n \right\},$$
-%	$$ \mathbb{G} = \left\{ G_i \in \mathbb{G}_M \: \middle| \: ... \right\}$$
 	$$ \mathbb{G} \subseteq \mathbb{G}_M,$$
 	and for (ii) creating additional propositions, $\pi^{ij}$, and adding them to the groups that each $G_i \in \mathbb{G}$ corresponds to, i.e., to
-%	$$G_j^i \in \mathcal{C}(G_i^m), \; j \in \left\{ 1, \ldots, i-1, i+1, \ldots, | \mathcal{C}(G_i^m)| \right\}.$$
-%	$$G_j^i, \forall G_j^i \in \mathcal{C}(G_i), \forall G_i \; j \not = i.$$
-	$$ \mathbb{G}_\mathcal{C} = \left\{ G_j \in \mathbb{G}_M \: \middle| \: G_j \in \mathcal{C}(G_i), G_i \in \mathbb{G}, i \in \left\{ 1, \ldots, n \right\} \right\}.$$
+%	$$ \mathbb{G}_\mathcal{C} = \left\{ G_j \in \mathbb{G}_M \: \middle| \: G_j \in \mathcal{C}(G_i), G_i \in \mathbb{G}, i \in \left\{ 1, \ldots, n \right\} \right\}.$$
+	$$ \mathbb{G}_\mathcal{C} = \bigcup_{G_i \in \mathbb{G}} \mathcal{C}_G (G_i) $$
 %	such that $\pi^{ij} \in \mathcal{C}(\pi_{mt})$.
 \end{myProblem}
 
@@ -61,7 +57,7 @@ These two requirements are generalized in Problem \ref{Prob:correspondence}, whi
 To address Problem \ref{Prob:correspondence}, we introduce another element to the specification language $\Lambda$, the \emph{add to Group} operator.
 
 \begin{myDefinition}\label{Def:addto}
-	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to one or more proposition groups, 
+	\textbf{(add to Group):} The \emph{add to Group} operator takes the new proposition $\pi_{mt} = D(m,t)$, and adds it to one or more groups of propositions, 
 %	$\mathbb{G} = \left\{ G_i | i \in \left\{ 1, \ldots, n \right\}\right\}, |\mathbb{G}| \leq n$.
 	$ \mathbb{G} \subseteq \mathbb{G}_M$.
 	Furthermore, it adds additional propositions, $\pi^{ij}$, to the corresponding groups,
@@ -94,7 +90,7 @@ Since we are now adding propositions besides those added by the detection sensor
 \begin{myDefinition}\label{Def:openworld2}
 	\textbf{(Expanding Open World Model -- revisited):} Our model $\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\}$ is now updated such that the propositions added in order to maintain correspondence are also added to the set of atomic propositions. That is, 
 	\begin{equation}\label{Eq:updateAP2}
-		AP_{t+1} = AP_t \cup \bigcup_{m=1}^{M}D(m, t) \cup \bigcup_{m=1}^{M}\mathcal{C}(D(m, t))
+		 AP_{t+1} = AP_t \cup \bigcup_{m=1}^{M}D(m, t) \cup \bigcup_{m=1}^{M} \smashoperator[r]{\bigcup_{\pi \in D(m, t)}}~ \mathcal{C}_{\pi}(\pi)
 	\end{equation}
 	replaces Eq. \eqref{Eq:updateAP}. Eq. \eqref{Eq:updateW} remains the same.
 \end{myDefinition}
@@ -106,7 +102,7 @@ Some auxiliary propositions, such as robot memory propositions, do not require g
 	% Rephrase when Problem 2 is stated. Remember, you can use Groups now!
 \end{myAssumption}
 
-For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions \texttt{letterNew} and \texttt{officeNew}. The sensor proposition \texttt{letterNew} would be grounded to letters bearing the new recipient's name. The information for grounding \texttt{officeNew} to a location on the robot's workspace can be inferred from the address on the letter, which the robot can look up on a map. If the new office is not part of the current map, the robot could prompt the user for its location, and then add it to its discrete abstraction of the workspace as a region proposition.
+For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new propositions \texttt{letter3} and \texttt{office3}. The sensor proposition \texttt{letter3} would be grounded to letters bearing the new recipient's name. The information for grounding \texttt{office3} to a location on the robot's workspace can be inferred from the address on the letter, which the robot can look up on a map. If the new office is not part of the current map, the robot could prompt the user for its location, and then add it to its discrete abstraction of the workspace as a region proposition.
 
 \subsection{Updating the Controller}
 
