@@ -9,10 +9,10 @@ The propositions within groups invariably appear in parallel constructions when 
 This interchangeability is a property of propositions of the same type (i.e. sensors, robot propositions, or regions), therefore we further constrain groups to be sets of propositions that are all of a isngle type. 
 In summary, a group $G$ has the following property:
 \begin{equation}
-	G \subseteq X_t | G \subseteq Y_t | G \subseteq R_t
+	G \subseteq \mathcal{X}_t | G \subseteq \mathcal{A}_t | G \subseteq \mathcal{R}_t
 \end{equation}
 % TODO: The sets R, A, X are defined in section II. You can remove the explanations below. ~Spyros
-Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{Y}_t \subseteq AP_t$ is the set of robot propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
+Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{A}_t \subseteq AP_t$ is the set of action propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
 A mission in $\Lambda$ can define any group satisfying this property.
 This generalizes the work in \cite{BingxinRSS2012}, which focused only on groups of region propositions. 
 Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, is not fixed. 
@@ -83,7 +83,7 @@ We can demonstrate this dependency with two English sentences: ``Go to the corre
 The first sentence is unclear because it is lacking the index of correspondence provided in the second sentence, namely ``all of the guests''. 
 Therefore a sentence using correspondence has two relevant groups: $G_q$, the quantified group, and $G_c$, the `corresponding' group. 
 The group acting as the index of correspondence may be paired with any of the available quantifiers, but the interpretation of quantified sentences using correspondence always results in conjunction over non-quantified sentences, as occurs with the `each' quantifier. 
-Finally, we will define a function $\mathcal{C}: AP_t \rightarrow 2^{AP_t}$ which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to. 
+Finally, we will define a function $\mathcal{C}: AP_t \rightarrow 2^{AP_t}$, which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to, where $2^{AP}$ denotes the power set of $AP$. 
 We can now express the translation of $\bar{\varphi}$ for a sentence using correspondence as:
 \begin{equation*}
 	\bigwedge \limits_{\pi_i \in G_q} [\pi_i / G_q] [\mathcal{C}(\pi_i) \cap G_c / G_c] \bar{\varphi}
