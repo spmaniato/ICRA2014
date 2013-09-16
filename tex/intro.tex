@@ -20,19 +20,19 @@ This mission is relatively simple, and yet the robot's world is already open w.r
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.7\columnwidth, clip]{./img/mailbot.jpg}
-	\caption{Our implementation of a mailbot. A Nao humanoid robot is mounted on a Segway platform that includes a Lidar sensor. The actuation and perception capabilities of the former are complemented by the localization, navigation and mobility advantages of the latter.}
+	\caption{Above is our implementation of a mailbot. A Nao humanoid robot is mounted on a Segway platform that includes a Lidar sensor. The actuation and perception capabilities of the Nao are complemented by the localization, navigation and mobility advantages of the Segway.}
 	\label{Fig:mailbot}
 \end{figure}
 
 In order to obtain controllers for open worlds, a number of challenges have to be overcome. 
 First, the world can be open w.r.t its spatial components. An aspect of this issue has been tackled in \cite{MurrayICRA2012} and \cite{MurrayICRA2013a}, where the authors introduced local resynthesis as a way to account for local topological changes in the robot's workspace. 
 Additionally, an approach that addresses the unreactive equivalent of the same problem appeared in \cite{Dimos2013ICRA}. 
-%Furthermore, the aforementioned approaches assume that the size of the workspace is known, i.e., that only its internal structure changes. 
 Furthermore, the aforementioned approaches deal with changes in the internal structure of the workspace. We are interested in expanding the workspace upon discovery of new regions.
-%In addition, they do not account for augmenting the mission with additional objectives, a situation that may arise if the robot can discover new regions or objects of interest. 
 In addition, we are interested in augmenting the mission with additional objectives, a situation that may arise if the robot can discover new regions or objects of interest. 
 The work in \cite{BingxinRSS2012} allows the robot's workspace to expand, but does not account for the discovery of non-spatial aspects of the world, such as learning new actions or responding to unexpected events.
-Moreover, there is the the challenge of specifying open world missions in the first place, since the world is only partially known prior to execution. The specification language and abstractions necessary for this have been approached with both semantic \cite{Joshi2012, MatthiasAI2010} and statistical \cite{Tellex2011} methods, but so far no solution provides the guarantees on behavior that a formal, correct-by-construction system is capable of. % TODO: Matt, could you make this more politically correct please?
+Moreover, there is the the challenge of specifying open-world missions in the first place, since the world is only partially known prior to execution. 
+Specification languages and abstractions have been developed for similar tasks with both formal \cite{Joshi2012, MatthiasAI2010} and statistical \cite{Tellex2011} methods.
+This paper differs from previous approaches in its use of correct-by-construction controller synthesis in an open world, requiring new approaches. 
 
 In this paper, we first propose an approach to writing high-level missions such that the robot's tasks can be specified in terms of elements in the world that are unknown prior to execution. This is accomplished via \emph{open-world abstractions}, which allow us to specify behaviors implicitly. 
 Furthermore, they allow the specification to be updated in an autonomous fashion, as new elements of interest are discovered. The new elements include, but are not limited to, the sensing of new objects and events, and the discovery of new regions of the workspace, and they may lead to new mission constraints and/or goals.
