@@ -1,14 +1,14 @@
 In order for robots to become widely accessible, users must be able to command them by specifying high-level behaviors, rather than programming low-level robot controllers.
 This type of robot control has recently become possible by applying tools and ideas from formal methods and hybrid systems to the field of robotics. The resulting methodologies translate high-level tasks to discrete and subsequently low-level continuous controllers in a correct-by-construction manner \cite{BBEFKP06, KGFP_TRO09, KaramanCDC2009, Wongpiromsarn2010, LaValleRSS2011, BhatiaRAM2011, Belta2013RSS}.
-\emph{Reactive} approaches account for a dynamic, and possibly adversarial, environment, and are thus of particular interest. For example, the framework in \cite{KGFP_TRO09} takes a logic formula that contains the mission specification and, by solving a two-player game between the robot and its environment \cite{piterman_06}, outputs a hybrid controller that is guaranteed to accomplish the mission. Other reactive approaches have been proposed, e.g., in \cite{Wongpiromsarn2010} and \cite{Belta2013RSS}.
+\emph{Reactive} approaches account for a dynamic -- and possibly adversarial -- environment, and are thus of particular interest. For example, the framework in \cite{KGFP_TRO09} takes a logic formula that contains the mission specification and, by solving a two-player game between the robot and its environment \cite{piterman_06}, outputs a hybrid controller that is guaranteed to accomplish the mission. Other reactive approaches have been proposed, e.g., in \cite{Wongpiromsarn2010} and \cite{Belta2013RSS}.
 
-These approaches operate under the closed-world assumption, i.e., the robot only accounts for what was modeled before execution, and no information can be added autonomously, i.e. without a human re-specifying the mission.
+These approaches operate under the closed-world assumption. The robot only accounts for what was modeled before execution, and no information can be added autonomously, i.e. without a human re-specifying the mission.
 % Ref: http://c2.com/cgi/wiki?ClosedWorldAssumption
 However, robots have moved from the cloistered assembly line to such highly unstructured workspaces as the Fukushima Daiichi nuclear disaster site \cite{Fukushima2011}. 
 %Thus, there is a need for high-level robot controllers that adapt to the discrepancies between the robot's model of the world and reality. 
-In addition, robots are asked to incorporate new functions during execution. 
+In addition, robots are sometimes asked to incorporate new functions during execution. 
 Examples include reconfigurable modular robots \cite{ModularIROS2011}, as well as robots that learn on-the-fly \cite{SaxenaIJRR2012} or query online knowledge repositories \cite{rapyuta2013}. 
-Finally, the world may be open with respect to (w.r.t.) goals added after the robot has been deployed, as in the case of robotic urban search and rescue tasks \cite{MatthiasAI2010}, military scenarios \cite{gda2013}, and autonomous space and planetary exploration missions \cite{spaceXplore2006}. 
+Finally, the world may be open with respect to (w.r.t.) goals added after the robot has been deployed, as in the case of urban search and rescue tasks \cite{MatthiasAI2010}, military scenarios \cite{gda2013}, and autonomous space and planetary exploration missions \cite{spaceXplore2006}. 
 
 \begin{myExample}\label{Ex:mailbot1}
 Consider a robotic courier, i.e., a ``mailbot", (see Fig. \ref{Fig:mailbot}) deployed in a school or company building. 
@@ -25,7 +25,7 @@ This mission is relatively simple, and yet the robot's world is already open w.r
 \end{figure}
 
 In order to obtain controllers for open worlds, a number of challenges have to be overcome. 
-First, the world can be open w.r.t its spatial components. An aspect of this issue has been tackled in \cite{MurrayICRA2012} and \cite{MurrayICRA2013a}, where the authors introduced local resynthesis as a way to account for local topological changes in the robot's workspace. 
+First, the world can be open w.r.t. its spatial components. An aspect of this issue has been tackled in \cite{MurrayICRA2012} and \cite{MurrayICRA2013a}, where the authors introduced local resynthesis as a way to account for local topological changes in the robot's workspace. 
 Additionally, an approach that addresses the unreactive equivalent of the same problem appeared in \cite{Dimos2013ICRA}. 
 Furthermore, the aforementioned approaches deal with changes in the internal structure of the workspace. We are interested in expanding the workspace upon discovery of new regions.
 In addition, we are interested in augmenting the mission with additional objectives, a situation that may arise if the robot can discover new regions or objects of interest. 
@@ -40,6 +40,6 @@ We show how the mission specification can be systematically and automatically re
 %Finally, our high-level approach allows the user to control how the new elements will be accounted for, and when the updated specification should be translated to a new controller.
 Finally, our high-level approach allows the user to control how the new elements will be accounted for, and when the robot should start operating according to the updated mission specification.
 
-The paper is organized as follows: Section \ref{preliminaries} provides the necessary background on logic-based reactive mission planning. Section \ref{problem} states the problem we are addressing. The proposed abstractions, which we will use to specify tasks over open worlds, are defined in Section \ref{abstractions}. Section \ref{openworld} presents our approach to systematically rewriting the mission specification. Simulations of the mailbot scenario (Example \ref{Ex:mailbot1}), which is revisited throughout the paper, are provided in Section \ref{simulation}. Finally, our conclusions, as well as possible research directions, are summarized in Section \ref{conclusion}.
+The paper is organized as follows: Section \ref{preliminaries} provides the necessary background on logic-based reactive mission planning. Section \ref{problem} formally states the problem we are addressing. The proposed abstractions, which we will use to specify tasks over open worlds, are defined in Section \ref{abstractions}. Section \ref{openworld} presents our approach to systematically rewriting the mission specification. Simulations of the mailbot scenario (Example \ref{Ex:mailbot1}), which is revisited throughout the paper, are provided in Section \ref{simulation}. Finally, our conclusions, as well as possible research directions, are summarized in Section \ref{conclusion}.
 
 % END

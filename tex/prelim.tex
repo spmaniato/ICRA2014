@@ -13,11 +13,11 @@ The sensor propositions allow the robot to react to its environment.
 \subsubsection*{Linear Temporal Logic}
 
 We are interested in missions with complex requirements, such as surveillance, avoidance, and response to events. 
-Thus, we use Linear Temporal Logic (LTL) formulas to specify the desired high-level behaviors. LTL consists of Boolean ($\neg, \wedge, \lor$) and temporal (next, $\X$, and until, $\mathcal{U}$) operators. 
-Additional temporal operators, eventually, $\F$, and always, $\G$, can be derived. 
+Thus, we use Linear Temporal Logic (LTL) formulas to specify desired high-level behaviors. LTL consists of propositions, and Boolean ($\neg, \wedge, \lor$) and temporal (next, $\X$, and until, $\mathcal{U}$) operators. 
+Additional temporal operators, eventually ($\F$) and always ($\G$) can be derived. 
 In our setting, LTL formulas are constructed from atomic propositions $\pi \in AP = \mathcal{X} \cup \mathcal{Y}$. 
 The semantics of an LTL formula $\varphi$ are defined over an infinite sequence $\sigma$ of truth assignments to the atomic propositions. 
-Let $t \in \NN$ be the position index of $\sigma$. Then, $\sigma (t)$ denotes the subset of propositions $\pi \in AP$ that are \texttt{True} at position $t$ of the sequence $\sigma$, and $\pi [t]$ denotes the valuation of a particular proposition.
+Let $t \in \NN$ be the position index of $\sigma$. Then, $\sigma (t)$ denotes the subset of propositions $\pi \in AP$ that are \texttt{True} at position $t$ of the sequence $\sigma$, and $\pi [t]$ denotes the valuation of a particular proposition at position $t$.
 
 \subsubsection*{Reactive Synthesis}
 Specifically, we use the GR(1) fragment of LTL, because its synthesis is tractable \cite{piterman_06}. GR(1) formulas $\varphi$ have an assume-guarantee structure between the environment ($e$) and the robot (system, $s$):
@@ -30,14 +30,14 @@ where $i$ denotes initial conditions, $t$ safety assumptions/requirements, and $
 
 For example, to specify the robot task ``starting in region $r_1$, repeatedly visit the region $r_2$ if you are not sensing an alarm", we would write: $r_1 \wedge \G\F \left(\neg x_{\text{alarm}} \Rightarrow  r_2 \right)$.
 
-If the formula $\varphi$ is realizable, a discrete robot strategy $\mathcal{S}$ is computed by solving a two-player game between the robot and the environment (adversarial player) \cite{piterman_06}. The strategy, which is guaranteed to be winning for the robot, is augmented with simple low-level controllers to form a hybrid controller \cite{KGFP_TRO09}.
+If the formula $\varphi$ is realizable, a discrete robot strategy $\mathcal{S}$ is computed by solving a two-player game between the robot and the environment (an adversarial player) \cite{piterman_06}. The strategy, which is guaranteed to be winning for the robot, is augmented with simple low-level controllers to form a hybrid controller \cite{KGFP_TRO09}.
 
 \subsection{LTL Mission Planning}\label{preliminariesB}
 % TODO: Rename section to "LTL from Structured English" ?
 
 The Linear Temporal Logic Mission Planning (LTLMoP) toolkit \cite{Finucane2010} is a Python-based, open-source toolkit for controlling physical and simulated robots using high-level behavior specifications.\footnote{http://ltlmop.github.io} 
-LTLMoP allows users to specify missions in either pure LTL, natural language, via a module called SLURP \cite{RamanRSS2013}, or a formal grammar called Structured English \cite{JFRKGICRA12}. 
-Structured English is designed to enable English speakers to intuitively understand behavior specifications and this paper will use it for demonstration. 
+LTLMoP allows users to specify missions in either pure LTL, natural language via a module called SLURP \cite{RamanRSS2013}, or a formal grammar called Structured English \cite{JFRKGICRA12}. 
+Structured English is designed to enable users to intuitively understand behavior specifications and this paper will use it for demonstration. 
 Specifications in Structured English are parsed using a feature-based context-free grammar and translated into formulas of LTL for controller synthesis. 
-LTLMoP provides our framework for mission specification, performs the reactive controller synthesis described above, and monitors execution of the discrete strategy in a continuous domain. 
+LTLMoP provides our framework for mission specification, performs reactive controller synthesis, and monitors execution of the resulting strategy. 
 %END
