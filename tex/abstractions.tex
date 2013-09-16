@@ -9,7 +9,7 @@ The propositions within groups invariably appear in parallel constructions when 
 This interchangeability is a property of propositions of the same type (i.e. sensors, robot propositions, or regions), therefore we further constrain groups to be sets of propositions that are all of a isngle type. 
 In summary, a group $G$ has the following property:
 \begin{equation}
-	G \subseteq \mathcal{X}_t | G \subseteq \mathcal{A}_t | G \subseteq \mathcal{R}_t
+	G \subseteq \mathcal{X}_t\,|\,G \subseteq \mathcal{A}_t\,|\,G \subseteq \mathcal{R}_t
 \end{equation}
 % TODO: The sets R, A, X are defined in section II. You can remove the explanations below. ~Spyros
 Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{A}_t \subseteq AP_t$ is the set of action propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
@@ -74,15 +74,23 @@ A consequence of abstracting specifications away from individual propositions is
 To address this difficulty, $\Lambda$ allows the definition of correspondences between propositions in groups. 
 A correspondence is a mapping from individual propositions to sets of propositions that contain at most one proposition from each group defined in the specification. 
 $\Lambda$ allows users to define correspondence either by explicitly mapping atomic propositions to one another or by mapping one group onto another. 
-For a group to correspond to another group, both groups must have the same number of elements. 
-Once correspondence has been defined in a specification, $\Lambda$ allows the use of a `corresponding' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. 
+Correspondence is denoted by the function $\mathcal{C}_\pi: AP_t \rightarrow 2^{AP_t}$, which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to, where $2^{AP}$ denotes the power set of $AP$. We say that a proposition $\pi_i$ corresponds to $\pi_j$ if and only if $\pi_j \in \mathcal{C}_\pi(\pi_i)$. 
+For defining corresondences between groups, we overload $\mathcal{C}$ to accept groups as arguments and denote this with $\mathcal{C}_G$.
+We say that a group $G_i$ corresponds to $G_j$ if and only if the following two conditions hold:
+\begin{subequations}
+\begin{align}
+	&\forall \pi_j \in G_j \forall \pi_i \in G_i : \pi_j \in \mathcal{C}_\pi(\pi_i) \\
+	&\forall \pi_i \in G_i : \mathcal{C}_\pi(\pi_i) \cap G_j \neq \emptyset
+\end{align}
+\end{subequations}
+Note that these conditions necessitate that $|G_i| = |G_j|$.
+\par Once correspondence has been defined in a specification, $\Lambda$ allows the use of a `corresponding' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. 
 To use our previous notation of $\bar{\varphi}$ and $G$, the `corresponding' operator can be written as `corresponding($G$)'. 
 The `corresponding' operator is different from the quantifiers described earlier because its semantics depend on the presence of another quantified group in the same sentence. 
 We can demonstrate this dependency with two English sentences: ``Go to the corresponding rooms'' and ``Take all of the guests to their corresponding rooms''.
 The first sentence is unclear because it is lacking the index of correspondence provided in the second sentence, namely ``all of the guests''. 
 Therefore a sentence using correspondence has two relevant groups: $G_q$, the quantified group, and $G_c$, the `corresponding' group. 
 The group acting as the index of correspondence may be paired with any of the available quantifiers, but the interpretation of quantified sentences using correspondence always results in conjunction over non-quantified sentences, as occurs with the `each' quantifier. 
-Finally, we will define a function $\mathcal{C}: AP_t \rightarrow 2^{AP_t}$, which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to, where $2^{AP}$ denotes the power set of $AP$. 
 We can now express the translation of $\bar{\varphi}$ for a sentence using correspondence as:
 \begin{equation*}
 	\bigwedge \limits_{\pi_i \in G_q} [\pi_i / G_q] [\mathcal{C}(\pi_i) \cap G_c / G_c] \bar{\varphi}
