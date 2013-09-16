@@ -3,7 +3,7 @@ We implemented the proposed approach to open-world mission specification in LTLM
 \begin{myExample}\label{Ex:mailbot3} We revisit the mailbot scenario from Examples \ref{Ex:mailbot1} and \ref{Ex:mailbot2}, and present the full mission specification, $\mathcal{M}_0$. The robot's workspace is depicted in Fig. \ref{Fig:map}.
 \end{myExample}
 
-Initially, the robot has no information about specific letters or their recipients. Therefore, it patrols the regions in \texttt{PatrolRooms}. If it senses a new letter, it will add a proposition to the group \texttt{Letters}. In simulation, LTLMoP prompts the user for the name of the proposition, e.g. \texttt{letter1}. Additionally, the \emph{add to} operator has to add a proposition to the group \texttt{Offices}, in order to maintain the correspondence. LTLMoP prompts the user a second time, and he inputs one of the region names, \texttt{r1}--\texttt{r6}. The two user prompts simulate the process of scanning the letter for the recipient's name and address, in order to name and ground the new propositions (see Assumption \ref{Ass:grounding}).
+Initially, the robot has no information about specific letters or their recipients. Therefore, it patrols the regions in \texttt{PatrolRooms}. If it senses a new letter (see Fig. \ref{Fig:sim1}), it will add a proposition to the group \texttt{Letters}. In simulation, LTLMoP prompts the user for the name of the proposition, e.g. \texttt{letter1}. Additionally, the \emph{add to} operator has to add a proposition to the group \texttt{Offices}, in order to maintain the correspondence. LTLMoP prompts the user a second time, and the user inputs one of the region names, \texttt{r1}--\texttt{r6} (see Fig. \ref{Fig:sim2}). The two user prompts simulate the process of scanning the letter for the recipient's name and address, in order to name and ground the new propositions (see Assumption \ref{Ass:grounding}).
 
 \begin{algorithm}
 	\textbf{Mission specification:} Autonomous Mailbot
@@ -48,98 +48,47 @@ Initially, the robot has no information about specific letters or their recipien
 	
 	\textbf{Open--World settings:} (immutable)\\
 	\texttt{If you are sensing newLetter then add to group Letters and resynthesize}\\
-	\texttt{If you are sensing newLetter then stay there}\\
+%	\texttt{If you are sensing newLetter then stay there}\\
 		
-	\textbf{Environment fairness assumption:} (immutable)\\
+%	\textbf{Environment fairness assumption:} (immutable)\\
 %	\texttt{Infinitely often not any Letters}\\
-	\texttt{Infinitely often not newLetter}\\
+%	\texttt{Infinitely often not newLetter}\\
 	}
-	\vspace{-10 pt}
+	\vspace{-8 pt}
 \end{algorithm}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.80\columnwidth, clip]{./img/mailbot_map.pdf}
+	\includegraphics[width=0.70\columnwidth, clip]{./img/mailbot_map.pdf}
 	\caption{Map of workspace for mailbot scenario.  Regions \texttt{r1}--\texttt{r6} are the offices of potential letter recipients.} 
 	\label{Fig:map}
 \end{figure}
 
-After the specification is rewritten, the LTL formula $\varphi [k]$ changes to $\varphi [k+1]$, according to Eqs. \eqref{Eq:newSpecA} and \eqref{Eq:newSpecB}. The change involved adding a new mission goal: the delivery of \texttt{letter1} to the corresponding office \texttt{r1}. Specifically, compared to $\varphi_g^s [k]$, $\varphi_g^s [k+1]$ contains the additional liveness requirement:
-\begin{equation*}
-	\G\F\left( \texttt{letter1} \Rightarrow \texttt{r1} \right)
-\end{equation*}
+After the specification is rewritten, the LTL formula $\varphi [k]$ changes to $\varphi [k+1]$, according to Eqs. \eqref{Eq:newSpecA} and \eqref{Eq:newSpecB}. The change involves adding a new mission goal: the delivery of \texttt{letter1} to the corresponding office \texttt{r1}. Specifically, compared to $\varphi_g^s [k]$, $\varphi_g^s [k+1]$ contains the additional liveness requirement:
+$\G\F\left( \texttt{letter1} \Rightarrow \texttt{r1} \right)$.
 
-After resynthesis, the robot can now sense letters in two ways. First, it could detect a letter addressed to the same recipient as \texttt{letter1}. In this case, \texttt{letter1} will become \texttt{True}, and the robot will deliver the letter to \texttt{r1}. Second, it could detect a letter addressed to a new recipient. In that case, the sensor \texttt{newLetter} will become \texttt{True}, and the \emph{add to group} operator will once again cause new propositions to be added to \texttt{Letters} and \texttt{Offices}.
+After resynthesis (see Fig. \ref{Fig:sim3}), the robot can now sense letters in two ways. First, it could detect a letter addressed to the same recipient as \texttt{letter1}. In this case, \texttt{letter1} will become \texttt{True}, and the robot will deliver the letter to \texttt{r1}. Second, it could detect a letter addressed to a new recipient. In that case, the sensor \texttt{newLetter} will become \texttt{True}, and the \emph{add to group} operator will once again cause new propositions to be added to \texttt{Letters} and \texttt{Offices}.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.99\columnwidth}
+	\includegraphics[width=0.99\columnwidth, clip]{./img/sim1.jpg}
+	\caption{A new letter is detected. The user names the proposition.} 
+	\label{Fig:sim1}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{0.99\columnwidth}
+	\includegraphics[width=0.99\columnwidth, clip]{./img/sim2.jpg}
+	\caption{The user is asked to ground the new office proposition.} 
+	\label{Fig:sim2}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{0.99\columnwidth}
+	\includegraphics[width=0.99\columnwidth, clip]{./img/sim3.jpg}
+	\caption{\texttt{letter1} and \texttt{r1} were added to \texttt{Letters} and \texttt{Offices}, respectively. Execution resumes, with \texttt{letter1} = \texttt{True}.} 
+	\label{Fig:sim3}
+	\end{subfigure}
+	\caption{Simulation of Example \ref{Ex:mailbot3} in LTLMoP.}\label{Fig:sim}
+\end{figure}
 
 % END
-%
-%\begin{myExample}\label{Ex:restaurant} Robotic Waiter \\
-%	Overview of task \ldots
-%\end{myExample}
-%
-%\begin{algorithm}
-%	\textbf{Mission specification:} Robotic Waiter\\
-%	{\small
-%	\texttt{Group Customers is empty}\\
-%	\texttt{Group Orders is empty}\\
-%	\texttt{Group ... is empty}\\
-%	\texttt{Group ... is empty}\\
-%	
-%	\texttt{Orders correspond to Customers}\\
-%	\texttt{... correspond to...}\\
-%	
-%	\texttt{if you are activating any Orders then go to kitchen and do corresponding FoodPickUp and go to corresponding Customer and do corresponding ServeFood}\\
-%	\texttt{...}\\
-%	
-%	\texttt{...}\\
-%	}
-%	
-%	\textbf{Open World Settings:}\\
-%	{\small
-%	\texttt{if you are sensing newOrder then add to Orders}\\ % TODO: ... and add to corr. groups?
-%	\texttt{...} 
-%	}
-%\end{algorithm}
-%
-%\begin{myExample}\label{Ex:planetxplore} Autonomous Planetary Exploration\\
-%	Consider now the more futuristic scenario of autonomous planetary exploration using rovers. In order to lessen the dependency of the rover from the engineers on Earth, the rover will be given a mission specification that it should carry out autonomously. However, the need to redefine the mission will arise as the rover discovers interesting elements of its environment, such as new types of rock and regions interest. In these cases, the engineers and scientists on Earth should be able to extend the rover's mission specification without sacrificing correctness or rewriting the specification from scratch.
-%	
-%	Specifics: exploration, new stuff sensor, new requests.
-%\end{myExample}
-%
-%\begin{algorithm}
-%	\textbf{Mission specification:} Autonomous Planetary Exploration\\
-%	{\small
-%	\texttt{Group InterestingRegions is empty}\\
-%	\texttt{Group PendingRequests is empty}\\
-%	\texttt{Group Sites is empty}\\
-%	\texttt{Group Actions is empty}\\
-%	
-%	\texttt{Sites correspond to Requests}\\
-%	\texttt{Actions correspond to Requests}\\
-%	
-%	\texttt{Recharging is set on BatteryLow and reset on BatteryFull}\\
-%	\texttt{if you are activating Recharging then stay there}\\
-%	\texttt{infinitely often BatteryFull}\\
-%	
-%	\texttt{visit each InterestingRegion and do Panorama}\\
-%	\texttt{if you are activating any PendingRequests then go to the corresponding Site and do the corresponding Action}\\
-%	\texttt{each PendingRequest is toggled on the corresponding Site and the corresponding Action}\\
-%	}
-%	
-%	\textbf{Exploration Settings:}\\
-%	{\small
-%	\texttt{do exploreMODE if and only if you are not activating Recharging}\\
-%	\texttt{if you are sensing newInterestingRegion then add to InterestingRegions}\\
-%	\texttt{...} 
-%	}
-%\end{algorithm}
-%
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.7\columnwidth, clip]{./img/planetXplore_regions.pdf}
-%	\caption{Workspace for the autonomous planetary exploration scenario (to be updated and broken down to intermediate exploration steps).}
-%	% TODO: Update this map. Regions should be around the land site! No mountain next to it either.
-%	% Instead of the final map, show intermediate steps as the workspace is expanded.
-%	\label{Fig:planetxplore}
-%\end{figure}
