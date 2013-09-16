@@ -5,7 +5,7 @@ First-order logic differs from propositional logic and LTL by its use of predica
 Two types of quantification are allowed in first-order logic: universal quantification using $\forall$ and existential quantification using $\exists$. 
 \par $\Lambda$ allows quantification over sets of propositions, which we refer to as groups. 
 This allows users to specify reactive behaviors in terms of groups of propositions instead of explicitly naming propositions. 
-The propositions within groups invariably appear in parallel constructions when groups are invoked in a specification, therefore they must all be grammatically interchangeable within a specification. 
+Quantification behaves identically towards all propositions within a group, therefore they must all be grammatically interchangeable within a specification. 
 This interchangeability is a property of propositions of the same type (i.e. sensors, robot propositions, or regions), therefore we further constrain groups to be sets of propositions that are all of a single type. 
 In summary, a group $G$ has the following property:
 \begin{equation}
@@ -13,7 +13,6 @@ In summary, a group $G$ has the following property:
 \end{equation}
 % TODO: The sets R, A, X are defined in section II. You can remove the explanations below. ~Spyros
 Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{A}_t \subseteq AP_t$ is the set of action propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
-A mission in $\Lambda$ can define any group satisfying this property.
 This generalizes the work in \cite{BingxinRSS2012}, which focused only on groups of region propositions. 
 Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, is not fixed. 
 For instance, alternative implementations of $\Lambda$ would be possible in a formal grammar like Structured English\cite{Finucane2010} and in a natural language processor like SLURP\cite{RamanRSS2013}, with different syntax in both. 
@@ -25,11 +24,11 @@ $\Lambda$ contains three quantifiers, which we call `any', `all', and `each'.
 For quantification to be meaningful in a robot's behavior the parser $\mathcal{P}_{\Lambda}$ must be able to translate the semantics of these first-order logic operations into LTL formulas $\varphi$.
 In this section we define LTL interpretations of quantification in $\Lambda$.  
 To explain the semantics of these quantifiers, we will use $\bar{\varphi}$ to denote the translation of a sentence in $\Lambda$ into first-order logic. 
-\par Let $\bar{\varphi}$ be the translation of and expression in $\Lambda$ into an expression containing only LTL operators and quantified groups. 
+\par Let $\bar{\varphi}$ be the translation of an expression in $\Lambda$ into an expression containing only LTL operators and quantified groups. 
 Using $G$ to denote a group, we can write the quantification of groups in $\bar{\varphi}$ as `any($G$)', `all($G$)', or `each($G$)'. 
 We will also use $[y/x]\bar{\varphi}$ to denote the expression that results from replacing all occurrences of $x$ in $\bar{\varphi}$ with $y$. 
 \par
-The quantifier `any($G$)' in a sentence is simply translated as the logical disjunction of every proposition in the group named by $G$. 
+The quantifier `any($G$)' in a sentence is translated as the logical disjunction of every proposition in the group named by $G$. 
 That is, $\bar{\varphi}$ is translated into: 
 \begin{equation*}
 	[ t / \text{any}(G)] \bar{\varphi}
@@ -56,34 +55,34 @@ $\bar{\varphi}$ is translated into:
  	\bigwedge\limits_{\pi_i \in G} [\pi_i / \text{each}(G)] \bar{\varphi}
 \end{equation*}
 \par
-With these abstractions, we can write compact, expressive, and intuitive specifications. 
-\par
 %TODO: The following example shouldn't use structured english...
 \begin{myExample}\label{Ex:quantifiers} 	
 	Consider a scenario where a robot is helping to manage a hotel. 
 	The robot has a group of regions representing the rooms in the hotel, a group of sensors indicating whether rooms are occupied, with a proposition for every room, and actions for cleaning a room, welcoming guests, and apologizing to guests. 
 	Part of the robot's specification might be expressed in English as:
-	``If any rooms are occupied and not all rooms are occupied then welcome guests. 
+	``If some rooms are occupied but not all rooms are occupied then welcome guests. 
 	If all rooms are occupied then apologize to guests. 
 	If none of the rooms are occupied then go to each room and clean the room.''
 	Using the quantifiers in $\Lambda$, this behavior can be expressed without explicitly naming individual propositions. 
 \end{myExample}
 
 \subsection{Proposition Correspondence} 
-A consequence of abstracting specifications away from individual propositions is that relationships between propositions become more difficult to denote. 
+One consequence of writing specifications without individual propositions is that relationships between propositions become more difficult to denote in specifications. 
+For instance if a robot were operating in a workspace with groups of regions that had one-to-one relationships, such as pick-up and drop-off locations, those relationships cannot be specified without explicitly naming individual propositions. 
 To address this difficulty, $\Lambda$ allows the definition of correspondences between propositions in groups. 
 A correspondence is a mapping from individual propositions to sets of propositions that contain at most one proposition from each group defined in the specification. 
 $\Lambda$ allows users to define correspondence either by explicitly mapping atomic propositions to one another or by mapping one group onto another. 
-Correspondence is denoted by the function $\mathcal{C}_\pi: AP_t \rightarrow 2^{AP_t}$, which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to, where $2^{AP}$ denotes the power set of $AP$. We say that a proposition $\pi_i$ corresponds to $\pi_j$ if and only if $\pi_j \in \mathcal{C}_\pi(\pi_i)$. 
-For defining correspondences between groups, we define another correspondence function $\mathcal{C}_G$, which operates on groups of propositions.
+Correspondence is denoted by the function $\mathcal{C}_\pi: AP \rightarrow 2^{AP}$, which takes in an atomic proposition and returns the set of propositions that it has been defined to correspond to, where $2^{AP}$ denotes the power set of $AP$. We say that a proposition $\pi_i$ corresponds to $\pi_j$ if and only if $\pi_j \in \mathcal{C}_\pi(\pi_i)$. 
+For defining correspondences between groups, we define another correspondence function $\mathcal{C}_G$, which operates on groups of propositions. 
 We say that a group $G_i$ corresponds to $G_j$, written as $G_j \in \mathcal{C}_G(G_i)$ if and only if the following two conditions hold:
 \begin{subequations}
 \begin{align}
-	&\forall \pi_j \in G_j \exists \pi_i \in G_i : \pi_j \in \mathcal{C}_\pi(\pi_i) \\
+	&\forall \pi_j \in G_j \exists! \pi_i \in G_i : \pi_j \in \mathcal{C}_\pi(\pi_i) \\
 	&\forall \pi_i \in G_i : \mathcal{C}_\pi(\pi_i) \cap G_j \neq \emptyset
 \end{align}
 \end{subequations}
-Note that these conditions necessitate that $|G_i| = |G_j|$. 
+Where $\exists!$ denotes unique existence. 
+Note that these conditions necessitate that $|G_i| = |G_j|$. %NOT TRUE: FIXXX
 In the remainder of this paper we will omit the subscripts on $\mathcal{C}$ when its usage is clear. 
 \par Once correspondence has been defined in a specification, $\Lambda$ allows the use of a `corresponding' operator to implicitly refer to the relationship between individual propositions without explicitly referring to the propositions themselves. 
 To use our previous notation of $\bar{\varphi}$ and $G$, the `corresponding' operator can be written as `corresponding($G$)'. 
@@ -91,7 +90,7 @@ The `corresponding' operator is different from the quantifiers described earlier
 We can demonstrate this dependency with two English sentences: ``Go to the corresponding rooms'' and ``Take all of the guests to their corresponding rooms''.
 The first sentence is unclear because it is lacking the index of correspondence provided in the second sentence, namely ``all of the guests''. 
 Therefore a sentence using correspondence has two relevant groups: $G_q$, the quantified group, and $G_c$, the `corresponding' group. 
-The group acting as the index of correspondence may be paired with any of the available quantifiers, but the interpretation of quantified sentences using correspondence always results in conjunction over non-quantified sentences, as occurs with the `each' quantifier. 
+$G_q$ may be paired with any of the available quantifiers, but the interpretation of quantified sentences using correspondence always results in conjunction over statements, as occurs with the `each' quantifier. 
 We can now express the translation of $\bar{\varphi}$ for a sentence using correspondence as:
 \begin{equation*}
 	\bigwedge \limits_{\pi_i \in G_q} [\pi_i / G_q] [\mathcal{C}(\pi_i) \cap G_c / G_c] \bar{\varphi}
