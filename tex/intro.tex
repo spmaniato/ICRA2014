@@ -1,5 +1,5 @@
 In order for robots to become widely accessible, users must be able to command them by specifying high-level behaviors, rather than programming low-level robot controllers.
-This type of robot control has recently become possible by applying tools and ideas from formal methods and hybrid systems to the field of robotics. The resulting methodologies translate high-level tasks to discrete and subsequently low-level continuous controllers in a correct-by-contstruction manner \cite{BBEFKP06, KGFP_TRO09, KaramanCDC2009, Wongpiromsarn2010, LaValleRSS2011, BhatiaRAM2011, Belta2013RSS}.
+This type of robot control has recently become possible by applying tools and ideas from formal methods and hybrid systems to the field of robotics. The resulting methodologies translate high-level tasks to discrete and subsequently low-level continuous controllers in a correct-by-construction manner \cite{BBEFKP06, KGFP_TRO09, KaramanCDC2009, Wongpiromsarn2010, LaValleRSS2011, BhatiaRAM2011, Belta2013RSS}.
 \emph{Reactive} approaches account for a dynamic, and possibly adversarial, environment, and are thus of particular interest. For example, the framework in \cite{KGFP_TRO09} takes a logic formula that contains the mission specification and, by solving a two-player game between the robot and its environment \cite{piterman_06}, outputs a hybrid controller that is guaranteed to accomplish the mission. Other reactive approaches have been proposed, e.g., in \cite{Wongpiromsarn2010} and \cite{Belta2013RSS}.
 
 These approaches operate under the closed-world assumption, i.e., the robot only accounts for what was modeled before execution, and no information can be added autonomously, i.e. without a human re-specifying the mission.
@@ -20,7 +20,7 @@ This mission is relatively simple, and yet the robot's world is already open w.r
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.7\columnwidth, clip]{./img/mailbot.jpg}
-	\caption{Our implementation of a mailbot. A Nao humanoid robot is mounted on a segway platform that includes a lidar sensor. The actuation and perception capabilities of the former are complemented by the localization, navigation and mobility advantages of the latter.}
+	\caption{Our implementation of a mailbot. A Nao humanoid robot is mounted on a Segway platform that includes a Lidar sensor. The actuation and perception capabilities of the former are complemented by the localization, navigation and mobility advantages of the latter.}
 	\label{Fig:mailbot}
 \end{figure}
 
