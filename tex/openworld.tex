@@ -83,7 +83,7 @@ To address Problem \ref{Prob:correspondence}, we introduce another element to th
 Returning to Example \ref{Ex:mailbot2}, the add to Group operator would be applied as follows: 
 $$ \texttt{add\_to}(\pi_{mt}, \left\{ G_1 \right\}) = ( \left\{ G_1 \right\},  \left\{ G_2 \right\}),$$
 where $G_1$ and $G_2$ stand for \texttt{Letters} and \texttt{Offices}, respectively.
-The equivalent Structured English task would be: \texttt{if you are sensing newLetter then add to group Letters}, where \texttt{newLetter} is the label of a sensor $d_m \in \mathcal{D}$. The new propositions are named by either a predefined naming scheme, prompting the human user, or using information from the low-level sensor that is abstracted by the proposition $d_m$. For example, the new ``letter" proposition could be named after the recipient's name, e.g. \texttt{letter\_johnDoe}, while the ``office" proposition after the address printed on the letter, e.g. \texttt{Room\_155}.
+The equivalent Structured English task would be: \texttt{if you are sensing newLetter then add to group Letters}, where \texttt{newLetter} is the label of a sensor $d_m \in \mathcal{D}$. The new propositions are named by either a predefined naming scheme, prompting the human user, or using information from the low-level sensor that is abstracted by the proposition $d_m$. For example, the new ``letter" proposition could be named after the recipient's name, e.g. \texttt{letter\_johnDoe}, while the ``office" might use the address printed on the letter, e.g. \texttt{Room\_155}.
 
 Since we are now adding propositions besides those added by the detection sensors $d_m \in \mathcal{D}$, as a direct result of the open world, we have to restate Definition \ref{Def:openworld} as follows:
 
