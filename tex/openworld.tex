@@ -39,8 +39,8 @@ As already mentioned, even if $G_1, G_2 \in \mathcal{M}_0$ were empty, the user 
 Let a letter corresponding to a new recipient be sensed by a sensor $d_{m} \in \mathcal{D}$, e.g. labeled \texttt{newLetter}. Then, a new proposition, $\pi_{mt}$, e.g. labeled \texttt{letter3}, would be added to $AP_t$. 
 There are two requirements for the specification $\mathcal{M}_{k+1}$ to reflect the addition of the new proposition. 
 First, $\pi_{mt}$ has to be added to $G_1$, not just the set of all propositions $AP_t$. 
-Second, an office proposition, $\pi_{mt}^\prime = \texttt{office3}$, has to be created, if necessary, and added to $G_2$, in order to reestablish correspondence, i.e., $G_2 \in \mathcal{C}(G_1)$, where now $G_{1} = G_1 \cup \left\{ \pi_{mt} \right\}$, $G_{2} = G_2 \cup \{ \pi_{mt}^\prime \}$. 
-Then, we would have $\pi_{mt}^\prime \in \mathcal{C}(\pi_{mt})$. 
+Second, an office proposition, $\pi^\prime = \texttt{office3}$, has to be created, if necessary, and added to $G_2$, in order to reestablish correspondence, i.e., $G_2 \in \mathcal{C}(G_1)$, where now $G_{1}^\prime = G_1 \cup \left\{ \pi_{mt} \right\}$, $G_{2}^\prime = G_2 \cup \{ \pi^\prime \}$. 
+Then, we would have $\pi^\prime \in \mathcal{C}(\pi_{mt})$. 
 The two requirements are generalized in Problem \ref{Prob:correspondence}, which is a subproblem of Problem \ref{Prob:newSpec}.
 
 \begin{myProblem}\label{Prob:correspondence} % Remove 'm' from sub/super-scripts?
@@ -69,7 +69,7 @@ To address Problem \ref{Prob:correspondence}, we introduce another element to th
 	$\mathbb{G}_\mathcal{C}$.
 	That is,
 	\begin{equation}
-		(\mathbb{G}^\prime, \mathbb{G}_{\mathcal{C}}^\prime) = \texttt{add\_to}(\pi_{mt}, \mathbb{G}, \mathcal{C}),
+		(\mathbb{G}^\prime, \mathbb{G}_{\mathcal{C}}^\prime) = \texttt{add\_to}(\pi_{mt}, \mathbb{G}),
 	\end{equation}
 	where
 	\begin{subequations}
@@ -85,7 +85,7 @@ To address Problem \ref{Prob:correspondence}, we introduce another element to th
 % Disjoint sets
 
 Returning to Example \ref{Ex:mailbot2}, the add to Group operator would be applied as follows: 
-$$ \texttt{add\_to}(\pi_{mt}, G_1) = (G_1, G_2),$$
+$$ \texttt{add\_to}(\pi_{mt}, \left\{ G_1 \right\}) = ( \left\{ G_1 \right\},  \left\{ G_2 \right\}),$$
 where $G_1$ and $G_2$ stand for \texttt{Letters} and \texttt{Offices}, respectively.
 The equivalent Structured English task would be: \texttt{if you are sensing newLetter then add to group Letters}, where \texttt{newLetter} is the label of a sensor $d_m \in \mathcal{D}$. The new propositions are named by either a predefined naming scheme, prompting the human user, or using information from the low-level sensor that is abstracted by the proposition $d_m$. For example, the new ``letter" proposition could be named after the recipient's name, e.g. \texttt{letter\_johnDoe}, while the ``office" proposition after the address printed on the letter, e.g. \texttt{Room\_155}.
 
@@ -110,12 +110,15 @@ For instance, in Example \ref{Ex:mailbot2}, a new letter would result in new pro
 
 \subsection{Updating the Controller}
 
-All the specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpecB}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``resynthesis" \cite{BingxinRSS2012}. We associate a robot proposition, e.g. \texttt{resynthesize}, with it. For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
+The specification rewriting described so far has resulted in mission specification $\mathcal{M}_{k+1}$ that can be parsed to an LTL specification $\varphi [k+1]$, according to Eq. \eqref{Eq:newSpecB}. However, for the updates to be reflected in the robot's controller, $\varphi [k+1]$ has to be passed to the synthesis algorithm in order to extract a new winning strategy. This process is dubbed ``resynthesis", and it is based on the work in \cite{BingxinRSS2012}.
+
+Since we want to enable the user to specify when resynthesis should take place,
+we associate a robot proposition, e.g. \texttt{resynthesize}, with it. 
+For example, in the setting of Example \ref{Ex:mailbot2}, and using Structured English, we could say:
 \texttt{if you are sensing newLetter then add to group Letters and resynthesize}. 
+In this task, the robot would update its strategy immediately after detecting a letter for a new recipient. In the search and rescue setting of Example \ref{Ex:SnS} below, it would make more sense for the robot to finish executing other actions before resynthesizing.
 
-Notice that the user chooses when resynthesis will take place. Given the task above, the robot would update its strategy immediately after detecting a letter for a new recipient. In a search and rescue setting, it would make more sense for the robot to finish executing other actions before re-synthesizing.
-
-\begin{myExample}\label{Ex:SnS} A robot is tasked with exploring a disaster site, and rescuing survivors. It is more sensible to have the robot finish a rescue and then re-synthesize, in order to incorporate new regions of interest into its mission.
+\begin{myExample}\label{Ex:SnS} A robot is tasked with exploring a disaster site, and rescuing survivors. It is more sensible to have the robot finish a rescue, and then resynthesize in order to incorporate new regions of interest into its mission.
 	\begin{algorithm}
 	\textbf{Mission specification:} (partial) Search and Rescue
 	
@@ -130,7 +133,7 @@ Notice that the user chooses when resynthesis will take place. Given the task ab
 	\vspace{-10 pt}
 	\end{algorithm}
 	
-The proposition \texttt{needToResynthesize} is a robot memory proposition (Section \ref{preliminariesA}) that enables the robot to remember it detected a new region and that it has to re-synthesize eventually.
+The proposition \texttt{needToResynthesize} is a robot memory proposition (Section \ref{preliminariesA}) that enables the robot to remember it detected a new region and that it has to resynthesize eventually.
 \end{myExample}
 
 The definition of the \emph{add to Group} operator and \emph{resynthesis} conclude the augmentation of the specification language $\Lambda$. Our approach is graphically summarized in Fig. \ref{Fig:approach}.
@@ -138,7 +141,7 @@ The definition of the \emph{add to Group} operator and \emph{resynthesis} conclu
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.9\columnwidth, clip]{./img/approach.pdf}
-	\caption{Illustration of our approach, where, for clarity, a single new proposition $\pi_{m}$ is added to a single group $G_m$, which has two corresponding groups $\mathcal{C}(G_m)$. The part of $\mathcal{M}_{k+1}$ denoted as \texttt{Tasks} is immutable throughout the rewriting and resynthesis processes. $\mathcal{S}^\prime$ denotes the revised robot controller.} % TODO: Write stuff here
+	\caption{Illustration of our approach, where, for clarity, a single new proposition $\pi_{m}$ is added to a single group $G_m$, which has two corresponding groups, $\mathcal{C}(G_m)$. The part of $\mathcal{M}_{k+1}$ denoted as \texttt{Tasks} is immutable throughout the rewriting and resynthesis processes. $\mathcal{S}^\prime$ denotes the revised robot controller.} % TODO: Write stuff here
 	\label{Fig:approach}
 \end{figure}
 % END
