@@ -1,21 +1,19 @@
-Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world. Specifically, in our framework, the world is closed if and only if $AP$, the set of atomic propositions from which LTL specifications are constructed, is fixed. That is, if the robot encounters a new element in its world (such as a new object), which was not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
+%Using the terminology in Section \ref{preliminaries}, we can express the notion of a \emph{closed} world. Specifically, in our framework, the world is closed if and only if $AP$, the set of atomic propositions from which LTL specifications are constructed, is fixed. 
+Using the terminology in Section \ref{preliminaries}, we say that the world is \emph{closed} if and only if $AP$, the set of atomic propositions, is fixed. 
+That is, if the robot encounters a new element in its world (such as a new object), which was not modeled as a proposition $\pi \in AP$, it will essentially ignore it, even if it is relevant to the mission.
 
 Three main reasons motivate the need for open-world mission specification and planning. First, in applications such as autonomous search and rescue scenarios, the mission is often specified before the robot has obtained full knowledge of the world. Second, the robot may have to incorporate new functions and respond to new events during execution. Finally, the mission's set of atomic propositions $AP$ may be too large for the user to enumerate a priori.
 %To clarify these reasons, we introduce an illustrative example:
 
-We begin our formal analysis of the problem by defining a model of an open world.
-
-Let $\W$ be a sequence of sets of atomic propositions:
-\begin{equation}\label{Eq:W}
-%	\W = \left\{ AP_0, AP_1, \ldots, AP_k \right\},
-	\W = AP_0 AP_1 \ldots AP_k,
-\end{equation}
-where $AP_{k+1} \not = AP_k$, and $k \in \NN$.
+We begin our formal analysis of the problem by defining a model of an open world. Let $\W$ be a sequence of sets of atomic propositions,
+%\begin{equation}\label{Eq:W}
+%	\W = AP_0 AP_1 \ldots AP_k,
+%\end{equation}
+$\W = AP_0 AP_1 \ldots AP_k$, where $AP_{k+1} \not = AP_k$, and $k \in \NN$.
 
 Also, let $\mathcal{D} = \left\{ d_1, \ldots, d_m, \ldots, d_M \right\}$ represent the abstract sensors that are responsible for detecting $M$ different \emph{classes} of new elements in the open world, where $\mathcal{D} \subseteq \mathcal{X}_k \subset AP_k, \forall k$. For instance, one sensor $d$ may detect new letters, whereas another new offices. 
 The number of new elements that can be detected is not bounded by $M$, since each sensor in $\mathcal{D}$ can trigger multiple times over the course of a mission.
-
-In addition, let $D$ be a function that reads the sensors that the environment propositions $\mathcal{D}$ abstract, and returns a new proposition if the sensors detected an unmodeled element of the world:
+In addition, let $D$ be a function that reads the sensors abstracted by $\mathcal{D}$, and returns a new proposition if the sensors detected an unmodeled element of the world:
 \begin{equation}\label{Eq:detection}
 	D(m, t) = 
 	\begin{cases}
@@ -25,7 +23,7 @@ In addition, let $D$ be a function that reads the sensors that the environment p
 \end{equation}¥
 where $d_m[t]$ denotes the value of the binary sensor $d_m$ at position $t$ of the infinite sequence $\sigma$ (Section \ref{preliminariesA}), and $\pi_{mt} \not \in AP_t$. The new proposition $\pi_{mt}$ can be either a sensor, an action, or a region proposition.
 
-Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state the open world model that we consider in this paper.
+Putting everything together, we state the open-world model that we consider in this paper.
 
 \begin{myDefinition}\label{Def:openworld}	
 	\textbf{(Expanding Open World Model):}
@@ -41,7 +39,9 @@ Putting together Equations \eqref{Eq:W} -- \eqref{Eq:detection}, we state the op
 		\W, & \text{otherwise}
 	\end{cases}
 	\end{equation}
-If the world is closed w.r.t. elements sensed by the sensors $d_m \in \mathcal{D}$, then $\W = AP_0, \forall t$.
+As a corollary, if the world is closed, then $\W = AP_0, \forall t$.
+%w.r.t. elements sensed by the sensors $d_m \in \mathcal{D}$
+
 %	and the index $k$ is then incremented only if any of the $M$ detection sensors $\mathcal{D}$ become $\texttt{True}$:
 %	\begin{equation*}
 %		k \leftarrow 
@@ -52,12 +52,15 @@ If the world is closed w.r.t. elements sensed by the sensors $d_m \in \mathcal{D
 %	\end{equation*}
 	\end{myDefinition} 
 
-We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_t$ in Eq. \eqref{Eq:updateAP} with additional new propositions. 
+%We will return to this definition in Section \ref{openworld}, where we augment the update of the sets $AP_t$ in Eq. \eqref{Eq:updateAP} with additional new propositions. 
+We will return to this definition in Section \ref{openworld}, where we augment the update of $AP_t$ with additional new propositions. 
 
 Notice the assumptions regarding $\W$ that Eq. \eqref{Eq:updateAP} makes:
 
 \begin{myAssumption}\label{Ass:noRemove}
-	$\W$ only models the {\em addition} of propositions as a result of new elements of the open world. That is, $AP_{k} \subset AP_{k+1}$. In other words, propositions cannot be removed. Hence, $\W$ is dubbed an \emph{expanding} open world model.
+	$\W$ only models the {\em addition} of propositions.
+%	as a result of new elements of the open world. 
+	That is, $AP_{k} \subset AP_{k+1}$. In other words, propositions cannot be removed. Hence, $\W$ is dubbed an \emph{expanding} open world model.
 \end{myAssumption}
 
 \begin{myAssumption}\label{Ass:onlyM}
