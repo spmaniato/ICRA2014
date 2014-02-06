@@ -21,16 +21,19 @@ Let $t \in \NN$ be the position index of $\sigma$. Then, $\sigma (t)$ denotes th
 
 \subsubsection*{Reactive Synthesis}
 Specifically, we use the GR(1) fragment of LTL, because its synthesis is tractable \cite{piterman_06}. GR(1) formulas $\varphi$ have an assume-guarantee structure between the environment ($e$) and the robot (system, $s$):
-\begin{align*}
-	\varphi &= (\varphi_e \Rightarrow \varphi_s),\\
-	\varphi_e &= \varphi_i^e \wedge \varphi_t^e \wedge \varphi_g^e,\\
-	\varphi_s &= \varphi_i^s \wedge \varphi_t^s \wedge \varphi_g^s
-\end{align*}
+%\begin{align*}
+%	\varphi &= (\varphi_e \Rightarrow \varphi_s),\\
+%	\varphi_e &= \varphi_i^e \wedge \varphi_t^e \wedge \varphi_g^e,\\
+%	\varphi_s &= \varphi_i^s \wedge \varphi_t^s \wedge \varphi_g^s
+%\end{align*}
+$$
+\varphi = (\varphi_e \Rightarrow \varphi_s); \varphi_e = \varphi_i^e \wedge \varphi_t^e \wedge \varphi_g^e; \varphi_s = \varphi_i^s \wedge \varphi_t^s \wedge \varphi_g^s
+$$
 where $i$ denotes initial conditions, $t$ safety assumptions/requirements, and $g$ liveness assumptions/requirements (goals) for the environment and the robot, respectively.
 
-For example, to specify the robot task ``starting in region $r_1$, repeatedly visit the region $r_2$ if you are not sensing an alarm", we would write: $r_1 \wedge \G\F \left(\neg x_{\text{alarm}} \Rightarrow  r_2 \right)$.
+%For example, to specify the robot task ``starting in region $r_1$, repeatedly visit the region $r_2$ if you are not sensing an alarm", we would write: $r_1 \wedge \G\F \left(\neg x_{\text{alarm}} \Rightarrow  r_2 \right)$.
 
-If the formula $\varphi$ is realizable, a discrete robot strategy $\mathcal{S}$ is computed by solving a two-player game between the robot and the environment (an adversarial player) \cite{piterman_06}. The strategy, which is guaranteed to be winning for the robot, is augmented with simple low-level controllers to form a hybrid controller \cite{KGFP_TRO09}.
+If the formula $\varphi$ is realizable, a discrete robot strategy $\mathcal{S}$ is computed by solving a two-player game between the robot and the environment (adversary) \cite{piterman_06}. The strategy, which is guaranteed to be winning for the robot, is augmented with simple low-level controllers to form a hybrid controller \cite{KGFP_TRO09}.
 
 \subsection{LTL Mission Planning}\label{preliminariesB}
 % TODO: Rename section to "LTL from Structured English" ?
