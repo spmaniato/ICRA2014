@@ -8,7 +8,7 @@ However, robots have moved from the cloistered assembly line to such highly unst
 %Thus, there is a need for high-level robot controllers that adapt to the discrepancies between the robot's model of the world and reality. 
 In addition, robots are sometimes asked to incorporate new functions during execution. 
 Examples include reconfigurable modular robots \cite{ModularIROS2011}, as well as robots that learn on-the-fly \cite{SaxenaIJRR2012} or query online knowledge repositories \cite{rapyuta2013}. 
-Finally, the world may be open with respect to (w.r.t.) goals added after the robot has been deployed, as in the case of urban search and rescue tasks \cite{MatthiasAI2010}, military scenarios \cite{gda2013}, and autonomous space and planetary exploration missions \cite{spaceXplore2006}. 
+Finally, the world may be open with respect to goals added after the robot has been deployed, as in the case of urban search and rescue \cite{MatthiasAI2010}, military scenarios \cite{gda2013}, and autonomous space and planetary exploration \cite{spaceXplore2006}. 
 
 \begin{myExample}\label{Ex:mailbot1}
 Consider a robotic courier, i.e., a ``mailbot", (see Fig. \ref{Fig:mailbot}) deployed in a school or company building. 
@@ -17,11 +17,26 @@ This mission is relatively simple, and yet the robot's world is already open w.r
 %Even if all possible recipients, and the locations of their offices, are fixed, the information may not be available a priori.
 \end{myExample}
 
+%\begin{figure}[t]
+%	\centering
+%	\includegraphics[width=0.7\columnwidth, clip]{./img/mailbot.jpg}
+%	\caption{Above is our implementation of a mailbot. An Aldebaran Nao humanoid robot is mounted on a Segway platform that includes a Lidar sensor. The actuation and perception capabilities of the Nao are complemented by the localization, navigation and mobility advantages of the Segway.}
+%	\label{Fig:mailbot}
+%\end{figure}
+
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.7\columnwidth, clip]{./img/mailbot.jpg}
-	\caption{Above is our implementation of a mailbot. An Aldebaran Nao humanoid robot is mounted on a Segway platform that includes a Lidar sensor. The actuation and perception capabilities of the Nao are complemented by the localization, navigation and mobility advantages of the Segway.}
+	
+	\begin{subfigure}[b]{0.493\columnwidth}
+	\includegraphics[width=\columnwidth]{img/mailbot_front.jpg}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.493\columnwidth}
+	\includegraphics[width=\columnwidth]{img/mailbot_side.jpg}
+	\end{subfigure}	
+	\caption{Our robotic courier: an Aldebaran Nao humanoid robot is mounted on a Segway-based, mobility and sensing platform.}
 	\label{Fig:mailbot}
+	\vspace{-5 pt}
 \end{figure}
 
 In order to obtain controllers for open worlds, a number of challenges have to be overcome. 
@@ -34,7 +49,8 @@ Moreover, there is the the challenge of specifying open-world missions in the fi
 Specification languages and abstractions have been developed for similar tasks with both formal \cite{Joshi2012, MatthiasAI2010} and statistical \cite{Tellex2011} methods.
 This paper differs from previous approaches in its use of correct-by-construction controller synthesis in an open world, requiring new techniques.
 
-In this paper, we first propose an approach to writing high-level missions such that the robot's tasks can be specified in terms of elements in the world that are unknown prior to execution. This is accomplished via \emph{open-world abstractions}, which allow us to specify behaviors implicitly. 
+%In this paper, we first propose an approach to writing high-level missions such that the robot's tasks can be specified in terms of elements in the world that are unknown prior to execution. This is accomplished via \emph{open-world abstractions}, which allow us to specify behaviors implicitly. 
+In this paper, we first propose \emph{open-world abstractions}, which allow us to specify high-level robot behaviors in terms of elements in the world that are unknown prior to execution.
 Furthermore, they allow the specification to be updated in an autonomous fashion, as new elements of interest are discovered. The new elements include, but are not limited to, the sensing of new objects and events, and the discovery of new regions of the workspace, and they may lead to new mission constraints and/or goals.
 We show how the mission specification can be systematically and automatically rewritten on-the-fly, in order to correctly incorporate these new elements of the open world. 
 %Finally, our high-level approach allows the user to control how the new elements will be accounted for, and when the updated specification should be translated to a new controller.
