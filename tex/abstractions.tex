@@ -6,48 +6,55 @@ Two types of quantification are allowed in first-order logic: universal quantifi
 \par $\Lambda$ allows quantification over sets of propositions, which we refer to as groups. 
 This allows users to specify reactive behaviors in terms of groups of propositions instead of explicitly naming propositions. 
 Quantification behaves identically towards all propositions within a group, therefore they must all be grammatically interchangeable within a specification. 
-This interchangeability is a property of propositions of the same type (i.e. sensors, robot propositions, or regions), therefore we further constrain groups to be sets of propositions that are all of a single type. 
+This interchangeability is a property of propositions of the same type (i.e. sensors, action propositions, or regions), therefore we further constrain groups to be sets of propositions that are all of a single type. 
 In summary, a group $G$ has the following property:
-\begin{equation}
-	G \subseteq \mathcal{X}_t\,|\,G \subseteq \mathcal{A}_t\,|\,G \subseteq \mathcal{R}_t
-\end{equation}
+%\begin{equation}
+%	G \subseteq \mathcal{X}_t\,|\,G \subseteq \mathcal{A}_t\,|\,G \subseteq \mathcal{R}_t
+%\end{equation}
+$G \subseteq \mathcal{X}_t\,|\,G \subseteq \mathcal{A}_t\,|\,G \subseteq \mathcal{R}_t$.
 % TODO: The sets R, A, X are defined in section II. You can remove the explanations below. ~Spyros
-Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{A}_t \subseteq AP_t$ is the set of action propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
+%Where $\mathcal{X}_t \subseteq AP_t$ is the set of sensor propositions at time $t$, $\mathcal{A}_t \subseteq AP_t$ is the set of action propositions at time $t$, and $\mathcal{R}_t \subseteq AP_t$ is the set of region propositions at time $t$. 
 This generalizes the work in \cite{BingxinRSS2012}, which focused only on groups of region propositions. 
-Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, is not fixed. 
-For instance, alternative implementations of $\Lambda$ would be possible in a formal grammar like Structured English\cite{Finucane2010} and in a natural language processor like SLURP\cite{RamanRSS2013}, with different syntax in both. 
+%Because the requirements of $\Lambda$ are agnostic to specific language implementations, the syntax of group operations, including group definition, is not fixed. 
+%For instance, alternative implementations of $\Lambda$ would be possible in a formal grammar like Structured English\cite{Finucane2010} and in a natural language processor like SLURP\cite{RamanRSS2013}, with different syntax in both. 
 
 \subsection{Group Quantifiers}
 
 For an expression in $\Lambda$ to be quantified over a group of propositions, the expression must have both a reference to the group (e.g. the name of the group) and a quantifier. 
 $\Lambda$ is augmented with three quantifiers: `any', `all', and `each'. 
 For quantification to be meaningful in a robot's behavior the parser $\mathcal{P}_{\Lambda}$ must be able to translate the semantics of these first-order logic operations into LTL formulas $\varphi$.
-In this section we define LTL interpretations of quantification in $\Lambda$.  
+In this section we define LTL interpretations of quantification. 
 %To explain the semantics of these quantifiers, we will use $\bar{\varphi}$ to denote the translation of a sentence in $\Lambda$ into first-order logic. 
 
 Let $\bar{\varphi}$ be the translation of an expression in $\Lambda$ into an expression containing only LTL operators and quantified groups. 
 Using $G$ to denote a group, we can write the quantification of groups in $\bar{\varphi}$ as `any($G$)', `all($G$)', or `each($G$)'. 
 We will also use $[y/x]\bar{\varphi}$ to denote the expression that results from replacing all occurrences of $x$ in $\bar{\varphi}$ with $y$. 
 \par
-The quantifier `any($G$)' in a sentence is translated as the logical disjunction of every proposition in the group named by $G$. 
+The quantifier `any($G$)' in a sentence is translated as the logical disjunction of every proposition in the group $G$. 
 That is, $\bar{\varphi}$ is translated into: 
-\begin{align*}
-	&[ p / \text{any}(G)] \bar{\varphi}, \text{where: } p = \bigvee \limits_{\pi_i \in G} \pi_i
-\end{align*}
-\par
-The quantifier `all($G$)' in a sentence is translated as the logical conjunction of every proposition in the group named by $G$. 
+%\begin{align*}
+%	&[ p / \text{any}(G)] \bar{\varphi}, \text{where: } p = \bigvee \limits_{\pi_i \in G} \pi_i
+%\end{align*}
+%\par
+$[ p / \text{any}(G)] \bar{\varphi}$, where: $p = \bigvee \limits_{\pi_i \in G} \pi_i$.
+
+The quantifier `all($G$)' in a sentence is translated as the logical conjunction of every proposition in the group $G$. 
 $\bar{\varphi}$ is therefore translated into: 
-\begin{equation*}
-	[ p / \text{all}(G)] \bar{\varphi}, \text{where: } p = \bigwedge \limits_{\pi_i \in G} \pi_i
-\end{equation*}
-\par
+%\begin{equation*}
+%	[ p / \text{all}(G)] \bar{\varphi}, \text{where: } p = \bigwedge \limits_{\pi_i \in G} \pi_i
+%\end{equation*}
+%\par
+$[ p / \text{all}(G)] \bar{\varphi}$, where: $p = \bigwedge \limits_{\pi_i \in G} \pi_i$.
+
 The quantifier `each($G$)' is similar to `all($G$)', but acts with a different semantic scope. 
-`each($G$)' in a sentence denotes that the entire sentence is true for each of the propositions in $G$ separately. 
-$\bar{\varphi}$ is translated into:
-\begin{equation*}
- 	\bigwedge\limits_{\pi_i \in G} [\pi_i / \text{each}(G)] \bar{\varphi}
-\end{equation*}
-\par
+`each($G$)' denotes that the entire expression is true for each of the propositions in $G$ separately. 
+Thus, $\bar{\varphi}$ is translated into:
+%\begin{equation*}
+% 	\bigwedge\limits_{\pi_i \in G} [\pi_i / \text{each}(G)] \bar{\varphi}
+%\end{equation*}
+%\par
+$\bigwedge\limits_{\pi_i \in G} [\pi_i / \text{each}(G)] \bar{\varphi}$
+
 \begin{myExample}\label{Ex:quantifiers} 	
 	Consider a scenario where a robot is helping to manage a hotel. 
 	The robot has a group of regions representing the rooms in the hotel, a group of sensors indicating whether rooms are occupied, with a proposition for every room, and actions for cleaning a room, welcoming guests, and apologizing to guests. 
@@ -84,11 +91,12 @@ The first sentence is unclear because it is lacking the index of correspondence 
 Therefore a sentence using correspondence has two relevant groups: $G_q$, the quantified group, and $G_c$, the `corresponding' group. 
 $G_q$ may be paired with any of the available quantifiers, but the interpretation of quantified sentences using correspondence always results in conjunction over statements, as occurs with the `each' quantifier. 
 We can now express the translation of $\bar{\varphi}$ for a sentence using correspondence as:
-\begin{equation*}
-	\bigwedge \limits_{\pi_i \in G_q} [\pi_i / q(G_q)] [\mathcal{C}(\pi_i) \cap G_c / \text{corresponding}(G_c)] \bar{\varphi}
-\end{equation*}
-Where $q$ is any of the available quantifiers. 
-Note from our earlier definition of correspondence that the set intersection in this expression results in at most one element (correspondences may contain at most one element from any group). 
+\begin{equation}\label{Eq:Corresponding}
+	\bigwedge \limits_{\pi_i \in G_q} [\pi_i / q(G_q)] [\mathcal{C}(\pi_i) \cap G_c / \text{corresponding}(G_c)] \bar{\varphi},
+\end{equation}
+where $q$ is any of the available quantifiers. 
+Note from our definition of correspondence that the set intersection in \eqref{Eq:Corresponding} results in at most one element. 
+%(correspondences may contain at most one element from any group). 
 If the intersection is empty, meaning that a correspondence has not been properly defined, then the sentence produces a syntax error. 
 
 \begin{myExample}\label{Ex:corresponding}
