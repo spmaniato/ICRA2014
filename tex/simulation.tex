@@ -13,7 +13,7 @@ Initially, the robot has no information about specific letters or their recipien
 	\textbf{Mission specification:} Autonomous Mailbot
 	
 	\vspace{-7 pt}
-	\hrulefill\\
+	\hrulefill
 	{\small
 	
 	\textbf{Group declarations:}\\
@@ -21,7 +21,7 @@ Initially, the robot has no information about specific letters or their recipien
 %	\texttt{Group LetterSlots is empty} \\
 %	\texttt{Group Delivery is empty} \\
 	\texttt{Group Offices is empty} \\
-	\texttt{Group PatrolRooms is mailRoom, hallW, hallN}\\ % FIXME: I don't like 'hall_x"s
+	\texttt{Group PatrolRooms is mailRoom, hallW, hallN}
 	
 	\textbf{Correspondence definitions:} (immutable)\\ %FIXME: Add more for add_to to work?
 %	\texttt{Letters correspond to LetterSlots, Delivery, Offices}\\ %FIXME: This isn't implemented
@@ -29,7 +29,7 @@ Initially, the robot has no information about specific letters or their recipien
 %	\texttt{LetterSlots correspond to Delivery}\\
 %	\texttt{Delivery correspond to LetterSlots}\\
 %	\texttt{Delivery correspond to Offices}\\
-	\texttt{Letters correspond to Offices}\\
+	\texttt{Letters correspond to Offices}
 	
 %	\hrulefill\\
 	% TODO: We can't have initial conditions when we are re-synthesizing, right?
@@ -39,7 +39,7 @@ Initially, the robot has no information about specific letters or their recipien
 	
 	\textbf{Mission tasks:} (immutable)\\
 	\texttt{If you are sensing any Letters then go to the corresponding Office}\\
-	\texttt{If you are not sensing any Letters then visit each PatrolRoom}\\
+	\texttt{If you are not sensing any Letters then visit each PatrolRoom}
 %	\texttt{Each LetterSlot is set on the corresponding Letter and pickUp and reset on the corresponding Delivery}\\
 	
 %	\texttt{Do pickUp if and only if you are sensing any Letters}\\
@@ -60,7 +60,7 @@ Initially, the robot has no information about specific letters or their recipien
 	}
 	\vspace{-8 pt}
 \end{algorithm}
-
+\vspace{-5 pt}
 %\begin{figure}[h]
 %	\centering
 %	\includegraphics[width=0.70\columnwidth, clip]{./img/mailbot_map.pdf}
